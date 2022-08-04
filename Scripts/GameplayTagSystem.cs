@@ -52,11 +52,27 @@ namespace KimScor.GameplayTagSystem
 #region Trigger Tag
         public void TriggerTag(GameplayTag triggerTag)
         {
+            if (triggerTag is null)
+                return;
+
             OnTriggerTag?.Invoke(this, triggerTag);
         }
 
         public void TriggerTags(GameplayTag[] triggerTags)
         {
+            if (triggerTags is null)
+                return;
+
+            foreach (GameplayTag tag in triggerTags)
+            {
+                TriggerTag(tag);
+            }
+        }
+        public void TriggerTags(IReadOnlyCollection<GameplayTag> triggerTags)
+        {
+            if (triggerTags is null)
+                return;
+
             foreach (GameplayTag tag in triggerTags)
             {
                 TriggerTag(tag);
