@@ -4,6 +4,7 @@ using UnityEngine.Events;
 
 namespace KimScor.GameplayTagSystem
 {
+
     [System.Serializable]
     public class GameplayTagEvent
     {
