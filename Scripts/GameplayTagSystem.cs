@@ -220,6 +220,9 @@ namespace KimScor.GameplayTagSystem
 
         public bool ContainTag(IReadOnlyDictionary<GameplayTag, int> container, GameplayTag tag)
         {
+            if (tag is null)
+                return false;
+
             if (!container.TryGetValue(tag, out int value))
                 return false;
 
@@ -233,10 +236,11 @@ namespace KimScor.GameplayTagSystem
         {
             return ContainTag(BlockTags, tag);
         }
+
         /// <summary>
-        /// 모두 있다면 True, 하나라도 없으면 False;
+        /// 모든 태그를 가지고 있는가
         /// </summary>
-        public bool ContainAllTags(IReadOnlyDictionary<GameplayTag, int> container, GameplayTag[] tags)
+        private bool ContainAllTags(IReadOnlyDictionary<GameplayTag, int> container, GameplayTag[] tags)
         {
             foreach (GameplayTag tag in tags)
             {
@@ -248,127 +252,36 @@ namespace KimScor.GameplayTagSystem
             return true;
         }
         /// <summary>
-        /// 모두 있다면 True, 하나라도 없으면 False;
+        /// 태그를 하나라도 가지고 있는가
         /// </summary>
-        public bool ContainAllOwnedTags(GameplayTag[] tags)
-        {
-            if (tags.Length == 0)
-                return true;
-
-            if (OwnedTags.Count == 0)
-                return false;
-
-            return ContainAllTags(OwnedTags, tags);
-        }
-        /// <summary>
-        /// 모두 있다면 True, 하나라도 없으면 False;
-        /// </summary>
-        public bool ContainAllBlockTags(GameplayTag[] tags)
-        {
-            if (tags.Length == 0)
-                return true;
-
-            if (BlockTags.Count == 0)
-                return false;
-
-            return ContainAllTags(BlockTags, tags);
-        }
-
-        /// <summary>
-        /// 하나라도 없다면 True
-        /// </summary>
-        public bool ContainOnceOwnedTags(GameplayTag[] tags)
-        {
-            if (tags.Length == 0)
-                return true;
-
-            if (OwnedTags.Count == 0)
-                return false;
-
-            return !ContainAllTags(OwnedTags, tags);
-        }
-        /// <summary>
-        /// 하나라도 없다면 True
-        /// </summary>
-        public bool ContainOnceBlockTags(GameplayTag[] tags)
-        {
-            if (tags.Length == 0)
-                return true;
-
-            if (BlockTags.Count == 0)
-                return false;
-
-            return !ContainAllTags(BlockTags, tags);
-        }
-
-        /// <summary>
-        /// 모두 없으면 True
-        /// </summary>
-        public bool ContainNotAllTags(IReadOnlyDictionary<GameplayTag, int> container, GameplayTag[] tags)
+        private bool ContainOnceTag(IReadOnlyDictionary<GameplayTag, int> container, GameplayTag[] tags)
         {
             foreach (GameplayTag tag in tags)
             {
                 if (ContainTag(container, tag))
                 {
-                    return false;
+                    return true;
                 }
             }
-            return true;
+            return false;
         }
-        /// <summary>
-        /// 모두 없다면 True
-        /// </summary>
-        public bool ContainNotAllOwnedTags(GameplayTag[] tags)
+
+        public bool ContainAllTagsInOwned(GameplayTag[] tags)
         {
-            if (tags.Length == 0)
-                return true;
-
-            if (OwnedTags.Count == 0)
-                return true;
-
-            return ContainNotAllTags(OwnedTags, tags);
+            return ContainAllTags(OwnedTags,tags);
         }
-        /// <summary>
-        /// 모두 없다면 True
-        /// </summary>
-        public bool ContainNotAllBlockTags(GameplayTag[] tags)
+        public bool ContainAllTagsInBlock(GameplayTag[] tags)
         {
-            if (tags.Length == 0)
-                return true;
-
-            if (BlockTags.Count == 0)
-                return true;
-
-            return ContainNotAllTags(BlockTags, tags);
+            return ContainAllTags(BlockTags, tags);
         }
-
-        /// <summary>
-        /// 하나라도 있다면 True
-        /// </summary>
-        public bool ContainNotOnceOwnedTags(GameplayTag[] tags)
+        public bool ContainOnceTagsInOwned(GameplayTag[] tags)
         {
-            if (tags.Length == 0)
-                return true;
-
-            if (OwnedTags.Count == 0)
-                return false;
-
-            return !ContainNotAllTags(OwnedTags, tags);
+            return ContainOnceTag(OwnedTags, tags);
         }
-        /// <summary>
-        /// 하나라도 있다면 True
-        /// </summary>
-        public bool ContainNotOnceBlockTags(GameplayTag[] tags)
+        public bool ContainOnceTagsInBlock(GameplayTag[] tags)
         {
-            if (tags.Length == 0)
-                return true;
-
-            if (BlockTags.Count == 0)
-                return false;
-
-            return !ContainNotAllTags(BlockTags, tags);
+            return ContainOnceTag(BlockTags, tags);
         }
-
 #endregion
     }
 }

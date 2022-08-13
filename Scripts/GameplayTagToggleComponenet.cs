@@ -16,9 +16,9 @@ namespace KimScor.GameplayTagSystem
         }
         private void OnDisable()
         {
-            _GameplayTagSystem = null;
-
             RemoveGameplayTags();
+
+            _GameplayTagSystem = null;
         }
 
         public void AddGameplayTags()
