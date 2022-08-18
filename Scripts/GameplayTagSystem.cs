@@ -251,6 +251,17 @@ namespace KimScor.GameplayTagSystem
             }
             return true;
         }
+        private bool ContainAllTags(IReadOnlyDictionary<GameplayTag, int> container, IReadOnlyCollection<GameplayTag> tags)
+        {
+            foreach (GameplayTag tag in tags)
+            {
+                if (!ContainTag(container, tag))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
         /// <summary>
         /// 태그를 하나라도 가지고 있는가
         /// </summary>
@@ -265,12 +276,31 @@ namespace KimScor.GameplayTagSystem
             }
             return false;
         }
+        private bool ContainOnceTag(IReadOnlyDictionary<GameplayTag, int> container, IReadOnlyCollection<GameplayTag> tags)
+        {
+            foreach (GameplayTag tag in tags)
+            {
+                if (ContainTag(container, tag))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
 
         public bool ContainAllTagsInOwned(GameplayTag[] tags)
         {
-            return ContainAllTags(OwnedTags,tags);
+            return ContainAllTags(OwnedTags, tags);
+        }
+        public bool ContainAllTagsInOwned(IReadOnlyCollection<GameplayTag> tags)
+        {
+            return ContainAllTags(OwnedTags, tags);
         }
         public bool ContainAllTagsInBlock(GameplayTag[] tags)
+        {
+            return ContainAllTags(BlockTags, tags);
+        }
+        public bool ContainAllTagsInBlock(IReadOnlyCollection<GameplayTag> tags)
         {
             return ContainAllTags(BlockTags, tags);
         }
@@ -278,10 +308,19 @@ namespace KimScor.GameplayTagSystem
         {
             return ContainOnceTag(OwnedTags, tags);
         }
+        public bool ContainOnceTagsInOwned(IReadOnlyCollection<GameplayTag> tags)
+        {
+            return ContainOnceTag(OwnedTags, tags);
+        }
         public bool ContainOnceTagsInBlock(GameplayTag[] tags)
         {
             return ContainOnceTag(BlockTags, tags);
         }
-#endregion
+        public bool ContainOnceTagsInBlock(IReadOnlyCollection<GameplayTag> tags)
+        {
+            return ContainOnceTag(BlockTags, tags);
+        }
+
+        #endregion
     }
 }
