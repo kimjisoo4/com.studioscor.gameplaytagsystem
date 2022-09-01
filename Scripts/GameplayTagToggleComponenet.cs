@@ -5,6 +5,7 @@ namespace KimScor.GameplayTagSystem
     public class GameplayTagToggleComponenet : MonoBehaviour
     {
         private GameplayTagSystem _GameplayTagSystem;
+        [SerializeField] private bool _AutoActivate = true;
 
         [SerializeField] private GameplayTag[] _ToggleTags;
 
@@ -12,13 +13,15 @@ namespace KimScor.GameplayTagSystem
         {
             _GameplayTagSystem = GetComponentInParent<GameplayTagSystem>();
 
-            AddGameplayTags();
+            if(_AutoActivate)
+                AddGameplayTags();
         }
         private void OnDisable()
         {
             RemoveGameplayTags();
 
-            _GameplayTagSystem = null;
+            if(_AutoActivate)
+                _GameplayTagSystem = null;
         }
 
         public void AddGameplayTags()

@@ -51,13 +51,13 @@ namespace KimScor.GameplayTagSystem
 
             if (_GameplayTagSystem != null)
             {
-                GameplayTagSystem_UpdateTag(_GameplayTagSystem);
-
                 _GameplayTagSystem.OnAddBlockTag += GameplayTagSystem_UpdateTag;
                 _GameplayTagSystem.OnAddOwnedTag += GameplayTagSystem_UpdateTag;
                 _GameplayTagSystem.OnRemoveBlockTag += GameplayTagSystem_UpdateTag;
                 _GameplayTagSystem.OnRemoveOwnedTag += GameplayTagSystem_UpdateTag;
             }
+
+            UpdateGameplayTagBlock();
         }
 
         [ContextMenu("ChangeLook")]
@@ -65,14 +65,24 @@ namespace KimScor.GameplayTagSystem
         {
             _LookBlockTag = !_LookBlockTag;
 
-            GameplayTagSystem_UpdateTag(_GameplayTagSystem);
+            UpdateGameplayTagBlock();
         }
 
-        private void GameplayTagSystem_UpdateTag(GameplayTagSystem gameplayTagSystem, GameplayTag changedTag = null)
+        private void UpdateGameplayTagBlock()
         {
+            if(_GameplayTagSystem == null)
+            {
+                foreach (var block in _Blocks)
+                {
+                    block.gameObject.SetActive(false);
+                }
+
+                return;
+            }
+
             int count = 0;
 
-            IReadOnlyDictionary<GameplayTag, int> container = !_LookBlockTag? gameplayTagSystem.OwnedTags : gameplayTagSystem.BlockTags;
+            IReadOnlyDictionary<GameplayTag, int> container = !_LookBlockTag ? _GameplayTagSystem.OwnedTags : _GameplayTagSystem.BlockTags;
 
             if (container.Count == 0)
                 return;
@@ -99,10 +109,15 @@ namespace KimScor.GameplayTagSystem
                 count++;
             }
 
-            for(int i = count; i < _Blocks.Count; i++)
+            for (int i = count; i < _Blocks.Count; i++)
             {
                 _Blocks[i].gameObject.SetActive(false);
             }
+        }
+
+        private void GameplayTagSystem_UpdateTag(GameplayTagSystem gameplayTagSystem, GameplayTag changedTag = null)
+        {
+            UpdateGameplayTagBlock();
         }
     }
 }
