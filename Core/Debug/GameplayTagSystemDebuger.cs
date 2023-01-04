@@ -3,11 +3,11 @@ using System.Linq;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
-namespace KimScor.GameplayTagSystem
+namespace StudioScor.GameplayTagSystem
 {
     public class GameplayTagSystemDebuger : MonoBehaviour
     {
-        [SerializeField] private GameplayTagSystem _GameplayTagSystem;
+        [SerializeField] private GameplayTagComponent _GameplayTagComponent;
         [SerializeField] private GridLayoutGroup _Grid;
         [SerializeField] private GameplayTagBlockUI _Block;
         [SerializeField] private List<GameplayTagBlockUI> _Blocks;
@@ -22,39 +22,39 @@ namespace KimScor.GameplayTagSystem
 #endif
         private void OnEnable()
         {
-            GameplayTagSystem_UpdateTag(_GameplayTagSystem);
+            GameplayTagSystem_UpdateTag(_GameplayTagComponent);
 
-            _GameplayTagSystem.OnAddBlockTag += GameplayTagSystem_UpdateTag;
-            _GameplayTagSystem.OnAddOwnedTag += GameplayTagSystem_UpdateTag;
-            _GameplayTagSystem.OnRemoveBlockTag += GameplayTagSystem_UpdateTag;
-            _GameplayTagSystem.OnRemoveOwnedTag += GameplayTagSystem_UpdateTag;
+            _GameplayTagComponent.OnAddedBlockTag += GameplayTagSystem_UpdateTag;
+            _GameplayTagComponent.OnAddedOwnedTag += GameplayTagSystem_UpdateTag;
+            _GameplayTagComponent.OnRemovedBlockTag += GameplayTagSystem_UpdateTag;
+            _GameplayTagComponent.OnRemovedOwnedTag += GameplayTagSystem_UpdateTag;
         }
         private void OnDisable()
         {
-            _GameplayTagSystem.OnAddBlockTag -= GameplayTagSystem_UpdateTag;
-            _GameplayTagSystem.OnAddOwnedTag -= GameplayTagSystem_UpdateTag;
-            _GameplayTagSystem.OnRemoveBlockTag -= GameplayTagSystem_UpdateTag;
-            _GameplayTagSystem.OnRemoveOwnedTag -= GameplayTagSystem_UpdateTag;
+            _GameplayTagComponent.OnAddedBlockTag -= GameplayTagSystem_UpdateTag;
+            _GameplayTagComponent.OnAddedOwnedTag -= GameplayTagSystem_UpdateTag;
+            _GameplayTagComponent.OnRemovedBlockTag -= GameplayTagSystem_UpdateTag;
+            _GameplayTagComponent.OnRemovedOwnedTag -= GameplayTagSystem_UpdateTag;
         }
 
-        public void SetGameplayTagSystem(GameplayTagSystem gameplayTagSystem)
+        public void SetGameplayTagSystem(GameplayTagComponent gameplayTagComponent)
         {
-            if(_GameplayTagSystem != null)
+            if(_GameplayTagComponent != null)
             {
-                _GameplayTagSystem.OnAddBlockTag -= GameplayTagSystem_UpdateTag;
-                _GameplayTagSystem.OnAddOwnedTag -= GameplayTagSystem_UpdateTag;
-                _GameplayTagSystem.OnRemoveBlockTag -= GameplayTagSystem_UpdateTag;
-                _GameplayTagSystem.OnRemoveOwnedTag -= GameplayTagSystem_UpdateTag;
+                _GameplayTagComponent.OnAddedBlockTag -= GameplayTagSystem_UpdateTag;
+                _GameplayTagComponent.OnAddedOwnedTag -= GameplayTagSystem_UpdateTag;
+                _GameplayTagComponent.OnRemovedBlockTag -= GameplayTagSystem_UpdateTag;
+                _GameplayTagComponent.OnRemovedOwnedTag -= GameplayTagSystem_UpdateTag;
             }
 
-            _GameplayTagSystem = gameplayTagSystem;
+            _GameplayTagComponent = gameplayTagComponent;
 
-            if (_GameplayTagSystem != null)
+            if (_GameplayTagComponent != null)
             {
-                _GameplayTagSystem.OnAddBlockTag += GameplayTagSystem_UpdateTag;
-                _GameplayTagSystem.OnAddOwnedTag += GameplayTagSystem_UpdateTag;
-                _GameplayTagSystem.OnRemoveBlockTag += GameplayTagSystem_UpdateTag;
-                _GameplayTagSystem.OnRemoveOwnedTag += GameplayTagSystem_UpdateTag;
+                _GameplayTagComponent.OnAddedBlockTag += GameplayTagSystem_UpdateTag;
+                _GameplayTagComponent.OnAddedOwnedTag += GameplayTagSystem_UpdateTag;
+                _GameplayTagComponent.OnRemovedBlockTag += GameplayTagSystem_UpdateTag;
+                _GameplayTagComponent.OnRemovedOwnedTag += GameplayTagSystem_UpdateTag;
             }
 
             UpdateGameplayTagBlock();
@@ -70,7 +70,7 @@ namespace KimScor.GameplayTagSystem
 
         private void UpdateGameplayTagBlock()
         {
-            if(_GameplayTagSystem == null)
+            if(_GameplayTagComponent == null)
             {
                 foreach (var block in _Blocks)
                 {
@@ -82,7 +82,7 @@ namespace KimScor.GameplayTagSystem
 
             int count = 0;
 
-            IReadOnlyDictionary<GameplayTag, int> container = !_LookBlockTag ? _GameplayTagSystem.OwnedTags : _GameplayTagSystem.BlockTags;
+            IReadOnlyDictionary<GameplayTag, int> container = !_LookBlockTag ? _GameplayTagComponent.OwnedTags : _GameplayTagComponent.BlockTags;
 
             if (container.Count == 0)
                 return;
@@ -115,7 +115,7 @@ namespace KimScor.GameplayTagSystem
             }
         }
 
-        private void GameplayTagSystem_UpdateTag(GameplayTagSystem gameplayTagSystem, GameplayTag changedTag = null)
+        private void GameplayTagSystem_UpdateTag(GameplayTagComponent gameplayTagComponent, GameplayTag changedTag = null)
         {
             UpdateGameplayTagBlock();
         }

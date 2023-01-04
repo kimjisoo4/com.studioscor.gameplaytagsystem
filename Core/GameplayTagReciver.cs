@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace KimScor.GameplayTagSystem
+namespace StudioScor.GameplayTagSystem
 {
 
     [System.Serializable]
@@ -24,31 +24,31 @@ namespace KimScor.GameplayTagSystem
         [SerializeField] private GameplayTag[] _GameplayTags;
         [SerializeField] private UnityEvent _TagEvent;
 
-        public void SetGameplayEvent(GameplayTagSystem gameplayTagSystem)
+        public void SetGameplayEvent(GameplayTagComponent gameplayTagComponent)
         {
             switch (_TagEventType)
             {
                 case ETagEventType.AddOwned:
-                    gameplayTagSystem.OnNewAddOwnedTag += GameplayTagSystem_OnTagEvent;
+                    gameplayTagComponent.OnAddedNewOwnedTag += GameplayTagSystem_OnTagEvent;
                     break;
                 case ETagEventType.RemoveOwned:
-                    gameplayTagSystem.OnRemoveOwnedTag += GameplayTagSystem_OnTagEvent;
+                    gameplayTagComponent.OnRemovedOwnedTag += GameplayTagSystem_OnTagEvent;
                     break;
                 case ETagEventType.AddBlock:
-                    gameplayTagSystem.OnNewAddBlockTag += GameplayTagSystem_OnTagEvent;
+                    gameplayTagComponent.OnAddedNewBlockTag += GameplayTagSystem_OnTagEvent;
                     break;
                 case ETagEventType.RemoveBlock:
-                    gameplayTagSystem.OnRemoveBlockTag += GameplayTagSystem_OnTagEvent;
+                    gameplayTagComponent.OnRemovedBlockTag += GameplayTagSystem_OnTagEvent;
                     break;
                 case ETagEventType.Trigger:
-                    gameplayTagSystem.OnTriggerTag += GameplayTagSystem_OnTagEvent;
+                    gameplayTagComponent.OnTriggeredTag += GameplayTagSystem_OnTagEvent;
                     break;
                 default:
                     break;
             }
         }
 
-        private void GameplayTagSystem_OnTagEvent(GameplayTagSystem gameplayTagSystem, GameplayTag changedTag)
+        private void GameplayTagSystem_OnTagEvent(GameplayTagComponent gameplayTagComponent, GameplayTag changedTag)
         {
             foreach (GameplayTag tag in _GameplayTags)
             {
@@ -62,16 +62,16 @@ namespace KimScor.GameplayTagSystem
 
     public class GameplayTagReciver : MonoBehaviour
     {
-        [SerializeField] private GameplayTagSystem _GameplayTagSystem;
-        public GameplayTagSystem GameplayTagSystem
+        [SerializeField] private GameplayTagComponent _GameplayTagComponent;
+        public GameplayTagComponent GameplayTagSystem
         {
             get
             {
-                if (_GameplayTagSystem == null)
+                if (_GameplayTagComponent == null)
                 {
-                    _GameplayTagSystem = GetComponentInParent<GameplayTagSystem>();
+                    _GameplayTagComponent = GetComponentInParent<GameplayTagComponent>();
                 }
-                return _GameplayTagSystem;
+                return _GameplayTagComponent;
             }
         }
         [SerializeField] private GameplayTagEvent[] _GameplayEvents;
@@ -79,7 +79,7 @@ namespace KimScor.GameplayTagSystem
 #if UNITY_EDITOR
         private void Reset()
         {
-            _GameplayTagSystem = GetComponentInParent<GameplayTagSystem>();
+            _GameplayTagComponent = GetComponentInParent<GameplayTagComponent>();
         }
 #endif
 

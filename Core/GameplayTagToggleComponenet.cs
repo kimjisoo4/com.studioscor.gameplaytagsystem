@@ -1,17 +1,17 @@
 ﻿using UnityEngine;
 
-namespace KimScor.GameplayTagSystem
+namespace StudioScor.GameplayTagSystem
 {
     public class GameplayTagToggleComponenet : MonoBehaviour
     {
-        private GameplayTagSystem _GameplayTagSystem;
+        private GameplayTagComponent _GameplayTagComponent;
         [SerializeField] private bool _AutoActivate = true;
 
         [SerializeField] private GameplayTag[] _ToggleTags;
 
         private void OnEnable()
         {
-            _GameplayTagSystem = GetComponentInParent<GameplayTagSystem>();
+            _GameplayTagComponent = GetComponentInParent<GameplayTagComponent>();
 
             if(_AutoActivate)
                 AddGameplayTags();
@@ -21,22 +21,22 @@ namespace KimScor.GameplayTagSystem
             RemoveGameplayTags();
 
             if(_AutoActivate)
-                _GameplayTagSystem = null;
+                _GameplayTagComponent = null;
         }
 
         public void AddGameplayTags()
         {
-            if (_GameplayTagSystem is null)
+            if (_GameplayTagComponent is null)
                 return;
 
-            _GameplayTagSystem.AddOwnedTags(_ToggleTags);
+            _GameplayTagComponent.AddOwnedTags(_ToggleTags);
         }
         public void RemoveGameplayTags()
         {
-            if (_GameplayTagSystem is null)
+            if (_GameplayTagComponent is null)
                 return;
 
-            _GameplayTagSystem.RemoveOwnedTags(_ToggleTags);
+            _GameplayTagComponent.RemoveOwnedTags(_ToggleTags);
         }
     }
 }

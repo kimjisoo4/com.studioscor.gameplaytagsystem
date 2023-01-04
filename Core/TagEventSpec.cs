@@ -1,4 +1,4 @@
-﻿namespace KimScor.GameplayTagSystem
+﻿namespace StudioScor.GameplayTagSystem
 {
     public abstract class TagEventSpec
     {
@@ -13,37 +13,37 @@
         public event TagEventHandler OnTriggerTagEvent;
         public event TagEventHandler OnReTriggerTagEvent;
 
-        private GameplayTagSystem _GameplayTagSystem;
-        public GameplayTagSystem GameplayTagSystem => _GameplayTagSystem;
+        private GameplayTagComponent _GameplayTagComponent;
+        public GameplayTagComponent GameplayTagComponent => _GameplayTagComponent;
 
         public bool UseDebug => _TagEvent.UseDebugMode;
 
 
-        public TagEventSpec(TagEvent tagEvent, GameplayTagSystem gameplayTagSystem)
+        public TagEventSpec(TagEvent tagEvent, GameplayTagComponent gameplayTagComponent)
         {
             _TagEvent = tagEvent;
-            _GameplayTagSystem = gameplayTagSystem;
+            _GameplayTagComponent = gameplayTagComponent;
 
             switch (TagEvent.GameplayTagEventType)
             {
                 case EGameplayTagEventType.ToggleTag:
-                    gameplayTagSystem.OnNewAddOwnedTag += GameplayTagSystem_OnToggle;
-                    gameplayTagSystem.OnRemoveOwnedTag += GameplayTagSystem_OnToggle;
+                    gameplayTagComponent.OnAddedNewOwnedTag += GameplayTagSystem_OnToggle;
+                    gameplayTagComponent.OnRemovedOwnedTag += GameplayTagSystem_OnToggle;
                     break;
                 case EGameplayTagEventType.AddTag:
-                    gameplayTagSystem.OnNewAddOwnedTag += GameplayTagSystem_OnTriggerTag;
+                    gameplayTagComponent.OnAddedNewOwnedTag += GameplayTagSystem_OnTriggerTag;
                     break;
                 case EGameplayTagEventType.RemoveTag:
-                    gameplayTagSystem.OnRemoveOwnedTag += GameplayTagSystem_OnTriggerTag;
+                    gameplayTagComponent.OnRemovedOwnedTag += GameplayTagSystem_OnTriggerTag;
                     break;
                 case EGameplayTagEventType.TriggerTag:
-                    gameplayTagSystem.OnTriggerTag += GameplayTagSystem_OnTriggerTag;
+                    gameplayTagComponent.OnTriggeredTag += GameplayTagSystem_OnTriggerTag;
                     break;
                 default:
                     break;
             }
         }
-        private void GameplayTagSystem_OnToggle(GameplayTagSystem gameplayTagSystem, GameplayTag changedTag)
+        private void GameplayTagSystem_OnToggle(GameplayTagComponent gameplayTagComponent, GameplayTag changedTag)
         {
             if (TagEvent.GameplayTag == changedTag)
             {
@@ -62,7 +62,7 @@
             } 
         }
 
-        private void GameplayTagSystem_OnTriggerTag(GameplayTagSystem gameplayTagSystem, GameplayTag changedTag)
+        private void GameplayTagSystem_OnTriggerTag(GameplayTagComponent gameplayTagComponent, GameplayTag changedTag)
         {
             if (TagEvent.GameplayTag == changedTag)
             {

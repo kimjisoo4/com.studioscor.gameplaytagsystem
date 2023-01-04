@@ -1,4 +1,4 @@
-﻿namespace KimScor.GameplayTagSystem
+﻿namespace StudioScor.GameplayTagSystem
 {
     public enum EGameplayTagEventType
     {

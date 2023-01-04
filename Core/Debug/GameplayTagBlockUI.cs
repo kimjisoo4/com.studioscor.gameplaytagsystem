@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using System.Collections.Generic;
 
-namespace KimScor.GameplayTagSystem
+namespace StudioScor.GameplayTagSystem
 {
     public class GameplayTagBlockUI : MonoBehaviour
     {

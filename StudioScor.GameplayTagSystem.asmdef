@@ -1,7 +1,9 @@
 {
-    "name": "KimScor.GameplayTagSystem",
-    "rootNamespace": "",
-    "references": [],
+    "name": "StudioScor.GameplayTagSystem",
+    "rootNamespace": "StudioScor.GameplayTagSystem",
+    "references": [
+        "GUID:0e56af4e027762c43b7508efc3b00495"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

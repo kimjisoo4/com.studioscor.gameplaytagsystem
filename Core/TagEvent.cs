@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace KimScor.GameplayTagSystem
+namespace StudioScor.GameplayTagSystem
 {
     public abstract class TagEvent : ScriptableObject
     {
@@ -12,6 +12,6 @@ namespace KimScor.GameplayTagSystem
         public GameplayTag GameplayTag => _GameplayTag;
         public bool UseDebugMode => _UseDebugMode;
 
-        public abstract TagEventSpec CreateSpec(GameplayTagSystem gameplayTagSystem);
+        public abstract TagEventSpec CreateSpec(GameplayTagComponent gameplayTagComponent);
     }
 }
