@@ -18,7 +18,7 @@ namespace StudioScor.GameplayTagSystem
 
         private void OnEnable()
         {
-            if(TryGetComponent(out GameplayTagSystem gameplayTagComponent))
+            if(TryGetComponent(out GameplayTagSystemComponent gameplayTagComponent))
             {
                 UpdateTag(gameplayTagComponent);
 
@@ -33,12 +33,12 @@ namespace StudioScor.GameplayTagSystem
             }
         }
 
-        private void GameplayTagSystem_OnAddBlockTag(GameplayTagSystem gameplayTagComponent, GameplayTag changedTag)
+        private void GameplayTagSystem_OnAddBlockTag(GameplayTagSystemComponent gameplayTagComponent, GameplayTag changedTag)
         {
             UpdateTag(gameplayTagComponent);
         }
 
-        private void UpdateTag(GameplayTagSystem gameplayTagComponent)
+        private void UpdateTag(GameplayTagSystemComponent gameplayTagComponent)
         {
             _OwnedTags.Clear();
             _BlockTags.Clear();

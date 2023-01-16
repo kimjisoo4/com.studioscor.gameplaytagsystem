@@ -16,6 +16,6 @@ namespace StudioScor.GameplayTagSystem
 
         public EGameplayTagEventType GameplayTagEventType => _GameplayTagEventType;
         public GameplayTag GameplayTag => _GameplayTag;
-        public abstract ScriptableGameplayTagEventSpec CreateSpec(GameplayTagSystem gameplayTagSystem);
+        public abstract ScriptableGameplayTagEventSpec CreateSpec(GameplayTagSystemComponent gameplayTagSystemComponent);
     }
 }

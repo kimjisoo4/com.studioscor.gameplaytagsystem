@@ -7,7 +7,7 @@ using Unity.VisualScripting;
 
 namespace StudioScor.GameplayTagSystem
 {
-    public partial class GameplayTagSystem : MonoBehaviour
+    public partial class GameplayTagSystemComponent : MonoBehaviour
     {
         [Conditional("SCOR_ENABLE_VISUALSCRIPTING")]
         protected virtual void TriggerTagWithVisualScripting(GameplayTag triggerTag)

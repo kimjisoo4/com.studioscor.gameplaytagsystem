@@ -5,10 +5,10 @@ using System.Diagnostics;
 namespace StudioScor.GameplayTagSystem
 {
     [DefaultExecutionOrder(GameplayTagSystemExecutionOrder.SUB_ORDER)]
-    [AddComponentMenu("StudioScor/GameplayTagSystem/GameplayTag Event Component", order: 10)]
+    [AddComponentMenu("StudioScor/GameplayTagSystem/GameplayTagSystem Event Component", order: 10)]
     public class GameplayTagEventComponent : MonoBehaviour
     {
-        [SerializeField] private GameplayTagSystem _GameplayTagSystem;
+        [SerializeField] private GameplayTagSystemComponent _GameplayTagSystemComponent;
         [SerializeField] private GameplayTagEvent[] _GameplayEvents;
 
         #region EDITOR ONLY
@@ -48,7 +48,7 @@ namespace StudioScor.GameplayTagSystem
 
         private void Awake()
         {
-            if (!_GameplayTagSystem)
+            if (!_GameplayTagSystemComponent)
                 SetGameplayTagSystem();
         }
 
@@ -58,7 +58,7 @@ namespace StudioScor.GameplayTagSystem
         }
         private void OnEnable()
         {
-            if (!_GameplayTagSystem)
+            if (!_GameplayTagSystemComponent)
             {
                 Log("GamepalyTag System Is Null", true);
 
@@ -70,14 +70,14 @@ namespace StudioScor.GameplayTagSystem
 
         protected void SetGameplayTagSystem()
         {
-            if (_GameplayTagSystem)
+            if (_GameplayTagSystemComponent)
                 return;
 
-            _GameplayTagSystem = GetComponentInParent<GameplayTagSystem>();
+            _GameplayTagSystemComponent = GetComponentInParent<GameplayTagSystemComponent>();
 
-            if (!_GameplayTagSystem)
+            if (!_GameplayTagSystemComponent)
             {
-                _GameplayTagSystem = GetComponentInChildren<GameplayTagSystem>();
+                _GameplayTagSystemComponent = GetComponentInChildren<GameplayTagSystemComponent>();
             }
         }
 
@@ -85,7 +85,7 @@ namespace StudioScor.GameplayTagSystem
         {
             foreach (GameplayTagEvent gameplayTagEvent in _GameplayEvents)
             {
-                gameplayTagEvent.SetGameplayEvent(_GameplayTagSystem);
+                gameplayTagEvent.SetGameplayEvent(_GameplayTagSystemComponent);
             }
         }
         protected void ResetGameplayEvents()

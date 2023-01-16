@@ -7,11 +7,11 @@ using System.Diagnostics;
 namespace StudioScor.GameplayTagSystem
 {
     [DefaultExecutionOrder(GameplayTagSystemExecutionOrder.MAIN_ORDER)]
-    [AddComponentMenu("StudioScor/GameplayTagSystem/GameplayTagSystem", order:0)]
-    public partial class GameplayTagSystem : MonoBehaviour
+    [AddComponentMenu("StudioScor/GameplayTagSystem/GameplayTag System Component", order:0)]
+    public partial class GameplayTagSystemComponent : MonoBehaviour
     {
         #region Events
-        public delegate void GameplayTagEventHandler(GameplayTagSystem gameplayTagComponent, GameplayTag gameplayTag);
+        public delegate void GameplayTagEventHandler(GameplayTagSystemComponent gameplayTagComponent, GameplayTag gameplayTag);
         #endregion
 
         [Header(" [ Setup ] ")]

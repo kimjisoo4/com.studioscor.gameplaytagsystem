@@ -8,7 +8,7 @@ namespace StudioScor.GameplayTagSystem
     public class GrantGameplayTagComponent : MonoBehaviour
     {
         [Header(" [ Grant GameplayTag Component ] ")]
-        [SerializeField] private GameplayTagSystem _GameplayTagSystem;
+        [SerializeField] private GameplayTagSystemComponent _GameplayTagSystemComponent;
         [Space(5f)]
         [SerializeField] private FGameplayTags _ToggleTags;
         [Space(5f)]
@@ -45,7 +45,7 @@ namespace StudioScor.GameplayTagSystem
 
         private void Awake()
         {
-            if (!_GameplayTagSystem)
+            if (!_GameplayTagSystemComponent)
             {
                 SetGameplayTagSystem();
             }
@@ -63,11 +63,11 @@ namespace StudioScor.GameplayTagSystem
 
         private void SetGameplayTagSystem()
         {
-            _GameplayTagSystem = GetComponentInParent<GameplayTagSystem>();
+            _GameplayTagSystemComponent = GetComponentInParent<GameplayTagSystemComponent>();
 
-            if (!_GameplayTagSystem)
+            if (!_GameplayTagSystemComponent)
             {
-                _GameplayTagSystem = GetComponentInChildren<GameplayTagSystem>();
+                _GameplayTagSystemComponent = GetComponentInChildren<GameplayTagSystemComponent>();
             }
         }
 
@@ -78,15 +78,15 @@ namespace StudioScor.GameplayTagSystem
 
             _WasGrantTags = true;
 
-            if (!_GameplayTagSystem)
+            if (!_GameplayTagSystemComponent)
             {
                 Log("GamepalyTag System Is Null", true);
 
                 return;
             }
 
-            _GameplayTagSystem.AddOwnedTags(_ToggleTags.Owneds);
-            _GameplayTagSystem.AddBlockTags(_ToggleTags.Blocks);
+            _GameplayTagSystemComponent.AddOwnedTags(_ToggleTags.Owneds);
+            _GameplayTagSystemComponent.AddBlockTags(_ToggleTags.Blocks);
         }
         public void RemoveGameplayTags()
         {
@@ -95,15 +95,15 @@ namespace StudioScor.GameplayTagSystem
 
             _WasGrantTags = false;
 
-            if (!_GameplayTagSystem)
+            if (!_GameplayTagSystemComponent)
             {
                 Log("GamepalyTag System Is Null", true);
 
                 return;
             }
 
-            _GameplayTagSystem.RemoveOwnedTags(_ToggleTags.Owneds);
-            _GameplayTagSystem.RemoveBlockTags(_ToggleTags.Blocks);
+            _GameplayTagSystemComponent.RemoveOwnedTags(_ToggleTags.Owneds);
+            _GameplayTagSystemComponent.RemoveBlockTags(_ToggleTags.Blocks);
         }
     }
 }

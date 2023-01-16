@@ -1,5 +1,6 @@
 ﻿#if SCOR_ENABLE_VISUALSCRIPTING
 using System;
+using System.Collections.Generic;
 
 using Unity.VisualScripting;
 
