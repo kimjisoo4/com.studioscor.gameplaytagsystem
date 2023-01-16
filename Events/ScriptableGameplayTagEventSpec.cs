@@ -7,7 +7,7 @@
         #endregion
 
         private readonly ScriptableGameplayTagEvent _TagEvent;
-        private readonly GameplayTagSystemComponent _GameplayTagComponent;
+        private readonly GameplayTagSystem _GameplayTagComponent;
 
         private bool _Toggle = false;
 
@@ -18,7 +18,7 @@
         public bool UseDebug => _TagEvent.UseDebug;
 #endif
 
-        public ScriptableGameplayTagEventSpec(ScriptableGameplayTagEvent gameplayTagEvent, GameplayTagSystemComponent gameplayTagSystem)
+        public ScriptableGameplayTagEventSpec(ScriptableGameplayTagEvent gameplayTagEvent, GameplayTagSystem gameplayTagSystem)
         {
             _TagEvent = gameplayTagEvent;
             _GameplayTagComponent = gameplayTagSystem;
@@ -92,7 +92,7 @@
 
         }
 
-        private void GameplayTagSystem_OnToggleTag(GameplayTagSystemComponent gameplayTagComponent, GameplayTag changedTag)
+        private void GameplayTagSystem_OnToggleTag(GameplayTagSystem gameplayTagComponent, GameplayTag changedTag)
         {
             if (_TagEvent.GameplayTag == changedTag)
             {
@@ -115,7 +115,7 @@
             } 
         }
 
-        private void GameplayTagSystem_OnTriggerTag(GameplayTagSystemComponent gameplayTagComponent, GameplayTag changedTag)
+        private void GameplayTagSystem_OnTriggerTag(GameplayTagSystem gameplayTagComponent, GameplayTag changedTag)
         {
             if (_TagEvent.GameplayTag == changedTag)
             {

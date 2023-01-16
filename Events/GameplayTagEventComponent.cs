@@ -8,7 +8,7 @@ namespace StudioScor.GameplayTagSystem
     [AddComponentMenu("StudioScor/GameplayTagSystem/GameplayTagSystem Event Component", order: 10)]
     public class GameplayTagEventComponent : MonoBehaviour
     {
-        [SerializeField] private GameplayTagSystemComponent _GameplayTagSystemComponent;
+        [SerializeField] private GameplayTagSystem _GameplayTagSystemComponent;
         [SerializeField] private GameplayTagEvent[] _GameplayEvents;
 
         #region EDITOR ONLY
@@ -73,11 +73,11 @@ namespace StudioScor.GameplayTagSystem
             if (_GameplayTagSystemComponent)
                 return;
 
-            _GameplayTagSystemComponent = GetComponentInParent<GameplayTagSystemComponent>();
+            _GameplayTagSystemComponent = GetComponentInParent<GameplayTagSystem>();
 
             if (!_GameplayTagSystemComponent)
             {
-                _GameplayTagSystemComponent = GetComponentInChildren<GameplayTagSystemComponent>();
+                _GameplayTagSystemComponent = GetComponentInChildren<GameplayTagSystem>();
             }
         }
 

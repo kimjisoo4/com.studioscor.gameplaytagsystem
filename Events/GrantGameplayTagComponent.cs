@@ -8,7 +8,7 @@ namespace StudioScor.GameplayTagSystem
     public class GrantGameplayTagComponent : MonoBehaviour
     {
         [Header(" [ Grant GameplayTag Component ] ")]
-        [SerializeField] private GameplayTagSystemComponent _GameplayTagSystemComponent;
+        [SerializeField] private GameplayTagSystem _GameplayTagSystemComponent;
         [Space(5f)]
         [SerializeField] private FGameplayTags _ToggleTags;
         [Space(5f)]
@@ -63,11 +63,11 @@ namespace StudioScor.GameplayTagSystem
 
         private void SetGameplayTagSystem()
         {
-            _GameplayTagSystemComponent = GetComponentInParent<GameplayTagSystemComponent>();
+            _GameplayTagSystemComponent = GetComponentInParent<GameplayTagSystem>();
 
             if (!_GameplayTagSystemComponent)
             {
-                _GameplayTagSystemComponent = GetComponentInChildren<GameplayTagSystemComponent>();
+                _GameplayTagSystemComponent = GetComponentInChildren<GameplayTagSystem>();
             }
         }
 

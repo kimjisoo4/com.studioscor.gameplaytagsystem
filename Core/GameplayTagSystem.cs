@@ -8,10 +8,10 @@ namespace StudioScor.GameplayTagSystem
 {
     [DefaultExecutionOrder(GameplayTagSystemExecutionOrder.MAIN_ORDER)]
     [AddComponentMenu("StudioScor/GameplayTagSystem/GameplayTag System Component", order:0)]
-    public partial class GameplayTagSystemComponent : MonoBehaviour
+    public partial class GameplayTagSystem : MonoBehaviour
     {
         #region Events
-        public delegate void GameplayTagEventHandler(GameplayTagSystemComponent gameplayTagComponent, GameplayTag gameplayTag);
+        public delegate void GameplayTagEventHandler(GameplayTagSystem gameplayTagComponent, GameplayTag gameplayTag);
         #endregion
 
         [Header(" [ Setup ] ")]
