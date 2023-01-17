@@ -2,7 +2,7 @@
 #if SCOR_ENABLE_VISUALSCRIPTING
 using Unity.VisualScripting;
 
-namespace StudioScor.GameplayTagSystem
+namespace StudioScor.GameplayTagSystem.VisualScripting.Editor
 {
     [Descriptor(typeof(GameplayTagSystemRemoveOwnedTagEvent))]
     public sealed class GameplayTagSystemRemoveOwnedTagEventDescriptor : UnitDescriptor<GameplayTagSystemRemoveOwnedTagEvent>

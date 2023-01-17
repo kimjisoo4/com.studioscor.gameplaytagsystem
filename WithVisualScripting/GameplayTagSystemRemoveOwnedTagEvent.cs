@@ -1,7 +1,7 @@
 ﻿#if SCOR_ENABLE_VISUALSCRIPTING
 using Unity.VisualScripting;
 
-namespace StudioScor.GameplayTagSystem
+namespace StudioScor.GameplayTagSystem.VisualScripting
 {
     [UnitTitle("OnRemoveOwnedTagEvent")]
     [UnitCategory("Events\\StudioScor\\GameplayTagSystem")]

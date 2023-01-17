@@ -6,7 +6,7 @@ namespace StudioScor.GameplayTagSystem
     public class GameplayTag : ScriptableObject
     {
 #if UNITY_EDITOR
-        [SerializeField, TextArea] private string Description = "";
+        [TextArea] public string Description = "";
 #endif
     }
 }

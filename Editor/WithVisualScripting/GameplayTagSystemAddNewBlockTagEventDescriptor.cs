@@ -2,12 +2,12 @@
 #if SCOR_ENABLE_VISUALSCRIPTING
 using Unity.VisualScripting;
 
-namespace StudioScor.GameplayTagSystem
+namespace StudioScor.GameplayTagSystem.VisualScripting.Editor
 {
-    [Descriptor(typeof(GameplayTagSystemAddNewBlockTagEvent))]
-    public sealed class GameplayTagSystemAddNewBlockTagEventDescriptor : UnitDescriptor<GameplayTagSystemAddNewBlockTagEvent>
+    [Descriptor(typeof(GameplayTagSystemGrantBlockTagEvent))]
+    public sealed class GameplayTagSystemAddNewBlockTagEventDescriptor : UnitDescriptor<GameplayTagSystemGrantBlockTagEvent>
     {
-        public GameplayTagSystemAddNewBlockTagEventDescriptor(GameplayTagSystemAddNewBlockTagEvent target) : base(target)
+        public GameplayTagSystemAddNewBlockTagEventDescriptor(GameplayTagSystemGrantBlockTagEvent target) : base(target)
         {
         }
 

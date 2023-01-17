@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-namespace StudioScor.GameplayTagSystem
+namespace StudioScor.GameplayTagSystem.Editor
 {
     [AddComponentMenu("StudioScor/GameplayTagSystem/Debug/GameplayTagSystem Simple Debugger")]
     public class GameplayTagSystemSimpleDebugger : MonoBehaviour
@@ -24,8 +24,8 @@ namespace StudioScor.GameplayTagSystem
 
                 gameplayTagComponent.OnRemovedBlockTag += GameplayTagSystem_OnAddBlockTag;
                 gameplayTagComponent.OnRemovedOwnedTag += GameplayTagSystem_OnAddBlockTag;
-                gameplayTagComponent.OnAddedNewBlockTag += GameplayTagSystem_OnAddBlockTag;
-                gameplayTagComponent.OnAddedNewOwnedTag += GameplayTagSystem_OnAddBlockTag;
+                gameplayTagComponent.OnGrantedBlockTag += GameplayTagSystem_OnAddBlockTag;
+                gameplayTagComponent.OnGrantedOwnedTag += GameplayTagSystem_OnAddBlockTag;
             }
             else
             {

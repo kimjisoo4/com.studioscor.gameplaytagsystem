@@ -8,7 +8,7 @@ using UnityEditor;
 using Unity.VisualScripting;
 
 
-namespace StudioScor.GameplayTagSystem
+namespace StudioScor.GameplayTagSystem.VisualScripting.Editor
 {
     public static class PathUtility
     {
@@ -26,7 +26,7 @@ namespace StudioScor.GameplayTagSystem
             }
         }
 
-        public static string VisualScriptingResources => RootFolder + "Core/WithVisualScripting/Resources/";
+        public static string VisualScriptingResources => RootFolder + "Editor/Resources/";
 
         private readonly static Dictionary<string, EditorTexture> _EditorTextures = new Dictionary<string, EditorTexture>();
 

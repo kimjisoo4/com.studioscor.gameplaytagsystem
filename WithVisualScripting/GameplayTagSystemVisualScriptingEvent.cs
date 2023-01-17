@@ -11,8 +11,8 @@ namespace StudioScor.GameplayTagSystem
         public const string ADD_BLOCK_TAG = "AddBlockTag";
         public const string SUBTRACT_BLOCK_TAG = "SubtractBlockTag";
         public const string REMOVE_BLOCK_TAG = "RemoveBlockTag";
-        public const string ADD_NEW_OWNED_TAG = "AddNewOwnedTag";
-        public const string ADD_NEW_BLOCK_TAG = "AddNewBlockTag";
+        public const string GRANT_OWNED_TAG = "GrantOwnedTag";
+        public const string GRANT_BLOCK_TAG = "GrantBlockTag";
 
     }
 }

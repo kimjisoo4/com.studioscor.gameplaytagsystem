@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 using Unity.VisualScripting;
 
-namespace StudioScor.GameplayTagSystem
+namespace StudioScor.GameplayTagSystem.VisualScripting
 {
     public abstract class GameplayTagSystemCustomUnitEvent : GameObjectEventUnit<GameplayTag>
     {
