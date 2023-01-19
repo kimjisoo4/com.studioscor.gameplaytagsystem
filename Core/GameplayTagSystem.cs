@@ -385,32 +385,32 @@ namespace StudioScor.GameplayTagSystem
 
         #region With VisualScripting
         [Conditional("SCOR_ENABLE_VISUALSCRIPTING")]
-        partial void Callback_OnTriggerTag_VisualScripting(GameplayTag triggerTag);
+        protected partial void Callback_OnTriggerTag_VisualScripting(GameplayTag triggerTag);
 
 
         [Conditional("SCOR_ENABLE_VISUALSCRIPTING")]
-        partial void Callback_OnGrantedOwnedTag_VisualScripting(GameplayTag addNewOwnedTag);
+        protected partial void Callback_OnGrantedOwnedTag_VisualScripting(GameplayTag addNewOwnedTag);
 
         [Conditional("SCOR_ENABLE_VISUALSCRIPTING")]
-        partial void Callback_OnAddedOwnedTag_VisualScripting(GameplayTag addOwnedTag);
+        protected partial void Callback_OnAddedOwnedTag_VisualScripting(GameplayTag addOwnedTag);
 
         [Conditional("SCOR_ENABLE_VISUALSCRIPTING")]
-        partial void Callback_OnRemovedBlockTag_VisualScripting(GameplayTag removeBlockTag);
+        protected partial void Callback_OnRemovedBlockTag_VisualScripting(GameplayTag removeBlockTag);
 
         [Conditional("SCOR_ENABLE_VISUALSCRIPTING")]
-        partial void Callback_OnSubtractedOwnedTag_VisualScripting(GameplayTag removeOwnedTag);
+        protected partial void Callback_OnSubtractedOwnedTag_VisualScripting(GameplayTag removeOwnedTag);
 
         [Conditional("SCOR_ENABLE_VISUALSCRIPTING")]
-        partial void Callback_OnGrantedBlockTag_VisualScripting(GameplayTag addNewBlockTag);
+        protected partial void Callback_OnGrantedBlockTag_VisualScripting(GameplayTag addNewBlockTag);
 
         [Conditional("SCOR_ENABLE_VISUALSCRIPTING")]
-        partial void Callback_OnAddedBlockTag_VisualScripting(GameplayTag addBlockTag);
+        protected partial void Callback_OnAddedBlockTag_VisualScripting(GameplayTag addBlockTag);
 
         [Conditional("SCOR_ENABLE_VISUALSCRIPTING")]
-        partial void Callback_OnRemovedOwnedTag_VisualScripting(GameplayTag removeOwnedTag);
+        protected partial void Callback_OnRemovedOwnedTag_VisualScripting(GameplayTag removeOwnedTag);
 
         [Conditional("SCOR_ENABLE_VISUALSCRIPTING")]
-        partial void Callback_OnSubtractedBlockTag_VisualScripting(GameplayTag removeBlockTag);
+        protected partial void Callback_OnSubtractedBlockTag_VisualScripting(GameplayTag removeBlockTag);
         
         #endregion
 

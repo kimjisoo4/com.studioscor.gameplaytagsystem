@@ -10,7 +10,7 @@ using Unity.VisualScripting;
 
 namespace StudioScor.GameplayTagSystem.VisualScripting.Editor
 {
-    public static class PathUtility
+    public static class GameplayTagSystemPathUtility
     {
         private static string _RootFolder;
         public static string RootFolder
@@ -25,7 +25,7 @@ namespace StudioScor.GameplayTagSystem.VisualScripting.Editor
                 return _RootFolder;
             }
         }
-
+        public static string Resources => RootFolder + "Editor/Resources/";
         public static string VisualScriptingResources => RootFolder + "Editor/Resources/";
 
         private readonly static Dictionary<string, EditorTexture> _EditorTextures = new Dictionary<string, EditorTexture>();

@@ -13,11 +13,11 @@ namespace StudioScor.GameplayTagSystem.VisualScripting.Editor
 
         protected override EditorTexture DefaultIcon()
         {
-            return PathUtility.Load("T_SubtractBlockTag_D");
+            return GameplayTagSystemPathUtility.Load("T_SubtractBlockTag_D");
         }
         protected override EditorTexture DefinedIcon()
         {
-            return PathUtility.Load("T_SubtractBlockTag_D");
+            return GameplayTagSystemPathUtility.Load("T_SubtractBlockTag_D");
         }
     }
 }
