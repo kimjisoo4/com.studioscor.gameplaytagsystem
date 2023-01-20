@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 
 namespace StudioScor.GameplayTagSystem.VisualScripting
 {
+
     public abstract class GameplayTagSystemCustomUnitEvent : GameObjectEventUnit<GameplayTag>
     {
         [DoNotSerialize]

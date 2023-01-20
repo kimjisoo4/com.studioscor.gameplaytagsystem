@@ -8,7 +8,7 @@ namespace StudioScor.GameplayTagSystem
     [AddComponentMenu("StudioScor/GameplayTagSystem/GameplayTagSystem Event Component", order: 10)]
     public class GameplayTagEventComponent : MonoBehaviour
     {
-        [SerializeField] private GameplayTagSystem _GameplayTagSystemComponent;
+        [SerializeField] private GameplayTagSystemComponent _GameplayTagSystemComponent;
         [SerializeField] private GameplayTagEvent[] _GameplayEvents;
 
         #region EDITOR ONLY
@@ -18,7 +18,7 @@ namespace StudioScor.GameplayTagSystem
         protected bool UseDebug => _UseDebug;
         private void Reset()
         {
-            SetGameplayTagSystem();
+            SetGameplayTagSystemComponent();
         }
 #endif
 
@@ -49,7 +49,7 @@ namespace StudioScor.GameplayTagSystem
         private void Awake()
         {
             if (!_GameplayTagSystemComponent)
-                SetGameplayTagSystem();
+                SetGameplayTagSystemComponent();
         }
 
         private void OnDisable()
@@ -68,16 +68,16 @@ namespace StudioScor.GameplayTagSystem
             SetupGameplayEvents();
         }
 
-        protected void SetGameplayTagSystem()
+        protected void SetGameplayTagSystemComponent()
         {
             if (_GameplayTagSystemComponent)
                 return;
 
-            _GameplayTagSystemComponent = GetComponentInParent<GameplayTagSystem>();
+            _GameplayTagSystemComponent = GetComponentInParent<GameplayTagSystemComponent>();
 
             if (!_GameplayTagSystemComponent)
             {
-                _GameplayTagSystemComponent = GetComponentInChildren<GameplayTagSystem>();
+                _GameplayTagSystemComponent = GetComponentInChildren<GameplayTagSystemComponent>();
             }
         }
 

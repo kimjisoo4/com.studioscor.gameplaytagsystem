@@ -8,7 +8,7 @@ namespace StudioScor.GameplayTagSystem
     public class GrantGameplayTagComponent : MonoBehaviour
     {
         [Header(" [ Grant GameplayTag Component ] ")]
-        [SerializeField] private GameplayTagSystem _GameplayTagSystemComponent;
+        [SerializeField] private GameplayTagSystemComponent _GameplayTagSystemComponent;
         [Space(5f)]
         [SerializeField] private FGameplayTags _ToggleTags;
         [Space(5f)]
@@ -23,7 +23,7 @@ namespace StudioScor.GameplayTagSystem
         protected bool UseDebug => _UseDebug;
         private void Reset()
         {
-            SetGameplayTagSystem();
+            SetGameplayTagSystemComponent();
         }
 #endif
         [Conditional("UNITY_EDITOR")]
@@ -47,7 +47,7 @@ namespace StudioScor.GameplayTagSystem
         {
             if (!_GameplayTagSystemComponent)
             {
-                SetGameplayTagSystem();
+                SetGameplayTagSystemComponent();
             }
         }
         private void OnEnable()
@@ -61,13 +61,13 @@ namespace StudioScor.GameplayTagSystem
                 RemoveGameplayTags();
         }
 
-        private void SetGameplayTagSystem()
+        private void SetGameplayTagSystemComponent()
         {
-            _GameplayTagSystemComponent = GetComponentInParent<GameplayTagSystem>();
+            _GameplayTagSystemComponent = GetComponentInParent<GameplayTagSystemComponent>();
 
             if (!_GameplayTagSystemComponent)
             {
-                _GameplayTagSystemComponent = GetComponentInChildren<GameplayTagSystem>();
+                _GameplayTagSystemComponent = GetComponentInChildren<GameplayTagSystemComponent>();
             }
         }
 

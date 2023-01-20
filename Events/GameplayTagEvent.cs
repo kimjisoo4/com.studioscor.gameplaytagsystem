@@ -25,7 +25,7 @@ namespace StudioScor.GameplayTagSystem
                                    || _EventType.Equals(EGameplayTagEventType.ToggleBlock);
 
         private bool _IsOnToggle = false;
-        private GameplayTagSystem _GameplayTagSystemComponent;
+        private GameplayTagSystemComponent _GameplayTagSystemComponent;
 
         #region EDITOR ONLY
 #if UNITY_EDITOR
@@ -49,9 +49,9 @@ namespace StudioScor.GameplayTagSystem
         }
         #endregion
 
-        public void SetGameplayEvent(GameplayTagSystem gameplayTagSystem)
+        public void SetGameplayEvent(GameplayTagSystemComponent gameplayTagSystemComponent)
         {
-            _GameplayTagSystemComponent = gameplayTagSystem;
+            _GameplayTagSystemComponent = gameplayTagSystemComponent;
 
             if(!_GameplayTagSystemComponent)
             {
@@ -128,7 +128,7 @@ namespace StudioScor.GameplayTagSystem
             }
         }
 
-        private void TryTriggerTagEvent(GameplayTagSystem gameplayTagSystemComponent, GameplayTag changedTag)
+        private void TryTriggerTagEvent(GameplayTagSystemComponent gameplayTagSystemComponent, GameplayTag changedTag)
         {
             foreach (GameplayTag tag in _GameplayTags)
             {

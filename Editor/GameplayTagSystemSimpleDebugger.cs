@@ -18,39 +18,53 @@ namespace StudioScor.GameplayTagSystem.Editor
 
         private void OnEnable()
         {
-            if(TryGetComponent(out GameplayTagSystem gameplayTagComponent))
+            if(TryGetComponent(out GameplayTagSystemComponent gameplayTagSystemComponent))
             {
-                UpdateTag(gameplayTagComponent);
+                UpdateTag(gameplayTagSystemComponent);
 
-                gameplayTagComponent.OnRemovedBlockTag += GameplayTagSystem_OnAddBlockTag;
-                gameplayTagComponent.OnRemovedOwnedTag += GameplayTagSystem_OnAddBlockTag;
-                gameplayTagComponent.OnGrantedBlockTag += GameplayTagSystem_OnAddBlockTag;
-                gameplayTagComponent.OnGrantedOwnedTag += GameplayTagSystem_OnAddBlockTag;
+                gameplayTagSystemComponent.OnRemovedBlockTag += GameplayTagSystem_UpdateTag;
+                gameplayTagSystemComponent.OnRemovedOwnedTag += GameplayTagSystem_UpdateTag;
+                gameplayTagSystemComponent.OnGrantedBlockTag += GameplayTagSystem_UpdateTag;
+                gameplayTagSystemComponent.OnGrantedOwnedTag += GameplayTagSystem_UpdateTag;
             }
             else
             {
                 enabled = false;
             }
         }
-
-        private void GameplayTagSystem_OnAddBlockTag(GameplayTagSystem gameplayTagComponent, GameplayTag changedTag)
-        {
-            UpdateTag(gameplayTagComponent);
-        }
-
-        private void UpdateTag(GameplayTagSystem gameplayTagComponent)
+        private void OnDisable()
         {
             _OwnedTags.Clear();
             _BlockTags.Clear();
 
-            foreach (var tag in gameplayTagComponent.OwnedTags)
+            if (TryGetComponent(out GameplayTagSystemComponent gameplayTagSystemComponent))
+            {
+                gameplayTagSystemComponent.OnRemovedBlockTag -= GameplayTagSystem_UpdateTag;
+                gameplayTagSystemComponent.OnRemovedOwnedTag -= GameplayTagSystem_UpdateTag;
+                gameplayTagSystemComponent.OnGrantedBlockTag -= GameplayTagSystem_UpdateTag;
+                gameplayTagSystemComponent.OnGrantedOwnedTag -= GameplayTagSystem_UpdateTag;
+            }
+        }
+
+        private void GameplayTagSystem_UpdateTag(GameplayTagSystemComponent gameplayTagSystemComponent, GameplayTag changedTag)
+        {
+            UpdateTag(gameplayTagSystemComponent);
+        }
+
+        private void UpdateTag(GameplayTagSystemComponent gameplayTagSystemComponent)
+        {
+            _OwnedTags.Clear();
+            _BlockTags.Clear();
+
+            foreach (var tag in gameplayTagSystemComponent.OwnedTags)
             {
                 if (tag.Value > 0)
                 {
                     _OwnedTags.Add(tag.Key);
                 }
             }
-            foreach (var tag in gameplayTagComponent.BlockTags)
+
+            foreach (var tag in gameplayTagSystemComponent.BlockTags)
             {
                 if (tag.Value > 0)
                 {

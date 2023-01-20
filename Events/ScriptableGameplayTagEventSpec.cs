@@ -7,7 +7,7 @@
         #endregion
 
         private readonly ScriptableGameplayTagEvent _TagEvent;
-        private readonly GameplayTagSystem _GameplayTagComponent;
+        private readonly GameplayTagSystemComponent _GameplayTagSystemComponent;
 
         private bool _Toggle = false;
 
@@ -18,35 +18,35 @@
         public bool UseDebug => _TagEvent.UseDebug;
 #endif
 
-        public ScriptableGameplayTagEventSpec(ScriptableGameplayTagEvent gameplayTagEvent, GameplayTagSystem gameplayTagSystem)
+        public ScriptableGameplayTagEventSpec(ScriptableGameplayTagEvent gameplayTagEvent, GameplayTagSystemComponent gameplayTagSystemComponent)
         {
             _TagEvent = gameplayTagEvent;
-            _GameplayTagComponent = gameplayTagSystem;
+            _GameplayTagSystemComponent = gameplayTagSystemComponent;
 
             switch (_TagEvent.GameplayTagEventType)
             {
                 case EGameplayTagEventType.ToggleOwned:
-                    _GameplayTagComponent.OnGrantedOwnedTag += GameplayTagSystem_OnToggleTag;
-                    _GameplayTagComponent.OnRemovedOwnedTag += GameplayTagSystem_OnToggleTag;
+                    _GameplayTagSystemComponent.OnGrantedOwnedTag += GameplayTagSystem_OnToggleTag;
+                    _GameplayTagSystemComponent.OnRemovedOwnedTag += GameplayTagSystem_OnToggleTag;
                     break;
                 case EGameplayTagEventType.ToggleBlock:
-                    _GameplayTagComponent.OnGrantedBlockTag += GameplayTagSystem_OnToggleTag;
-                    _GameplayTagComponent.OnRemovedBlockTag += GameplayTagSystem_OnToggleTag;
+                    _GameplayTagSystemComponent.OnGrantedBlockTag += GameplayTagSystem_OnToggleTag;
+                    _GameplayTagSystemComponent.OnRemovedBlockTag += GameplayTagSystem_OnToggleTag;
                     break;
                 case EGameplayTagEventType.AddOwned:
-                    _GameplayTagComponent.OnGrantedOwnedTag += GameplayTagSystem_OnTriggerTag;
+                    _GameplayTagSystemComponent.OnGrantedOwnedTag += GameplayTagSystem_OnTriggerTag;
                     break;
                 case EGameplayTagEventType.RemoveOwned:
-                    _GameplayTagComponent.OnRemovedOwnedTag += GameplayTagSystem_OnTriggerTag;
+                    _GameplayTagSystemComponent.OnRemovedOwnedTag += GameplayTagSystem_OnTriggerTag;
                     break;
                 case EGameplayTagEventType.AddBlock:
-                    _GameplayTagComponent.OnGrantedBlockTag += GameplayTagSystem_OnTriggerTag;
+                    _GameplayTagSystemComponent.OnGrantedBlockTag += GameplayTagSystem_OnTriggerTag;
                     break;
                 case EGameplayTagEventType.RemoveBlock:
-                    _GameplayTagComponent.OnRemovedBlockTag += GameplayTagSystem_OnToggleTag;
+                    _GameplayTagSystemComponent.OnRemovedBlockTag += GameplayTagSystem_OnToggleTag;
                     break;
                 case EGameplayTagEventType.Trigger:
-                    _GameplayTagComponent.OnTriggeredTag += GameplayTagSystem_OnTriggerTag;
+                    _GameplayTagSystemComponent.OnTriggeredTag += GameplayTagSystem_OnTriggerTag;
                     break;
                 default:
                     break;
@@ -58,27 +58,27 @@
             switch (_TagEvent.GameplayTagEventType)
             {
                 case EGameplayTagEventType.ToggleOwned:
-                    _GameplayTagComponent.OnGrantedOwnedTag -= GameplayTagSystem_OnToggleTag;
-                    _GameplayTagComponent.OnRemovedOwnedTag -= GameplayTagSystem_OnToggleTag;
+                    _GameplayTagSystemComponent.OnGrantedOwnedTag -= GameplayTagSystem_OnToggleTag;
+                    _GameplayTagSystemComponent.OnRemovedOwnedTag -= GameplayTagSystem_OnToggleTag;
                     break;
                 case EGameplayTagEventType.ToggleBlock:
-                    _GameplayTagComponent.OnGrantedBlockTag -= GameplayTagSystem_OnToggleTag;
-                    _GameplayTagComponent.OnRemovedBlockTag -= GameplayTagSystem_OnToggleTag;
+                    _GameplayTagSystemComponent.OnGrantedBlockTag -= GameplayTagSystem_OnToggleTag;
+                    _GameplayTagSystemComponent.OnRemovedBlockTag -= GameplayTagSystem_OnToggleTag;
                     break;
                 case EGameplayTagEventType.AddOwned:
-                    _GameplayTagComponent.OnGrantedOwnedTag -= GameplayTagSystem_OnTriggerTag;
+                    _GameplayTagSystemComponent.OnGrantedOwnedTag -= GameplayTagSystem_OnTriggerTag;
                     break;
                 case EGameplayTagEventType.RemoveOwned:
-                    _GameplayTagComponent.OnRemovedOwnedTag -= GameplayTagSystem_OnTriggerTag;
+                    _GameplayTagSystemComponent.OnRemovedOwnedTag -= GameplayTagSystem_OnTriggerTag;
                     break;
                 case EGameplayTagEventType.AddBlock:
-                    _GameplayTagComponent.OnGrantedBlockTag -= GameplayTagSystem_OnTriggerTag;
+                    _GameplayTagSystemComponent.OnGrantedBlockTag -= GameplayTagSystem_OnTriggerTag;
                     break;
                 case EGameplayTagEventType.RemoveBlock:
-                    _GameplayTagComponent.OnRemovedBlockTag -= GameplayTagSystem_OnToggleTag;
+                    _GameplayTagSystemComponent.OnRemovedBlockTag -= GameplayTagSystem_OnToggleTag;
                     break;
                 case EGameplayTagEventType.Trigger:
-                    _GameplayTagComponent.OnTriggeredTag -= GameplayTagSystem_OnTriggerTag;
+                    _GameplayTagSystemComponent.OnTriggeredTag -= GameplayTagSystem_OnTriggerTag;
                     break;
                 default:
                     break;
@@ -92,7 +92,7 @@
 
         }
 
-        private void GameplayTagSystem_OnToggleTag(GameplayTagSystem gameplayTagComponent, GameplayTag changedTag)
+        private void GameplayTagSystem_OnToggleTag(GameplayTagSystemComponent gameplayTagSystemComponent, GameplayTag changedTag)
         {
             if (_TagEvent.GameplayTag == changedTag)
             {
@@ -115,7 +115,7 @@
             } 
         }
 
-        private void GameplayTagSystem_OnTriggerTag(GameplayTagSystem gameplayTagComponent, GameplayTag changedTag)
+        private void GameplayTagSystem_OnTriggerTag(GameplayTagSystemComponent gameplayTagSystemComponent, GameplayTag changedTag)
         {
             if (_TagEvent.GameplayTag == changedTag)
             {
