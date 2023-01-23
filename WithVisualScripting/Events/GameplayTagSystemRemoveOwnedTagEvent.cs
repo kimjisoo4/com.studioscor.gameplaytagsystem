@@ -6,9 +6,9 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
     [UnitTitle("On Removed OwnedTag")]
     [UnitSubtitle("Event")]
     [UnitCategory("Events\\StudioScor\\GameplayTagSystem")]
-    public class GameplayTagSystemRemoveOwnedTagEvent : GameplayTagSystemCustomUnitEvent
+    public class GameplayTagSystemRemoveOwnedTagEvent : GameplayTagSystemEventUnit
     {
-        protected override string EventName => GameplayTagSystemVisualScriptingEvent.REMOVE_OWNED_TAG;
+        protected override string hookName => GameplayTagSystemVisualScriptingEvent.REMOVE_OWNED_TAG;
     }
 }
 

@@ -6,20 +6,13 @@ using Unity.VisualScripting;
 
 namespace StudioScor.GameplayTagSystem.VisualScripting
 {
-
-    public abstract class GameplayTagSystemCustomUnitEvent : GameObjectEventUnit<GameplayTag>
+    public abstract class GameplayTagSystemEventUnit : GameObjectEventUnit<GameplayTag>
     {
         [DoNotSerialize]
+        [PortLabel("GameplayTag")]
         public ValueOutput GameplayTag { get; private set; }
-        public override Type MessageListenerType => default;
-        protected abstract string EventName { get; }
 
-        public override EventHook GetHook(GraphReference reference)
-        {
-            var data = reference.GetElementData<Data>(this);
-
-            return new EventHook(EventName, data.target);
-        }
+        public override Type MessageListenerType => typeof(GameplayTagSystemEventListener);
 
         protected override void Definition()
         {

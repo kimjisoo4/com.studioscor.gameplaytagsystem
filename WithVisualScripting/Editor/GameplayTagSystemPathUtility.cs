@@ -26,7 +26,7 @@ namespace StudioScor.GameplayTagSystem.VisualScripting.Editor
             }
         }
         public static string Resources => RootFolder + "Editor/Resources/";
-        public static string VisualScriptingResources => RootFolder + "Editor/Resources/";
+        public static string VisualScriptingResources => RootFolder + "WithVisualScripting/Editor/Resources/";
 
         private readonly static Dictionary<string, EditorTexture> _EditorTextures = new Dictionary<string, EditorTexture>();
 

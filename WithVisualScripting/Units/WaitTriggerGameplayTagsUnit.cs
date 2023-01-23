@@ -7,7 +7,7 @@ using Unity.VisualScripting;
 namespace StudioScor.GameplayTagSystem.VisualScripting
 {
     [UnitTitle("Wait Contain All OwnedTags")]
-    [UnitSubtitle("Task")]
+    [UnitSubtitle("GameplayTagSystem Task")]
     [UnitCategory("Time\\StudioScor\\GameplayTagSystem")]
     public class WaitOwnedGameplayTagUnit : GameplayTagSystemWaitUnit
     {

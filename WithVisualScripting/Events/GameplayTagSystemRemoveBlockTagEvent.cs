@@ -6,9 +6,9 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
     [UnitTitle("On Removed BlockTag")]
     [UnitSubtitle("Event")]
     [UnitCategory("Events\\StudioScor\\GameplayTagSystem")]
-    public class GameplayTagSystemRemoveBlockTagEvent : GameplayTagSystemCustomUnitEvent
+    public class GameplayTagSystemRemoveBlockTagEvent : GameplayTagSystemEventUnit
     {
-        protected override string EventName => GameplayTagSystemVisualScriptingEvent.REMOVE_BLOCK_TAG;
+        protected override string hookName => GameplayTagSystemVisualScriptingEvent.REMOVE_BLOCK_TAG;
     }
 }
 

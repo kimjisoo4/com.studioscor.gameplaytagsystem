@@ -5,11 +5,8 @@ using Unity.VisualScripting;
 
 namespace StudioScor.GameplayTagSystem.VisualScripting
 {
-
-
-
     [UnitTitle("Wait Trigger GameplayTag")]
-    [UnitSubtitle("Task")]
+    [UnitSubtitle("GameplayTagSystem Task")]
     [UnitCategory("Time\\StudioScor\\GameplayTagSystem")]
     public class WaitTriggerGameplayTagUnit : GameplayTagSystemWaitUnit
     {

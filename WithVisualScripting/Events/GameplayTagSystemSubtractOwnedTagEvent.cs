@@ -6,9 +6,9 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
     [UnitTitle("On Subtracted OwnedTag")]
     [UnitSubtitle("Event")]
     [UnitCategory("Events\\StudioScor\\GameplayTagSystem")]
-    public class GameplayTagSystemSubtractOwnedTagEvent : GameplayTagSystemCustomUnitEvent
+    public class GameplayTagSystemSubtractOwnedTagEvent : GameplayTagSystemEventUnit
     {
-        protected override string EventName => GameplayTagSystemVisualScriptingEvent.SUBTRACT_OWNED_TAG;
+        protected override string hookName => GameplayTagSystemVisualScriptingEvent.SUBTRACT_OWNED_TAG;
     }
 }
 

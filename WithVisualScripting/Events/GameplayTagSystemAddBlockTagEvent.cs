@@ -6,9 +6,9 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
     [UnitTitle("On Added BlockTag")]
     [UnitSubtitle("Event")]
     [UnitCategory("Events\\StudioScor\\GameplayTagSystem")]
-    public class GameplayTagSystemAddBlockTagEvent : GameplayTagSystemCustomUnitEvent
+    public class GameplayTagSystemAddBlockTagEvent : GameplayTagSystemEventUnit
     {
-        protected override string EventName => GameplayTagSystemVisualScriptingEvent.ADD_BLOCK_TAG;
+        protected override string hookName => GameplayTagSystemVisualScriptingEvent.ADD_BLOCK_TAG;
     }
 }
 

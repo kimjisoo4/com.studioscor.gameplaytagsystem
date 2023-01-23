@@ -7,7 +7,7 @@ namespace StudioScor.GameplayTagSystem
 {
     [DefaultExecutionOrder(GameplayTagSystemExecutionOrder.MAIN_ORDER)]
     [AddComponentMenu("StudioScor/GameplayTagSystem/GameplayTagSystem Component", order:0)]
-    public partial class GameplayTagSystemComponent : MonoBehaviour
+    public class GameplayTagSystemComponent : MonoBehaviour
     {
         #region Events
         public delegate void GameplayTagEventHandler(GameplayTagSystemComponent gameplayTagSystemComponent, GameplayTag gameplayTag);
@@ -115,7 +115,6 @@ namespace StudioScor.GameplayTagSystem
                 return;
 
             Callback_OnTriggerTag(triggerTag);
-            Callback_OnTriggerTag_VisualScripting(triggerTag);
         }
 
         public void TriggerTags(GameplayTag[] triggerTags)
@@ -143,7 +142,6 @@ namespace StudioScor.GameplayTagSystem
                 if (_OwnedTags[addOwnedTag] == 1)
                 {
                     Callback_OnGrantedOwnedTag(addOwnedTag);
-                    Callback_OnGrantedOwnedTag_VisualScripting(addOwnedTag);
                 }
             }
             else
@@ -151,11 +149,9 @@ namespace StudioScor.GameplayTagSystem
                 _OwnedTags.TryAdd(addOwnedTag, 1);
 
                 Callback_OnGrantedOwnedTag(addOwnedTag);
-                Callback_OnGrantedOwnedTag_VisualScripting(addOwnedTag);
             }
 
             Callback_OnAddedOwnedTag(addOwnedTag);
-            Callback_OnAddedOwnedTag_VisualScripting(addOwnedTag);
         }
 
         public void AddOwnedTags(GameplayTag[] addOwnedTags)
@@ -178,12 +174,9 @@ namespace StudioScor.GameplayTagSystem
             {
                 _OwnedTags[removeOwnedTag] -= 1;
 
-                Log(" Subtract [" + removeOwnedTag + "] - " + _OwnedTags[removeOwnedTag]);
-
                 if (_OwnedTags[removeOwnedTag] == 0)
                 {
                     Callback_OnRemovedOwnedTag(removeOwnedTag);
-                    Callback_OnRemovedOwnedTag_VisualScripting(removeOwnedTag);
                 }
             }
             else
@@ -192,7 +185,6 @@ namespace StudioScor.GameplayTagSystem
             }
 
             Callback_OnSubtractedOwnedTag(removeOwnedTag);
-            Callback_OnSubtractedOwnedTag_VisualScripting(removeOwnedTag);
         }
 
         public void RemoveOwnedTags(GameplayTag[] removeOwnedTags)
@@ -218,7 +210,6 @@ namespace StudioScor.GameplayTagSystem
                 if (_BlockTags[addBlockTag] == 1)
                 {
                     Callback_OnGrantedBlockTag(addBlockTag);
-                    Callback_OnGrantedBlockTag_VisualScripting(addBlockTag);
                 }
             }
             else
@@ -226,11 +217,9 @@ namespace StudioScor.GameplayTagSystem
                 _BlockTags.TryAdd(addBlockTag, 1);
 
                 Callback_OnGrantedBlockTag(addBlockTag);
-                Callback_OnGrantedBlockTag_VisualScripting(addBlockTag);
             }
 
             Callback_OnAddedBlockTag(addBlockTag);
-            Callback_OnAddedBlockTag_VisualScripting(addBlockTag);
         }
 
         public void AddBlockTags(GameplayTag[] addBlockTags)
@@ -249,16 +238,13 @@ namespace StudioScor.GameplayTagSystem
             if (removeBlockTag == null)
                 return;
 
-            if (BlockTags.TryGetValue(removeBlockTag, out int value))
+            if (BlockTags.ContainsKey(removeBlockTag))
             {
                 _BlockTags[removeBlockTag] -= 1;
 
-                if (value == 0)
+                if (_BlockTags[removeBlockTag] == 0)
                 {
-                    _BlockTags[removeBlockTag] = 0;
-
                     Callback_OnRemovedBlockTag(removeBlockTag);
-                    Callback_OnRemovedBlockTag_VisualScripting(removeBlockTag);
                 }
             }
             else
@@ -267,7 +253,6 @@ namespace StudioScor.GameplayTagSystem
             }
 
             Callback_OnSubtractedBlcokTag(removeBlockTag);
-            Callback_OnSubtractedBlockTag_VisualScripting(removeBlockTag);
         }
 
         public void RemoveBlockTags(GameplayTag[] removeTags)
@@ -382,38 +367,6 @@ namespace StudioScor.GameplayTagSystem
             return ContainAnyTags(BlockTags, tags);
         }
 
-        #endregion
-
-
-        #region With VisualScripting
-        [Conditional("SCOR_ENABLE_VISUALSCRIPTING")]
-        protected partial void Callback_OnTriggerTag_VisualScripting(GameplayTag triggerTag);
-
-
-        [Conditional("SCOR_ENABLE_VISUALSCRIPTING")]
-        protected partial void Callback_OnGrantedOwnedTag_VisualScripting(GameplayTag addNewOwnedTag);
-
-        [Conditional("SCOR_ENABLE_VISUALSCRIPTING")]
-        protected partial void Callback_OnAddedOwnedTag_VisualScripting(GameplayTag addOwnedTag);
-
-        [Conditional("SCOR_ENABLE_VISUALSCRIPTING")]
-        protected partial void Callback_OnRemovedBlockTag_VisualScripting(GameplayTag removeBlockTag);
-
-        [Conditional("SCOR_ENABLE_VISUALSCRIPTING")]
-        protected partial void Callback_OnSubtractedOwnedTag_VisualScripting(GameplayTag removeOwnedTag);
-
-        [Conditional("SCOR_ENABLE_VISUALSCRIPTING")]
-        protected partial void Callback_OnGrantedBlockTag_VisualScripting(GameplayTag addNewBlockTag);
-
-        [Conditional("SCOR_ENABLE_VISUALSCRIPTING")]
-        protected partial void Callback_OnAddedBlockTag_VisualScripting(GameplayTag addBlockTag);
-
-        [Conditional("SCOR_ENABLE_VISUALSCRIPTING")]
-        protected partial void Callback_OnRemovedOwnedTag_VisualScripting(GameplayTag removeOwnedTag);
-
-        [Conditional("SCOR_ENABLE_VISUALSCRIPTING")]
-        protected partial void Callback_OnSubtractedBlockTag_VisualScripting(GameplayTag removeBlockTag);
-        
         #endregion
 
         #region CallBack

@@ -6,9 +6,9 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
     [UnitTitle("On Added OwnedTag")]
     [UnitSubtitle("Event")]
     [UnitCategory("Events\\StudioScor\\GameplayTagSystem")]
-    public class GameplayTagSystemAddOwnedTagEvent : GameplayTagSystemCustomUnitEvent
+    public class GameplayTagSystemAddOwnedTagEvent : GameplayTagSystemEventUnit
     {
-        protected override string EventName => GameplayTagSystemVisualScriptingEvent.ADD_OWNED_TAG;
+        protected override string hookName => GameplayTagSystemVisualScriptingEvent.ADD_OWNED_TAG;
     }
 }
 
