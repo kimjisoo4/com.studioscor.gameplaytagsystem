@@ -30,7 +30,7 @@ namespace StudioScor.GameplayTagSystem
             get
             {
                 if (!_WasSetup)
-                    Setup();
+                    SetupGameplayTagSystem();
 
                 return _OwnedTags;
             }
@@ -40,7 +40,7 @@ namespace StudioScor.GameplayTagSystem
             get
             {
                 if (!_WasSetup)
-                    Setup();
+                    SetupGameplayTagSystem();
 
                 return _BlockTags;
             }
@@ -82,10 +82,10 @@ namespace StudioScor.GameplayTagSystem
         private void Awake()
         {
             if (!_WasSetup)
-                Setup();
+                SetupGameplayTagSystem();
         }
 
-        protected virtual void Setup()
+        protected void SetupGameplayTagSystem()
         {
             if (_WasSetup)
                 return;
@@ -97,6 +97,8 @@ namespace StudioScor.GameplayTagSystem
 
             AddOwnedTags(_InitializationTags.Owneds);
             AddBlockTags(_InitializationTags.Blocks);
+
+            OnSetup();
         }
 
         public void ResetGameplayTagSystem()
@@ -106,7 +108,12 @@ namespace StudioScor.GameplayTagSystem
 
             AddOwnedTags(_InitializationTags.Owneds);
             AddBlockTags(_InitializationTags.Blocks);
+
+            OnReset();
         }
+
+        protected virtual void OnSetup() { }
+        protected virtual void OnReset() { }
 
         #region Trigger Tag
         public void TriggerTag(GameplayTag triggerTag)
