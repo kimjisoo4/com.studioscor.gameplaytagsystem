@@ -7,7 +7,7 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
     [DisableAnnotation]
     [AddComponentMenu("")]
     [IncludeInSettings(false)]
-    public sealed class GameplayTagSystemEventListener : MessageListener
+    public sealed class GameplayTagSystemMessageListener : MessageListener
     {
         private void Start()
         {
@@ -29,21 +29,22 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
         }
         private void OnDestroy()
         {
-            var gameplayTagSystem = GetComponent<GameplayTagSystemComponent>();
+            if (TryGetComponent(out GameplayTagSystemComponent gameplayTagSystem))
+            {
+                gameplayTagSystem.OnTriggeredTag -= OnTriggerTagEventListener_OnTriggeredTag;
 
-            gameplayTagSystem.OnTriggeredTag -= OnTriggerTagEventListener_OnTriggeredTag;
+                gameplayTagSystem.OnAddedOwnedTag -= GameplayTagSystem_OnAddedOwnedTag;
+                gameplayTagSystem.OnAddedBlockTag -= GameplayTagSystem_OnAddedBlockTag;
 
-            gameplayTagSystem.OnAddedOwnedTag -= GameplayTagSystem_OnAddedOwnedTag;
-            gameplayTagSystem.OnAddedBlockTag -= GameplayTagSystem_OnAddedBlockTag;
+                gameplayTagSystem.OnGrantedOwnedTag -= GameplayTagSystem_OnGrantedOwnedTag;
+                gameplayTagSystem.OnGrantedBlockTag -= GameplayTagSystem_OnGrantedBlockTag;
 
-            gameplayTagSystem.OnGrantedOwnedTag -= GameplayTagSystem_OnGrantedOwnedTag;
-            gameplayTagSystem.OnGrantedBlockTag -= GameplayTagSystem_OnGrantedBlockTag;
+                gameplayTagSystem.OnSubtractedOwnedTag -= GameplayTagSystem_OnSubtractedOwnedTag;
+                gameplayTagSystem.OnSubtractedBlockTag -= GameplayTagSystem_OnSubtractedBlockTag;
 
-            gameplayTagSystem.OnSubtractedOwnedTag -= GameplayTagSystem_OnSubtractedOwnedTag;
-            gameplayTagSystem.OnSubtractedBlockTag -= GameplayTagSystem_OnSubtractedBlockTag;
-
-            gameplayTagSystem.OnRemovedOwnedTag -= GameplayTagSystem_OnRemovedOwnedTag;
-            gameplayTagSystem.OnRemovedBlockTag -= GameplayTagSystem_OnRemovedBlockTag;
+                gameplayTagSystem.OnRemovedOwnedTag -= GameplayTagSystem_OnRemovedOwnedTag;
+                gameplayTagSystem.OnRemovedBlockTag -= GameplayTagSystem_OnRemovedBlockTag;
+            }
         }
 
         private void GameplayTagSystem_OnRemovedBlockTag(GameplayTagSystemComponent gameplayTagSystemComponent, GameplayTag gameplayTag)

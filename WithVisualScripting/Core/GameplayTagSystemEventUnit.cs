@@ -12,7 +12,7 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
         [PortLabel("GameplayTag")]
         public ValueOutput GameplayTag { get; private set; }
 
-        public override Type MessageListenerType => typeof(GameplayTagSystemEventListener);
+        public override Type MessageListenerType => typeof(GameplayTagSystemMessageListener);
 
         protected override void Definition()
         {
