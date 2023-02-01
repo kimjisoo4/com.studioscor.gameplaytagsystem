@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace StudioScor.GameplayTagSystem.Editor
 {
+
     [AddComponentMenu("StudioScor/GameplayTagSystem/Debug/GameplayTagSystem Simple Debugger")]
     public class GameplayTagSystemSimpleDebugger : MonoBehaviour
     {

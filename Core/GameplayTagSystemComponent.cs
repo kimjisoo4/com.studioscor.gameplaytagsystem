@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-using System.Diagnostics;
+using StudioScor.Utilities;
 
 namespace StudioScor.GameplayTagSystem
 {
     [DefaultExecutionOrder(GameplayTagSystemExecutionOrder.MAIN_ORDER)]
     [AddComponentMenu("StudioScor/GameplayTagSystem/GameplayTagSystem Component", order:0)]
-    public class GameplayTagSystemComponent : MonoBehaviour
+    public class GameplayTagSystemComponent : BaseMonoBehaviour
     {
         #region Events
         public delegate void GameplayTagEventHandler(GameplayTagSystemComponent gameplayTagSystemComponent, GameplayTag gameplayTag);
@@ -16,35 +16,11 @@ namespace StudioScor.GameplayTagSystem
         [Header(" [ Setup ] ")]
         [SerializeField] private FGameplayTags _InitializationTags;
 
-#if UNITY_EDITOR
-        [Header(" [ Use Debug ] ")]
-        [SerializeField] private bool _UseDebug;
-        protected bool UseDebug => _UseDebug;
-#endif
+        protected Dictionary<GameplayTag, int> _OwnedTags;
+        protected Dictionary<GameplayTag, int> _BlockTags;
 
-        private Dictionary<GameplayTag, int> _OwnedTags;
-        private Dictionary<GameplayTag, int> _BlockTags;
-
-        public IReadOnlyDictionary<GameplayTag, int> OwnedTags
-        {
-            get
-            {
-                if (!_WasSetup)
-                    SetupGameplayTagSystem();
-
-                return _OwnedTags;
-            }
-        }
-        public IReadOnlyDictionary<GameplayTag, int> BlockTags
-        {
-            get
-            {
-                if (!_WasSetup)
-                    SetupGameplayTagSystem();
-
-                return _BlockTags;
-            }
-        }
+        public IReadOnlyDictionary<GameplayTag, int> OwnedTags => _OwnedTags;
+        public IReadOnlyDictionary<GameplayTag, int> BlockTags => _BlockTags;
 
 
         public event GameplayTagEventHandler OnGrantedOwnedTag;
@@ -59,44 +35,21 @@ namespace StudioScor.GameplayTagSystem
 
         public event GameplayTagEventHandler OnTriggeredTag;
 
-        private bool _WasSetup = false;
-
-
-        #region EDITOR ONLY
-        [Conditional("UNITY_EDITOR")]
-        protected void Log(object content, bool isError = false)
-        {
-#if UNITY_EDITOR
-            if (isError)
-            {
-                UnityEngine.Debug.LogError("GameplayTag Sytstem [ " + transform.name + " ] : " + content, this);
-
-                return;
-            }
-
-            if (UseDebug)
-                UnityEngine.Debug.Log("GameplayTag Sytstem [ " + transform.name + " ] : " + content, this);
-#endif
-        }
-        #endregion
         private void Awake()
         {
-            if (!_WasSetup)
-                SetupGameplayTagSystem();
+            SetupGameplayTagSystem();
+        }
+
+        private void Start()
+        {
+            AddOwnedTags(_InitializationTags.Owneds);
+            AddBlockTags(_InitializationTags.Blocks);
         }
 
         protected void SetupGameplayTagSystem()
         {
-            if (_WasSetup)
-                return;
-
-            _WasSetup = true;
-
             _OwnedTags = new();
             _BlockTags = new();
-
-            AddOwnedTags(_InitializationTags.Owneds);
-            AddBlockTags(_InitializationTags.Blocks);
 
             OnSetup();
         }
@@ -118,12 +71,11 @@ namespace StudioScor.GameplayTagSystem
         #region Trigger Tag
         public void TriggerTag(GameplayTag triggerTag)
         {
-            if (triggerTag is null)
+            if (!triggerTag)
                 return;
 
             Callback_OnTriggerTag(triggerTag);
         }
-
         public void TriggerTags(GameplayTag[] triggerTags)
         {
             if (triggerTags is null)
@@ -134,7 +86,7 @@ namespace StudioScor.GameplayTagSystem
                 TriggerTag(tag);
             }
         }
-#endregion
+        #endregion
 
         #region Add, Remove Tags
         public void AddOwnedTag(GameplayTag addOwnedTag)
@@ -142,7 +94,7 @@ namespace StudioScor.GameplayTagSystem
             if (addOwnedTag == null)
                 return;
 
-            if (OwnedTags.ContainsKey(addOwnedTag))
+            if (_OwnedTags.ContainsKey(addOwnedTag))
             {
                 _OwnedTags[addOwnedTag] += 1;
 
@@ -177,7 +129,7 @@ namespace StudioScor.GameplayTagSystem
             if (removeOwnedTag == null)
                 return;
 
-            if (OwnedTags.ContainsKey(removeOwnedTag))
+            if (_OwnedTags.ContainsKey(removeOwnedTag))
             {
                 _OwnedTags[removeOwnedTag] -= 1;
 
@@ -210,7 +162,7 @@ namespace StudioScor.GameplayTagSystem
             if (addBlockTag == null)
                 return;
 
-            if (BlockTags.ContainsKey(addBlockTag))
+            if (_BlockTags.ContainsKey(addBlockTag))
             {
                 _BlockTags[addBlockTag] += 1;
 
@@ -245,7 +197,7 @@ namespace StudioScor.GameplayTagSystem
             if (removeBlockTag == null)
                 return;
 
-            if (BlockTags.ContainsKey(removeBlockTag))
+            if (_BlockTags.ContainsKey(removeBlockTag))
             {
                 _BlockTags[removeBlockTag] -= 1;
 
@@ -272,17 +224,17 @@ namespace StudioScor.GameplayTagSystem
                 RemoveBlockTag(tag);
             }
         }
-#endregion
+        #endregion
 
         #region Check Has Tag
         
         public bool ContainOwnedTag(GameplayTag tag)
         {
-            return ContainTag(OwnedTags, tag);
+            return ContainTag(_OwnedTags, tag);
         }
         public bool ContainBlockTag(GameplayTag tag)
         {
-            return ContainTag(BlockTags, tag);
+            return ContainTag(_BlockTags, tag);
         }
         protected bool ContainTag(IReadOnlyDictionary<GameplayTag, int> container, GameplayTag tag)
         {
@@ -343,35 +295,35 @@ namespace StudioScor.GameplayTagSystem
 
         public bool ContainAllTagsInOwned(GameplayTag[] tags)
         {
-            return ContainAllTags(OwnedTags, tags);
+            return ContainAllTags(_OwnedTags, tags);
         }
         public bool ContainAllTagsInOwned(IReadOnlyCollection<GameplayTag> tags)
         {
-            return ContainAllTags(OwnedTags, tags);
+            return ContainAllTags(_OwnedTags, tags);
         }
         public bool ContainAllTagsInBlock(GameplayTag[] tags)
         {
-            return ContainAllTags(BlockTags, tags);
+            return ContainAllTags(_BlockTags, tags);
         }
         public bool ContainAllTagsInBlock(IReadOnlyCollection<GameplayTag> tags)
         {
-            return ContainAllTags(BlockTags, tags);
+            return ContainAllTags(_BlockTags, tags);
         }
         public bool ContainAnyTagsInOwned(GameplayTag[] tags)
         {
-            return ContainAnyTags(OwnedTags, tags);
+            return ContainAnyTags(_OwnedTags, tags);
         }
         public bool ContainAnyTagsInOwned(IReadOnlyCollection<GameplayTag> tags)
         {
-            return ContainAnyTags(OwnedTags, tags);
+            return ContainAnyTags(_OwnedTags, tags);
         }
         public bool ContainAnyTagsInBlock(GameplayTag[] tags)
         {
-            return ContainAnyTags(BlockTags, tags);
+            return ContainAnyTags(_BlockTags, tags);
         }
         public bool ContainAnyTagsInBlock(IReadOnlyCollection<GameplayTag> tags)
         {
-            return ContainAnyTags(BlockTags, tags);
+            return ContainAnyTags(_BlockTags, tags);
         }
 
         #endregion

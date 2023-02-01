@@ -1,6 +1,8 @@
-﻿namespace StudioScor.GameplayTagSystem
+﻿using StudioScor.Utilities;
+
+namespace StudioScor.GameplayTagSystem
 {
-    public abstract class ScriptableGameplayTagEventSpec
+    public abstract class ScriptableGameplayTagEventSpec : BaseClass
     {
         #region Event
         public delegate void TagEventHandler(ScriptableGameplayTagEventSpec spec);
@@ -15,7 +17,7 @@
         public event TagEventHandler OnReleaseTagEvent;
 
 #if UNITY_EDITOR
-        public bool UseDebug => _TagEvent.UseDebug;
+        public new bool UseDebug => _TagEvent.UseDebug;
 #endif
 
         public ScriptableGameplayTagEventSpec(ScriptableGameplayTagEvent gameplayTagEvent, GameplayTagSystemComponent gameplayTagSystemComponent)

@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
-using System.Diagnostics;
+using StudioScor.Utilities;
 
 namespace StudioScor.GameplayTagSystem
 {
     [DefaultExecutionOrder(GameplayTagSystemExecutionOrder.SUB_ORDER)]
     [AddComponentMenu("StudioScor/GameplayTagSystem/Grant GameplayTagComponent", order:10)]
-    public class GrantGameplayTagComponent : MonoBehaviour
+    public class GrantGameplayTagComponent : BaseMonoBehaviour
     {
         [Header(" [ Grant GameplayTag Component ] ")]
         [SerializeField] private GameplayTagSystemComponent _GameplayTagSystemComponent;
@@ -16,39 +16,16 @@ namespace StudioScor.GameplayTagSystem
 
         private bool _WasGrantTags = false;
 
-        #region EDITOR ONLY
 #if UNITY_EDITOR
-        [Header(" [ Use Debug ] ")]
-        [SerializeField] private bool _UseDebug;
-        protected bool UseDebug => _UseDebug;
         private void Reset()
         {
             SetGameplayTagSystemComponent();
         }
 #endif
-        [Conditional("UNITY_EDITOR")]
-        protected void Log(object content, bool isError = false)
-        {
-#if UNITY_EDITOR
-            if (isError)
-            {
-                UnityEngine.Debug.LogError("Grant GameplayTag Componenet [ " + transform.name + " ] : " + content, this);
-
-                return;
-            }
-
-            if (UseDebug)
-                UnityEngine.Debug.Log("Grant GameplayTag Componenet [ " + transform.name + " ] : " + content, this);
-#endif
-        }
-        #endregion
 
         private void Awake()
         {
-            if (!_GameplayTagSystemComponent)
-            {
-                SetGameplayTagSystemComponent();
-            }
+            SetGameplayTagSystemComponent();
         }
         private void OnEnable()
         {
@@ -63,6 +40,9 @@ namespace StudioScor.GameplayTagSystem
 
         private void SetGameplayTagSystemComponent()
         {
+            if (!_GameplayTagSystemComponent)
+                return;
+
             _GameplayTagSystemComponent = GetComponentInParent<GameplayTagSystemComponent>();
 
             if (!_GameplayTagSystemComponent)

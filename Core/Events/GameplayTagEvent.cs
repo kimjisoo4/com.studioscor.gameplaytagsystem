@@ -2,13 +2,14 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-using System.Diagnostics;
+using StudioScor.Utilities;
+
 
 namespace StudioScor.GameplayTagSystem
 {
 
     [System.Serializable]
-    public class GameplayTagEvent
+    public class GameplayTagEvent : BaseClass
     {
 
 #if UNITY_EDITOR
@@ -26,28 +27,6 @@ namespace StudioScor.GameplayTagSystem
 
         private bool _IsOnToggle = false;
         private GameplayTagSystemComponent _GameplayTagSystemComponent;
-
-        #region EDITOR ONLY
-#if UNITY_EDITOR
-        [SerializeField] private bool _UseDebug;
-        protected bool UseDebug => _UseDebug;
-#endif
-        [Conditional("UNITY_EDITOR")]
-        protected void Log(object content, bool isError = false)
-        {
-#if UNITY_EDITOR
-            if (isError)
-            {
-                UnityEngine.Debug.LogError("Grant GameplayTag Componenet [ " + _GameplayTagSystemComponent.name + " ] : " + content, _GameplayTagSystemComponent);
-
-                return;
-            }
-
-            if (UseDebug)
-                UnityEngine.Debug.Log("Grant GameplayTag Componenet [ " + _GameplayTagSystemComponent.name + " ] : " + content, _GameplayTagSystemComponent);
-#endif
-        }
-        #endregion
 
         public void SetGameplayEvent(GameplayTagSystemComponent gameplayTagSystemComponent)
         {
@@ -142,7 +121,7 @@ namespace StudioScor.GameplayTagSystem
 
                             TriggerTag?.Invoke();
 
-                            Log(" GameplayTag On Trigger Event ( Tag : " + tag.name + " )");
+                            Log(" GameplayTag On Trigger Event ( Tag : " + tag.name + " )", false, gameplayTagSystemComponent);
                         }
                         else
                         {
@@ -150,14 +129,14 @@ namespace StudioScor.GameplayTagSystem
 
                             ReleaseTag?.Invoke();
 
-                            Log(" GameplayTag On Release Event ( Tag : " + tag.name + " )");
+                            Log(" GameplayTag On Release Event ( Tag : " + tag.name + " )", false, gameplayTagSystemComponent);
                         }
                     }
                     else
                     {
                         TriggerTag?.Invoke();
 
-                        Log(" GameplayTag On Trigger Event ( Tag : " + tag.name + " )");
+                        Log(" GameplayTag On Trigger Event ( Tag : " + tag.name + " )", false, gameplayTagSystemComponent);
 
                     }
 
