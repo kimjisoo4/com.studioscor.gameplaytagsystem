@@ -28,6 +28,9 @@ namespace StudioScor.GameplayTagSystem
         private bool _IsOnToggle = false;
         private GameplayTagSystemComponent _GameplayTagSystemComponent;
 
+        public new Object Context => _GameplayTagSystemComponent;
+
+
         public void SetGameplayEvent(GameplayTagSystemComponent gameplayTagSystemComponent)
         {
             _GameplayTagSystemComponent = gameplayTagSystemComponent;
@@ -121,7 +124,7 @@ namespace StudioScor.GameplayTagSystem
 
                             TriggerTag?.Invoke();
 
-                            Log(" GameplayTag On Trigger Event ( Tag : " + tag.name + " )", false, gameplayTagSystemComponent);
+                            Log(" GameplayTag On Trigger Event ( Tag : " + tag.name + " )");
                         }
                         else
                         {
@@ -129,14 +132,14 @@ namespace StudioScor.GameplayTagSystem
 
                             ReleaseTag?.Invoke();
 
-                            Log(" GameplayTag On Release Event ( Tag : " + tag.name + " )", false, gameplayTagSystemComponent);
+                            Log(" GameplayTag On Release Event ( Tag : " + tag.name + " )");
                         }
                     }
                     else
                     {
                         TriggerTag?.Invoke();
 
-                        Log(" GameplayTag On Trigger Event ( Tag : " + tag.name + " )", false, gameplayTagSystemComponent);
+                        Log(" GameplayTag On Trigger Event ( Tag : " + tag.name + " )");
 
                     }
 

@@ -1,4 +1,5 @@
 ﻿using StudioScor.Utilities;
+using UnityEngine;
 
 namespace StudioScor.GameplayTagSystem
 {
@@ -16,9 +17,8 @@ namespace StudioScor.GameplayTagSystem
         public event TagEventHandler OnTriggerTagEvent;
         public event TagEventHandler OnReleaseTagEvent;
 
-#if UNITY_EDITOR
         public new bool UseDebug => _TagEvent.UseDebug;
-#endif
+        public new Object Context => _TagEvent;
 
         public ScriptableGameplayTagEventSpec(ScriptableGameplayTagEvent gameplayTagEvent, GameplayTagSystemComponent gameplayTagSystemComponent)
         {
