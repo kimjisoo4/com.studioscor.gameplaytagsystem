@@ -7,7 +7,7 @@ using StudioScor.Utilities.VisualScripting;
 
 namespace StudioScor.GameplayTagSystem.VisualScripting
 {
-    public abstract class GameplayTagSystemEventUnit: CustomGameObjectEventUnit<GameplayTagSystemComponent, GameplayTag>
+    public abstract class GameplayTagSystemEventUnit: CustomEventUnit<GameplayTagSystemComponent, GameplayTag>
     {
         [DoNotSerialize]
         [PortLabel("GameplayTag")]

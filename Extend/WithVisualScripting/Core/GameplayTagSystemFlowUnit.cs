@@ -1,12 +1,9 @@
 ﻿#if SCOR_ENABLE_VISUALSCRIPTING
-using System;
-using System.Collections;
 using Unity.VisualScripting;
 
 namespace StudioScor.GameplayTagSystem.VisualScripting
 {
-
-    public abstract class GameplayTagSystemWaitUnit : GameplayTagSystemUnit
+    public abstract class GameplayTagSystemFlowUnit : GameplayTagSystemUnit
     {
         [DoNotSerialize]
         [PortLabel("Enter")]
@@ -18,19 +15,18 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
         [PortLabelHidden]
         public ControlOutput Exit;
 
-
         protected override void Definition()
         {
             base.Definition();
 
-            Enter = ControlInputCoroutine(nameof(Enter), Await);
+            Enter = ControlInput(nameof(Enter), OnFlow);
             Exit = ControlOutput(nameof(Exit));
 
             Succession(Enter, Exit);
             Requirement(GameplayTagSystemComponent, Enter);
         }
 
-        protected abstract IEnumerator Await(Flow arg);
+        protected abstract ControlOutput OnFlow(Flow flow);
     }
 }
 
