@@ -3,6 +3,8 @@
     "rootNamespace": "StudioScor.GameplayTagSystem.Editor",
     "references": [
         "GUID:2a2d341d7e231f74d8c9f2adfaaa67f6",
+        "GUID:0e56af4e027762c43b7508efc3b00495",
+        "GUID:d231f5ffb585d104580a481a96616a8c",
         "GUID:21b0c8d1703a94250bfac916590cea4f",
         "GUID:54cb1906aeb4e4264bc1d2aa3818a43f",
         "GUID:ea715009a4efd4c6cbc85be3ae097dd3",

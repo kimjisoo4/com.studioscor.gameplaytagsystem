@@ -1,4 +1,5 @@
 ﻿using UnityEditor;
+using StudioScor.GameplayTagSystem;
 
 namespace StudioScor.GameplayTagSystem.Editor
 {

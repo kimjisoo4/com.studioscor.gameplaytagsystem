@@ -9,10 +9,9 @@ namespace StudioScor.GameplayTagSystem
     {
         [Header(" [ Grant GameplayTag Component ] ")]
         [SerializeField] private GameplayTagSystemComponent _GameplayTagSystemComponent;
+        [SerializeField] private bool _AutoActivate = true;
         [Space(5f)]
         [SerializeField] private FGameplayTags _ToggleTags;
-        [Space(5f)]
-        [SerializeField] private bool _AutoActivate = true;
 
         private bool _WasGrantTags = false;
 
@@ -40,14 +39,12 @@ namespace StudioScor.GameplayTagSystem
 
         private void SetGameplayTagSystemComponent()
         {
-            if (!_GameplayTagSystemComponent)
+            if (_GameplayTagSystemComponent)
                 return;
 
-            _GameplayTagSystemComponent = GetComponentInParent<GameplayTagSystemComponent>();
-
-            if (!_GameplayTagSystemComponent)
+            if (!gameObject.TryGetComponentInParentOrChildren(out _GameplayTagSystemComponent))
             {
-                _GameplayTagSystemComponent = GetComponentInChildren<GameplayTagSystemComponent>();
+                Log("GameplayTag System Component Is NULL!!", true);
             }
         }
 

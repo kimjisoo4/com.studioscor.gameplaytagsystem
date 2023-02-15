@@ -28,8 +28,9 @@ namespace StudioScor.GameplayTagSystem
         private bool _IsOnToggle = false;
         private GameplayTagSystemComponent _GameplayTagSystemComponent;
 
+#if UNITY_EDITOR
         public new Object Context => _GameplayTagSystemComponent;
-
+#endif
 
         public void SetGameplayEvent(GameplayTagSystemComponent gameplayTagSystemComponent)
         {
