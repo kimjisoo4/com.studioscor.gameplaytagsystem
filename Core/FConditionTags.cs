@@ -1,9 +1,15 @@
-﻿namespace StudioScor.GameplayTagSystem
+﻿using UnityEngine;
+using System.Collections.Generic;
+
+namespace StudioScor.GameplayTagSystem
 {
     [System.Serializable]
     public struct FConditionTags
     {
-        public GameplayTag[] Requireds;
-        public GameplayTag[] Obstacleds;
+        [SerializeField] private GameplayTag[] _Requireds;
+        [SerializeField] private GameplayTag[] _Obstacleds;
+
+        public IReadOnlyCollection<GameplayTag> Requireds => _Requireds;
+        public IReadOnlyCollection<GameplayTag> Obstacleds => _Obstacleds;
     }
 }
