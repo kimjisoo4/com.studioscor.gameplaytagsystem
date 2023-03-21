@@ -1,20 +1,13 @@
 ﻿#if SCOR_ENABLE_VISUALSCRIPTING
-
 using Unity.VisualScripting;
-using StudioScor.GameplayTagSystem;
 
-namespace StudioScor.AbilitySystem.VisualScripting.GameplayTagSystem
+namespace StudioScor.GameplayTagSystem.VisualScripting
 {
     [UnitTitle("Check Condition Tags")]
     [UnitSubtitle("GameplayTagSystem")]
     [UnitCategory("StudioScor\\GameplayTagSystem")]
-    public class CheckConditionTagsUnit : Unit
+    public class CheckConditionTagsUnit : GameplayTagSystemUnit
     {
-        [DoNotSerialize]
-        [NullMeansSelf]
-        [PortLabel("GameplayTagSystem")]
-        public ValueInput GameplayTagSystemComponent { get; private set; }
-
         [DoNotSerialize]
         [PortLabel("ObstacledTags")]
         public ValueInput ObstacledTags { get; private set; }
@@ -27,26 +20,24 @@ namespace StudioScor.AbilitySystem.VisualScripting.GameplayTagSystem
         [PortLabel("Condition")]
         [PortLabelHidden]
         public ValueOutput IsPositive;
+
         protected override void Definition()
         {
-            GameplayTagSystemComponent = ValueInput<GameplayTagSystemComponent>(nameof(GameplayTagSystemComponent)).NullMeansSelf();
+            base.Definition();
 
             ObstacledTags = ValueInput<GameplayTag[]>(nameof(ObstacledTags), default);
             RequiredTags = ValueInput<GameplayTag[]>(nameof(RequiredTags), default);
 
             IsPositive = ValueOutput<bool>(nameof(IsPositive), CheckGameplayTags);
 
-            Requirement(GameplayTagSystemComponent, IsPositive);
+            Requirement(Target, IsPositive);
             Requirement(ObstacledTags, IsPositive);
             Requirement(RequiredTags, IsPositive);
         }
 
         private bool CheckGameplayTags(Flow flow)
         {
-            var gameplayTagSystem = flow.GetValue<GameplayTagSystemComponent>(GameplayTagSystemComponent);
-
-            if (!gameplayTagSystem)
-                return false;
+            var gameplayTagSystem = flow.GetValue<IGameplayTagSystem>(Target);
 
             var obstacledTags = flow.GetValue<GameplayTag[]>(ObstacledTags);
 

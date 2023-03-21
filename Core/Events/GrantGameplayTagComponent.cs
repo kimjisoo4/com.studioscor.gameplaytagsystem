@@ -8,79 +8,137 @@ namespace StudioScor.GameplayTagSystem
     public class GrantGameplayTagComponent : BaseMonoBehaviour
     {
         [Header(" [ Grant GameplayTag Component ] ")]
-        [SerializeField] private GameplayTagSystemComponent _GameplayTagSystemComponent;
-        [SerializeField] private bool _AutoActivate = true;
+        [SerializeField] private GameObject _Target;
+        [SerializeField] private bool _AutoPlaying = true;
         [Space(5f)]
         [SerializeField] private FGameplayTags _ToggleTags;
 
-        private bool _WasGrantTags = false;
+        private IGameplayTagSystem _GameplayTagSystem;
+        private bool _IsPlaying = false;
 
 #if UNITY_EDITOR
         private void Reset()
         {
-            SetGameplayTagSystemComponent();
+            Setup();
+        }
+        private void OnValidate()
+        {
+            if (_Target)
+            {
+                if(_Target.TryGetComponentInParentOrChildren(out _GameplayTagSystem))
+                {
+                    if(_Target != _GameplayTagSystem.gameObject)
+                    {
+                        _Target = _GameplayTagSystem.gameObject;
+                    }
+                }
+                else
+                {
+                    _Target = null;
+                }
+            }
         }
 #endif
 
         private void Awake()
         {
-            SetGameplayTagSystemComponent();
+            Setup();
         }
         private void OnEnable()
         {
-            if(_AutoActivate)
-                AddGameplayTags();
+            if(_AutoPlaying)
+                OnToggleGameplayTag();
         }
         private void OnDisable()
         {
-            if(_AutoActivate)
-                RemoveGameplayTags();
+            if(_AutoPlaying)
+                EndToggleGameplayTag();
         }
 
-        private void SetGameplayTagSystemComponent()
+        private void Setup()
         {
-            if (_GameplayTagSystemComponent)
+            if (_GameplayTagSystem is not null)
                 return;
 
-            if (!gameObject.TryGetComponentInParentOrChildren(out _GameplayTagSystemComponent))
+            if (gameObject.TryGetComponentInParentOrChildren(out _GameplayTagSystem))
+            {
+                _Target = _GameplayTagSystem.gameObject;
+            }
+            else
             {
                 Log("GameplayTag System Component Is NULL!!", true);
             }
         }
 
-        public void AddGameplayTags()
+        public void SetTarget(GameObject gameObject)
         {
-            if (_WasGrantTags)
-                return;
+            var gameplayTagSystemEvent = gameObject.GetComponent<IGameplayTagSystem>();
 
-            _WasGrantTags = true;
-
-            if (!_GameplayTagSystemComponent)
-            {
-                Log("GamepalyTag System Is Null", true);
-
-                return;
-            }
-
-            _GameplayTagSystemComponent.AddOwnedTags(_ToggleTags.Owneds);
-            _GameplayTagSystemComponent.AddBlockTags(_ToggleTags.Blocks);
+            SetGameplayTagSystem(gameplayTagSystemEvent);
         }
-        public void RemoveGameplayTags()
+        public void SetTarget(Component component)
         {
-            if (!_WasGrantTags)
+            var gameplayTagSystemEvent = component.GetComponent<IGameplayTagSystem>();
+
+            SetGameplayTagSystem(gameplayTagSystemEvent);
+        }
+        public void SetGameplayTagSystem(IGameplayTagSystem gameplayTagSystem)
+        {
+            if (_GameplayTagSystem is not null)
+            {
+                EndToggleGameplayTag();
+
+                _Target = null;
+            }
+
+            _GameplayTagSystem = gameplayTagSystem;
+
+            if(_GameplayTagSystem is not null)
+            {
+                _Target = _GameplayTagSystem.gameObject;
+
+                if(_AutoPlaying)
+                    OnToggleGameplayTag();
+            }
+        }
+
+        public void OnToggleGameplayTag()
+        {
+            if (_IsPlaying)
                 return;
 
-            _WasGrantTags = false;
+            _IsPlaying = true;
 
-            if (!_GameplayTagSystemComponent)
+            Log("On Toggle GameplayTags");
+
+            if (_GameplayTagSystem is null)
             {
                 Log("GamepalyTag System Is Null", true);
 
                 return;
             }
 
-            _GameplayTagSystemComponent.RemoveOwnedTags(_ToggleTags.Owneds);
-            _GameplayTagSystemComponent.RemoveBlockTags(_ToggleTags.Blocks);
+            _GameplayTagSystem.AddOwnedTags(_ToggleTags.Owneds);
+            _GameplayTagSystem.AddBlockTags(_ToggleTags.Blocks);
+        }
+        public void EndToggleGameplayTag()
+        {
+            if (!_IsPlaying)
+                return;
+
+            _IsPlaying = false;
+
+            Log("End Toggle GameplayTags");
+
+            if (_GameplayTagSystem is null)
+            {
+                Log("GamepalyTag System Is Null", true);
+
+                return;
+            }
+
+            _GameplayTagSystem.RemoveOwnedTags(_ToggleTags.Owneds);
+            _GameplayTagSystem.RemoveBlockTags(_ToggleTags.Blocks);
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 
 using StudioScor.Utilities;
@@ -11,107 +10,150 @@ namespace StudioScor.GameplayTagSystem
     [System.Serializable]
     public class GameplayTagEvent : BaseClass
     {
-
 #if UNITY_EDITOR
         public string DecsriptionName = "GameplayTag Event";
+        public override Object Context => _GameplayTagSystem.gameObject;
 #endif
-
+        [Header(" [ GameplayTag Event ] ")]
         [SerializeField] private EGameplayTagEventType _EventType;
         [SerializeField] private GameplayTag[] _GameplayTags;
+        [Space(5f)]
+        [SerializeField] private UnityEvent _OnTriggeredTag;
+        [SerializeField] private UnityEvent _OnReleasedTag;
 
-        public UnityEvent TriggerTag;
-        public UnityEvent ReleaseTag;
+        public event UnityAction OnTriggeredTag;
+        public event UnityAction OnReleasedTag;
 
-        private bool IsToggleEvent => _EventType.Equals(EGameplayTagEventType.ToggleOwned)
-                                   || _EventType.Equals(EGameplayTagEventType.ToggleBlock);
 
-        private bool _IsOnToggle = false;
-        private GameplayTagSystemComponent _GameplayTagSystemComponent;
+        private IGameplayTagSystemEvent _GameplayTagSystem;
 
-#if UNITY_EDITOR
-        public new Object Context => _GameplayTagSystemComponent;
-#endif
+        private bool _IsPlaying = false;
+        private bool _WasToggleOn = false;
+        public bool IsOn => _WasToggleOn;
+        public bool IsToggleEvent => _EventType.Equals(EGameplayTagEventType.ToggleOwned)
+                           || _EventType.Equals(EGameplayTagEventType.ToggleBlock);
 
-        public void SetGameplayEvent(GameplayTagSystemComponent gameplayTagSystemComponent)
+        public void OnGameplayTagEvent()
         {
-            _GameplayTagSystemComponent = gameplayTagSystemComponent;
+            if (_IsPlaying)
+                return;
 
-            if(!_GameplayTagSystemComponent)
+            _IsPlaying = true;
+
+            SetupEvents();
+        }
+        public void EndGameplayTagEvent()
+        {
+            if (!_IsPlaying)
+                return;
+
+            _IsPlaying = false;
+
+            ResetEvents();
+        }
+
+        private void SetupEvents()
+        {
+            if (_GameplayTagSystem is null)
             {
-                Log("GameplayTag System Is Null!", true);
+                Log("IGameplayTagSystemEvents Is Null !!!", false);
+
+                return;
+            }
+            switch (_EventType)
+            {
+                case EGameplayTagEventType.ToggleOwned:
+                    _GameplayTagSystem.OnGrantedOwnedTag += TryTriggerTagEvent;
+                    _GameplayTagSystem.OnRemovedOwnedTag += TryTriggerTagEvent;
+                    break;
+                case EGameplayTagEventType.ToggleBlock:
+                    _GameplayTagSystem.OnGrantedBlockTag += TryTriggerTagEvent;
+                    _GameplayTagSystem.OnRemovedBlockTag += TryTriggerTagEvent;
+                    break;
+                case EGameplayTagEventType.AddOwned:
+                    _GameplayTagSystem.OnGrantedOwnedTag += TryTriggerTagEvent;
+                    break;
+                case EGameplayTagEventType.RemoveOwned:
+                    _GameplayTagSystem.OnRemovedOwnedTag += TryTriggerTagEvent;
+                    break;
+                case EGameplayTagEventType.AddBlock:
+                    _GameplayTagSystem.OnGrantedBlockTag += TryTriggerTagEvent;
+                    break;
+                case EGameplayTagEventType.RemoveBlock:
+                    _GameplayTagSystem.OnRemovedBlockTag += TryTriggerTagEvent;
+                    break;
+                case EGameplayTagEventType.Trigger:
+                    _GameplayTagSystem.OnTriggeredTag += TryTriggerTagEvent;
+                    break;
+                default:
+                    break;
+            }
+        }
+        private void ResetEvents()
+        {
+            if (_GameplayTagSystem is null)
+                return;
+
+            switch (_EventType)
+            {
+                case EGameplayTagEventType.ToggleOwned:
+                    _GameplayTagSystem.OnGrantedOwnedTag -= TryTriggerTagEvent;
+                    _GameplayTagSystem.OnRemovedOwnedTag -= TryTriggerTagEvent;
+
+                    _WasToggleOn = false;
+                    break;
+                case EGameplayTagEventType.ToggleBlock:
+                    _GameplayTagSystem.OnGrantedBlockTag -= TryTriggerTagEvent;
+                    _GameplayTagSystem.OnRemovedBlockTag -= TryTriggerTagEvent;
+
+                    _WasToggleOn = false;
+                    break;
+                case EGameplayTagEventType.AddOwned:
+                    _GameplayTagSystem.OnGrantedOwnedTag -= TryTriggerTagEvent;
+                    break;
+                case EGameplayTagEventType.RemoveOwned:
+                    _GameplayTagSystem.OnRemovedOwnedTag -= TryTriggerTagEvent;
+                    break;
+                case EGameplayTagEventType.AddBlock:
+                    _GameplayTagSystem.OnGrantedBlockTag -= TryTriggerTagEvent;
+                    break;
+                case EGameplayTagEventType.RemoveBlock:
+                    _GameplayTagSystem.OnRemovedBlockTag -= TryTriggerTagEvent;
+                    break;
+                case EGameplayTagEventType.Trigger:
+                    _GameplayTagSystem.OnTriggeredTag -= TryTriggerTagEvent;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        public void SetTarget(GameObject target)
+        {
+            var gameplayTagSystem = target.GetComponent<IGameplayTagSystemEvent>();
+
+            SetGameplayTagSystemEvent(gameplayTagSystem);
+        }
+        public void SetTarget(Component component)
+        {
+            var gameplayTagSystem = component.GetComponent<IGameplayTagSystemEvent>();
+
+            SetGameplayTagSystemEvent(gameplayTagSystem);
+        }
+
+        public void SetGameplayTagSystemEvent(IGameplayTagSystemEvent gameplayTagSystemEvent)
+        {
+            _GameplayTagSystem = gameplayTagSystemEvent;
+
+            if(_GameplayTagSystem is null)
+            {
+                Log("IGameplayTag System Events Is NULL!!!", true);
                 
                 return;
             }
-
-            switch (_EventType)
-            {
-                case EGameplayTagEventType.ToggleOwned:
-                    _GameplayTagSystemComponent.OnGrantedOwnedTag += TryTriggerTagEvent;
-                    _GameplayTagSystemComponent.OnRemovedOwnedTag += TryTriggerTagEvent;
-                    break;
-                case EGameplayTagEventType.ToggleBlock:
-                    _GameplayTagSystemComponent.OnGrantedBlockTag += TryTriggerTagEvent;
-                    _GameplayTagSystemComponent.OnRemovedBlockTag += TryTriggerTagEvent;
-                    break;
-                case EGameplayTagEventType.AddOwned:
-                    _GameplayTagSystemComponent.OnGrantedOwnedTag += TryTriggerTagEvent;
-                    break;
-                case EGameplayTagEventType.RemoveOwned:
-                    _GameplayTagSystemComponent.OnRemovedOwnedTag += TryTriggerTagEvent;
-                    break;
-                case EGameplayTagEventType.AddBlock:
-                    _GameplayTagSystemComponent.OnGrantedBlockTag += TryTriggerTagEvent;
-                    break;
-                case EGameplayTagEventType.RemoveBlock:
-                    _GameplayTagSystemComponent.OnRemovedBlockTag += TryTriggerTagEvent;
-                    break;
-                case EGameplayTagEventType.Trigger:
-                    _GameplayTagSystemComponent.OnTriggeredTag += TryTriggerTagEvent;
-                    break;
-                default:
-                    break;
-            }
-        }
-        public void ResetGameplayEvent()
-        {
-            if (!_GameplayTagSystemComponent)
-                return;
-            
-            switch (_EventType)
-            {
-                case EGameplayTagEventType.ToggleOwned:
-                    _GameplayTagSystemComponent.OnGrantedOwnedTag -= TryTriggerTagEvent;
-                    _GameplayTagSystemComponent.OnRemovedOwnedTag -= TryTriggerTagEvent;
-
-                    _IsOnToggle = false;
-                    break;
-                case EGameplayTagEventType.ToggleBlock:
-                    _GameplayTagSystemComponent.OnGrantedBlockTag -= TryTriggerTagEvent;
-                    _GameplayTagSystemComponent.OnRemovedBlockTag -= TryTriggerTagEvent;
-
-                    _IsOnToggle = false;
-                    break;
-                case EGameplayTagEventType.AddOwned:
-                    _GameplayTagSystemComponent.OnGrantedOwnedTag -= TryTriggerTagEvent;
-                    break;
-                case EGameplayTagEventType.RemoveOwned:
-                    _GameplayTagSystemComponent.OnRemovedOwnedTag -= TryTriggerTagEvent;
-                    break;
-                case EGameplayTagEventType.AddBlock:
-                    _GameplayTagSystemComponent.OnGrantedBlockTag -= TryTriggerTagEvent;
-                    break;
-                case EGameplayTagEventType.RemoveBlock:
-                    _GameplayTagSystemComponent.OnRemovedBlockTag -= TryTriggerTagEvent;
-                    break;
-                case EGameplayTagEventType.Trigger:
-                    _GameplayTagSystemComponent.OnTriggeredTag -= TryTriggerTagEvent;
-                    break;
-                default:
-                    break;
-            }
         }
 
-        private void TryTriggerTagEvent(GameplayTagSystemComponent gameplayTagSystemComponent, GameplayTag changedTag)
+        private void TryTriggerTagEvent(IGameplayTagSystemEvent gameplayTagSystemEvent, GameplayTag changedTag)
         {
             foreach (GameplayTag tag in _GameplayTags)
             {
@@ -119,34 +161,42 @@ namespace StudioScor.GameplayTagSystem
                 {
                     if (IsToggleEvent)
                     {
-                        if (!_IsOnToggle)
+                        if (!_WasToggleOn)
                         {
-                            _IsOnToggle = true;
+                            _WasToggleOn = true;
 
-                            TriggerTag?.Invoke();
-
-                            Log(" GameplayTag On Trigger Event ( Tag : " + tag.name + " )");
+                            Callback_OnTriggered();
                         }
                         else
                         {
-                            _IsOnToggle = false;
+                            _WasToggleOn = false;
 
-                            ReleaseTag?.Invoke();
-
-                            Log(" GameplayTag On Release Event ( Tag : " + tag.name + " )");
+                            Callback_OnReleased();
                         }
                     }
                     else
                     {
-                        TriggerTag?.Invoke();
-
-                        Log(" GameplayTag On Trigger Event ( Tag : " + tag.name + " )");
-
+                        Callback_OnTriggered();
                     }
 
                     break;
                 }
             }
+        }
+
+        protected void Callback_OnTriggered()
+        {
+            Log(" GameplayTag On Trigger Event");
+
+            _OnTriggeredTag?.Invoke();
+            OnTriggeredTag?.Invoke();
+        }
+        protected void Callback_OnReleased()
+        {
+            Log(" GameplayTag On Release Event");
+
+            _OnReleasedTag?.Invoke();
+            OnReleasedTag?.Invoke();
         }
     }
 }

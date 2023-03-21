@@ -96,7 +96,7 @@ namespace StudioScor.GameplayTagSystem
 
         }
 
-        private void GameplayTagSystem_OnToggleTag(GameplayTagSystemComponent gameplayTagSystemComponent, GameplayTag changedTag)
+        private void GameplayTagSystem_OnToggleTag(IGameplayTagSystemEvent gameplayTagSystemEvent, GameplayTag changedTag)
         {
             if (_TagEvent.GameplayTag == changedTag)
             {
@@ -119,7 +119,7 @@ namespace StudioScor.GameplayTagSystem
             } 
         }
 
-        private void GameplayTagSystem_OnTriggerTag(GameplayTagSystemComponent gameplayTagSystemComponent, GameplayTag changedTag)
+        private void GameplayTagSystem_OnTriggerTag(IGameplayTagSystemEvent gameplayTagSystemEvent, GameplayTag changedTag)
         {
             if (_TagEvent.GameplayTag == changedTag)
             {

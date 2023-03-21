@@ -5,7 +5,7 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
 {
     [UnitTitle("Toggle Grant GameplayTags")]
     [UnitShortTitle("ToggleGrantTags")]
-    [UnitCategory("StudioScor\\GameplayTagSystem\\")]
+    [UnitCategory("StudioScor\\GameplayTagSystem")]
     public class GameplayTagSystemToggleGrantUnit : GameplayTagSystemUnit
     {
         [DoNotSerialize]
@@ -56,12 +56,12 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
             Succession(ToggleOn, TurnOn);
             Succession(ToggleOff, TurnOff);
 
-            Requirement(GameplayTagSystemComponent, ToggleOn);
+            Requirement(Target, ToggleOn);
         }
 
         private ControlOutput OnToggle(Flow flow)
         {
-            var gameplayTagSystem = flow.GetValue<GameplayTagSystemComponent>(GameplayTagSystemComponent);
+            var gameplayTagSystem = flow.GetValue<IGameplayTagSystem>(Target);
 
             var ownedTags = flow.GetValue<GameplayTag[]>(OwnedTags);
             var blockTags = flow.GetValue<GameplayTag[]>(BlockTags);
@@ -76,7 +76,7 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
 
         private ControlOutput OffToggle(Flow flow)
         {
-            var gameplayTagSystem = flow.GetValue<GameplayTagSystemComponent>(GameplayTagSystemComponent);
+            var gameplayTagSystem = flow.GetValue<IGameplayTagSystem>(Target);
 
             var ownedTags = flow.GetValue<GameplayTag[]>(OwnedTags);
             var blockTags = flow.GetValue<GameplayTag[]>(BlockTags);

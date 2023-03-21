@@ -23,7 +23,7 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
             Exit = ControlOutput(nameof(Exit));
 
             Succession(Enter, Exit);
-            Requirement(GameplayTagSystemComponent, Enter);
+            Requirement(Target, Enter);
         }
 
         protected abstract ControlOutput OnFlow(Flow flow);

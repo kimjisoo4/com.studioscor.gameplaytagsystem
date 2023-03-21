@@ -5,36 +5,10 @@ using StudioScor.Utilities;
 
 namespace StudioScor.GameplayTagSystem
 {
-    public interface IGameplayTagSystem
-    {
-        public Transform transform { get; }
-
-        public void AddOwnedTag(GameplayTag addTag);
-        public void RemoveOwnedTag(GameplayTag removeTag);
-        public void AddBlockTag(GameplayTag addTag);
-        public void RemoveBlockTag(GameplayTag removeTag);
-
-        public void AddOwnedTags(IReadOnlyCollection<GameplayTag> addTags);
-        public void AddBlockTags(IReadOnlyCollection<GameplayTag> addTags);
-        public void RemoveOwnedTags(IReadOnlyCollection<GameplayTag> removeTags);
-        public void RemoveBlockTags(IReadOnlyCollection<GameplayTag> removeTags);
-
-        public bool ContainBlockTag(GameplayTag containTag);
-        public bool ContainOwnedTag(GameplayTag containTag);
-        public bool ContainAllTagsInOwned(IReadOnlyCollection<GameplayTag> containTags);
-        public bool ContainAllTagsInBlock(IReadOnlyCollection<GameplayTag> containTags);
-        public bool ContainAnyTagsInOwned(IReadOnlyCollection<GameplayTag> containTags);
-        public bool ContainAnyTagsInBlock(IReadOnlyCollection<GameplayTag> containTags);
-    }
-
     [DefaultExecutionOrder(GameplayTagSystemExecutionOrder.MAIN_ORDER)]
     [AddComponentMenu("StudioScor/GameplayTagSystem/GameplayTagSystem Component", order:0)]
-    public class GameplayTagSystemComponent : BaseMonoBehaviour, IGameplayTagSystem
+    public class GameplayTagSystemComponent : BaseMonoBehaviour, IGameplayTagSystem, IGameplayTagSystemEvent
     {
-        #region Events
-        public delegate void GameplayTagEventHandler(GameplayTagSystemComponent gameplayTagSystemComponent, GameplayTag gameplayTag);
-        #endregion
-
         [Header(" [ Setup ] ")]
         [SerializeField] private FGameplayTags _InitializationTags;
 
@@ -98,7 +72,7 @@ namespace StudioScor.GameplayTagSystem
 
             Callback_OnTriggerTag(triggerTag);
         }
-        public void TriggerTags(GameplayTag[] triggerTags)
+        public void TriggerTags(IEnumerable<GameplayTag> triggerTags)
         {
             if (triggerTags is null)
                 return;
@@ -134,22 +108,12 @@ namespace StudioScor.GameplayTagSystem
 
             Callback_OnAddedOwnedTag(addTag);
         }
-        public void AddOwnedTags(IReadOnlyCollection<GameplayTag> addTags)
+        public void AddOwnedTags(IEnumerable<GameplayTag> addTags)
         {
             if (addTags is null)
                 return;
 
             foreach (var tag in addTags)
-            {
-                AddOwnedTag(tag);
-            }
-        }
-        public void AddOwnedTags(GameplayTag[] addTags)
-        {
-            if (addTags == null)
-                return;
-
-            foreach (GameplayTag tag in addTags)
             {
                 AddOwnedTag(tag);
             }
@@ -163,11 +127,6 @@ namespace StudioScor.GameplayTagSystem
             if (_OwnedTags.ContainsKey(removeTag))
             {
                 _OwnedTags[removeTag] -= 1;
-
-                if (_OwnedTags[removeTag] == 0)
-                {
-                    Callback_OnRemovedOwnedTag(removeTag);
-                }
             }
             else
             {
@@ -175,8 +134,13 @@ namespace StudioScor.GameplayTagSystem
             }
 
             Callback_OnSubtractedOwnedTag(removeTag);
+
+            if (_OwnedTags[removeTag] == 0)
+            {
+                Callback_OnRemovedOwnedTag(removeTag);
+            }
         }
-        public void RemoveOwnedTags(GameplayTag[] removeTas)
+        public void RemoveOwnedTags(IEnumerable<GameplayTag> removeTas)
         {
             if (removeTas is null)
                 return;
@@ -186,17 +150,6 @@ namespace StudioScor.GameplayTagSystem
                 RemoveOwnedTag(tag);
             }
         }
-        public void RemoveOwnedTags(IReadOnlyCollection<GameplayTag> removeTags)
-        {
-            if (removeTags is null)
-                return;
-
-            foreach (GameplayTag tag in removeTags)
-            {
-                RemoveOwnedTag(tag);
-            }
-        }
-
         public void AddBlockTag(GameplayTag addTag)
         {
             if (addTag == null)
@@ -220,17 +173,7 @@ namespace StudioScor.GameplayTagSystem
 
             Callback_OnAddedBlockTag(addTag);
         }
-        public void AddBlockTags(GameplayTag[] addTags)
-        {
-            if (addTags is null)
-                return;
-
-            foreach (GameplayTag tag in addTags)
-            {
-                AddBlockTag(tag);
-            }
-        }
-        public void AddBlockTags(IReadOnlyCollection<GameplayTag> addTags)
+        public void AddBlockTags(IEnumerable<GameplayTag> addTags)
         {
             if (addTags is null)
                 return;
@@ -249,11 +192,6 @@ namespace StudioScor.GameplayTagSystem
             if (_BlockTags.ContainsKey(removeTag))
             {
                 _BlockTags[removeTag] -= 1;
-
-                if (_BlockTags[removeTag] == 0)
-                {
-                    Callback_OnRemovedBlockTag(removeTag);
-                }
             }
             else
             {
@@ -261,8 +199,13 @@ namespace StudioScor.GameplayTagSystem
             }
 
             Callback_OnSubtractedBlcokTag(removeTag);
+
+            if (_BlockTags[removeTag] == 0)
+            {
+                Callback_OnRemovedBlockTag(removeTag);
+            }
         }
-        public void RemoveBlockTags(GameplayTag[] removeTags)
+        public void RemoveBlockTags(IEnumerable<GameplayTag> removeTags)
         {
             if (removeTags is null)
                 return;
@@ -272,131 +215,6 @@ namespace StudioScor.GameplayTagSystem
                 RemoveBlockTag(tag);
             }
         }
-        public void RemoveBlockTags(IReadOnlyCollection<GameplayTag> removeTags)
-        {
-            if (removeTags is null)
-                return;
-
-            foreach (GameplayTag tag in removeTags)
-            {
-                RemoveBlockTag(tag);
-            }
-        }
-        #endregion
-
-        #region Check Has Tag
-        protected bool ContainTag(IReadOnlyDictionary<GameplayTag, int> container, GameplayTag tag)
-        {
-            if (tag is null)
-                return false;
-
-            if (!container.TryGetValue(tag, out int value))
-                return false;
-
-            return value > 0;
-        }
-        public bool ContainOwnedTag(GameplayTag tag)
-        {
-            return ContainTag(_OwnedTags, tag);
-        }
-        public bool ContainBlockTag(GameplayTag tag)
-        {
-            return ContainTag(_BlockTags, tag);
-        }
-
-        protected bool ContainAllTags(IReadOnlyDictionary<GameplayTag, int> container, GameplayTag[] tags)
-        {
-            if (tags is null)
-                return true;
-
-            foreach (GameplayTag tag in tags)
-            {
-                if (!ContainTag(container, tag))
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-        protected bool ContainAllTags(IReadOnlyDictionary<GameplayTag, int> container, IReadOnlyCollection<GameplayTag> tags)
-        {
-            if (tags is null)
-                return true;
-            foreach (GameplayTag tag in tags)
-            {
-                if (!ContainTag(container, tag))
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        protected bool ContainAnyTags(IReadOnlyDictionary<GameplayTag, int> container, GameplayTag[] tags)
-        {
-            if (tags is null)
-                return false;
-
-            foreach (GameplayTag tag in tags)
-            {
-                if (ContainTag(container, tag))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-        protected bool ContainAnyTags(IReadOnlyDictionary<GameplayTag, int> container, IReadOnlyCollection<GameplayTag> tags)
-        {
-            if (tags is null)
-                return false;
-
-            foreach (GameplayTag tag in tags)
-            {
-                if (ContainTag(container, tag))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        public bool ContainAllTagsInOwned(GameplayTag[] tags)
-        {
-            return ContainAllTags(_OwnedTags, tags);
-        }
-        public bool ContainAllTagsInOwned(IReadOnlyCollection<GameplayTag> tags)
-        {
-            return ContainAllTags(_OwnedTags, tags);
-        }
-
-        public bool ContainAllTagsInBlock(GameplayTag[] tags)
-        {
-            return ContainAllTags(_BlockTags, tags);
-        }
-        public bool ContainAllTagsInBlock(IReadOnlyCollection<GameplayTag> tags)
-        {
-            return ContainAllTags(_BlockTags, tags);
-        }
-
-        public bool ContainAnyTagsInOwned(GameplayTag[] tags)
-        {
-            return ContainAnyTags(_OwnedTags, tags);
-        }
-        public bool ContainAnyTagsInOwned(IReadOnlyCollection<GameplayTag> tags)
-        {
-            return ContainAnyTags(_OwnedTags, tags);
-        }
-
-        public bool ContainAnyTagsInBlock(GameplayTag[] tags)
-        {
-            return ContainAnyTags(_BlockTags, tags);
-        }
-        public bool ContainAnyTagsInBlock(IReadOnlyCollection<GameplayTag> tags)
-        {
-            return ContainAnyTags(_BlockTags, tags);
-        }
-
         #endregion
 
         #region CallBack

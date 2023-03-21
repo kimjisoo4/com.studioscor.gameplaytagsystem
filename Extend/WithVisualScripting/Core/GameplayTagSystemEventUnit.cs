@@ -7,12 +7,11 @@ using StudioScor.Utilities.VisualScripting;
 
 namespace StudioScor.GameplayTagSystem.VisualScripting
 {
-    public abstract class GameplayTagSystemEventUnit: CustomEventUnit<GameplayTagSystemComponent, GameplayTag>
+    public abstract class GameplayTagSystemEventUnit: CustomInterfaceEventUnit<IGameplayTagSystemEvent, GameplayTag>
     {
         [DoNotSerialize]
         [PortLabel("GameplayTag")]
         public ValueOutput GameplayTag { get; private set; }
-
         public override Type MessageListenerType => typeof(GameplayTagSystemMessageListener);
 
         protected override void Definition()

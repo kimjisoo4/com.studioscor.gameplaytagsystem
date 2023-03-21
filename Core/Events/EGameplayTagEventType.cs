@@ -1,5 +1,15 @@
 ﻿namespace StudioScor.GameplayTagSystem
 {
+    public enum EGameplayTagType
+    {
+        Owned,
+        Block,
+    }
+    public enum EContainType
+    {
+        Any,
+        All,
+    }
     public enum EGameplayTagEventType
     {
         ToggleOwned = 1,

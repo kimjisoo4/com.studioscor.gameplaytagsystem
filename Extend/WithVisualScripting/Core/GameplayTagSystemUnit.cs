@@ -1,4 +1,5 @@
 ﻿#if SCOR_ENABLE_VISUALSCRIPTING
+using UnityEngine;
 using Unity.VisualScripting;
 
 namespace StudioScor.GameplayTagSystem.VisualScripting
@@ -9,11 +10,11 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
         [NullMeansSelf]
         [PortLabel("Target")]
         [PortLabelHidden]
-        public ValueInput GameplayTagSystemComponent;
+        public ValueInput Target;
 
         protected override void Definition()
         {
-            GameplayTagSystemComponent = ValueInput<GameplayTagSystemComponent>(nameof(GameplayTagSystemComponent), null).NullMeansSelf();
+            Target = ValueInput<GameObject>(nameof(Target), null).NullMeansSelf();
         }
     }
 }
