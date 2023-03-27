@@ -9,7 +9,8 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
 
     [UnitTitle("Wait Trigger GameplayTag")]
     [UnitShortTitle("WaitTriggerTag")]
-    [UnitCategory("StudioScor\\GameplayTagSystem")]
+    [UnitSubtitle("GameplayTagSystem Task")]
+    [UnitCategory("Time\\StudioScor\\GameplayTagSystem")]
     public class WaitTriggerGameplayTagUnit : WaitTriggerEventUnit<IGameplayTagSystemEvent, GameplayTag>
     {
         [DoNotSerialize]
