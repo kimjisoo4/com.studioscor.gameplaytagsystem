@@ -3,21 +3,17 @@ using StudioScor.Utilities;
 
 namespace StudioScor.GameplayTagSystem
 {
-
     [DefaultExecutionOrder(GameplayTagSystemExecutionOrder.SUB_ORDER)]
-    [AddComponentMenu("StudioScor/GameplayTagSystem/Grant GameplayTagComponent", order:10)]
-    public class GrantGameplayTagComponent : BaseMonoBehaviour
+    [AddComponentMenu("StudioScor/GameplayTagSystem/Trigger GameplayTagComponent", order: 10)]
+    public class TriggerGameplayTagComponent : BaseMonoBehaviour
     {
         [Header(" [ Grant GameplayTag Component ] ")]
         [SerializeField] private GameObject _Target;
         [Space(5f)]
-        [SerializeField] private FGameplayTags _ToggleTags;
+        [SerializeField] private GameplayTag[] _TriggerTags;
 
         [Header(" [ Auto Playing ] ")]
         [SerializeField] private bool _AutoPlaying;
-
-        private bool _IsPlaying = false;
-        public bool IsPlaying => _IsPlaying;
 
         private IGameplayTagSystem _GameplayTagSystem;
 
@@ -26,14 +22,14 @@ namespace StudioScor.GameplayTagSystem
         {
             Setup();
         }
-            
+
         private void OnValidate()
         {
             if (_Target)
             {
-                if(_Target.TryGetComponentInParentOrChildren(out _GameplayTagSystem))
+                if (_Target.TryGetComponentInParentOrChildren(out _GameplayTagSystem))
                 {
-                    if(_Target != _GameplayTagSystem.gameObject)
+                    if (_Target != _GameplayTagSystem.gameObject)
                     {
                         _Target = _GameplayTagSystem.gameObject;
                     }
@@ -53,11 +49,7 @@ namespace StudioScor.GameplayTagSystem
         private void OnEnable()
         {
             if (_AutoPlaying)
-                OnToggleGameplayTag();
-        }
-        private void OnDisable()
-        {
-            EndToggleGameplayTag();
+                OnTriggerTag();
         }
 
         private void Setup()
@@ -85,32 +77,19 @@ namespace StudioScor.GameplayTagSystem
         }
         public void SetGameplayTagSystem(IGameplayTagSystem gameplayTagSystem)
         {
-            if (_GameplayTagSystem is not null && IsPlaying)
-            {
-                EndToggleGameplayTag();
-
-                _Target = null;
-            }
+            _Target = null;
 
             _GameplayTagSystem = gameplayTagSystem;
 
-            if(_GameplayTagSystem is not null)
+            if (_GameplayTagSystem is not null)
             {
                 _Target = _GameplayTagSystem.gameObject;
-
-                if (IsPlaying)
-                    OnToggleGameplayTag();
             }
         }
 
-        public void OnToggleGameplayTag()
+        public void OnTriggerTag(GameplayTag triggerTag)
         {
-            if (_IsPlaying)
-                return;
-
-            _IsPlaying = true;
-
-            Log("On Toggle GameplayTags");
+            Log("On Trigger GameplayTags");
 
             if (_GameplayTagSystem is null)
             {
@@ -119,18 +98,12 @@ namespace StudioScor.GameplayTagSystem
                 return;
             }
 
-            _GameplayTagSystem.AddOwnedTags(_ToggleTags.Owneds);
-            _GameplayTagSystem.AddBlockTags(_ToggleTags.Blocks);
+            _GameplayTagSystem.TriggerTag(triggerTag);
         }
 
-        public void EndToggleGameplayTag()
+        public void OnTriggerTag()
         {
-            if (!_IsPlaying)
-                return;
-
-            _IsPlaying = false;
-
-            Log("End Toggle GameplayTags");
+            Log("On Trigger GameplayTags");
 
             if (_GameplayTagSystem is null)
             {
@@ -139,8 +112,7 @@ namespace StudioScor.GameplayTagSystem
                 return;
             }
 
-            _GameplayTagSystem.RemoveOwnedTags(_ToggleTags.Owneds);
-            _GameplayTagSystem.RemoveBlockTags(_ToggleTags.Blocks);
+            _GameplayTagSystem.TriggerTags(_TriggerTags);
         }
     }
 }

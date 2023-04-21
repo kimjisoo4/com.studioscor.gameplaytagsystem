@@ -13,7 +13,7 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
         {
             var gameplayTagSystem = GetComponent<IGameplayTagSystemEvent>();
 
-            gameplayTagSystem.OnTriggeredTag += OnTriggerTagEventListener_OnTriggeredTag;
+            gameplayTagSystem.OnTriggeredTag += GameplayTagSystem_OnTriggeredTag;
             
             gameplayTagSystem.OnAddedOwnedTag += GameplayTagSystem_OnAddedOwnedTag;
             gameplayTagSystem.OnAddedBlockTag += GameplayTagSystem_OnAddedBlockTag;
@@ -31,7 +31,7 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
         {
             if (TryGetComponent(out IGameplayTagSystemEvent gameplayTagSystem))
             {
-                gameplayTagSystem.OnTriggeredTag -= OnTriggerTagEventListener_OnTriggeredTag;
+                gameplayTagSystem.OnTriggeredTag -= GameplayTagSystem_OnTriggeredTag;
 
                 gameplayTagSystem.OnAddedOwnedTag -= GameplayTagSystem_OnAddedOwnedTag;
                 gameplayTagSystem.OnAddedBlockTag -= GameplayTagSystem_OnAddedBlockTag;
@@ -87,7 +87,7 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
             EventBus.Trigger(new EventHook(GameplayTagSystemWithVisualScripting.ADD_OWNED_TAG, gameplayTagSystemEvent), gameplayTag);
         }
 
-        private void OnTriggerTagEventListener_OnTriggeredTag(IGameplayTagSystemEvent gameplayTagSystemEvent, GameplayTag gameplayTag)
+        private void GameplayTagSystem_OnTriggeredTag(IGameplayTagSystemEvent gameplayTagSystemEvent, GameplayTag gameplayTag)
         {
             EventBus.Trigger(new EventHook(GameplayTagSystemWithVisualScripting.TRIGGER_TAG, gameplayTagSystemEvent), gameplayTag);
         }

@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 namespace StudioScor.GameplayTagSystem.VisualScripting
 {
     [UnitTitle("Trigger GameplayTag")]
-    [UnitShortTitle("TriggerTag")]
+    [UnitSubtitle("GameplayTagSystem Unit")]
     [UnitCategory("StudioScor\\GameplayTagSystem")]
     public class GameplayTagSystemTriggerTagUnit : GameplayTagSystemFlowUnit
     {
@@ -14,14 +14,20 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
 
         [Serialize]
         [Inspectable]
-        [InspectorToggleLeft]
-        public bool UseList { get; set; } = false;
+        [UnitHeaderInspectable]
+        [PortLabel("Structure Type")]
+        public EStructureType StructureType { get; set; } = EStructureType.Target;
+
+        private bool _UseList;
+
 
         protected override void Definition()
         {
             base.Definition();
 
-            if(UseList)
+            _UseList = StructureType.Equals(EStructureType.List);
+
+            if (_UseList)
                 GameplayTag = ValueInput<GameplayTag[]>(nameof(GameplayTag), null);
             else
                 GameplayTag = ValueInput<GameplayTag>(nameof(GameplayTag), null);
@@ -33,7 +39,7 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
         {
             var gameplayTagSystem = flow.GetValue<IGameplayTagSystem>(Target);
             
-            if(UseList)
+            if(_UseList)
             {
                 var triggerTags = flow.GetValue<GameplayTag[]>(GameplayTag);
 

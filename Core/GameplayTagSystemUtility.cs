@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using UnityEngine;
+using System.Collections.Generic;
 
 namespace StudioScor.GameplayTagSystem
 {
@@ -6,6 +7,41 @@ namespace StudioScor.GameplayTagSystem
 
     public static class GameplayTagSystemUtility
     {
+        public static IGameplayTagSystem GetGameplayTagSystem(this GameObject target)
+        {
+            return target.GetComponent<IGameplayTagSystem>();
+        }
+        public static IGameplayTagSystem GetGameplayTagSystem(this Component component)
+        {
+            return component.GetComponent<IGameplayTagSystem>();
+        }
+        public static bool TryGetGameplayTagSystem(this GameObject target, out IGameplayTagSystem gameplayTagSystem)
+        {
+            return target.TryGetComponent(out gameplayTagSystem);
+        }
+        public static bool TryGetGameplayTagSystem(this Component component, out IGameplayTagSystem gameplayTagSystem)
+        {
+            return component.TryGetComponent(out gameplayTagSystem);
+        }
+
+        public static IGameplayTagSystemEvent GetGameplayTagSystemEvent(this GameObject target)
+        {
+            return target.GetComponent<IGameplayTagSystemEvent>();
+        }
+        public static IGameplayTagSystemEvent GetGameplayTagSystemEvent(this Component component)
+        {
+            return component.GetComponent<IGameplayTagSystemEvent>();
+        }
+        public static bool TryGetGameplayTagSystemEvent(this GameObject target, out IGameplayTagSystemEvent gameplayTagSystemEvent)
+        {
+            return target.TryGetComponent(out gameplayTagSystemEvent);
+        }
+        public static bool TryGetGameplayTagSystemEvent(this Component component, out IGameplayTagSystemEvent gameplayTagSystemEvent)
+        {
+            return component.TryGetComponent(out gameplayTagSystemEvent);
+        }
+
+
         public static bool ContainTag(this IReadOnlyDictionary<GameplayTag, int> container, GameplayTag tag)
         {
             if (tag is null)

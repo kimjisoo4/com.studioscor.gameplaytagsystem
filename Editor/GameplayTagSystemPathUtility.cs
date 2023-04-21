@@ -6,6 +6,7 @@ namespace StudioScor.GameplayTagSystem.Editor
     public static class GameplayTagSystemPathUtility
     {
         private static string _RootFolder;
+        public static string Resources => RootFolder + "Editor/Icons/";
         public static string RootFolder
         {
             get

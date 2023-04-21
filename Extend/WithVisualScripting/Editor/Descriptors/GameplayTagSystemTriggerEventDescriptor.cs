@@ -4,6 +4,7 @@ using Unity.VisualScripting;
 
 namespace StudioScor.GameplayTagSystem.VisualScripting.Editor
 {
+
     [Descriptor(typeof(GameplayTagSystemTriggerTagEvent))]
     public sealed class GameplayTagSystemTriggerEventDescriptor : UnitDescriptor<GameplayTagSystemTriggerTagEvent>
     {

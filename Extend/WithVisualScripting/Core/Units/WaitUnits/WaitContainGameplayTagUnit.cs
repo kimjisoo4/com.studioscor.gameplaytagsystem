@@ -8,7 +8,6 @@ using StudioScor.Utilities.VisualScripting;
 namespace StudioScor.GameplayTagSystem.VisualScripting
 {
     [UnitTitle("Wait Contain GameplayTag")]
-    [UnitShortTitle("WaitContainTag")]
     [UnitSubtitle("GameplayTagSystem Task")]
     [UnitCategory("Time\\StudioScor\\GameplayTagSystem")]
     public class WaitContainGameplayTagUnit : ToggleUpdateUnit
@@ -19,9 +18,11 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
         [NullMeansSelf]
         public ValueInput Target;
 
-        [DoNotSerialize]
-        [PortLabel("Type")]
-        public ValueInput Type { get; private set; }
+        [Serialize]
+        [Inspectable]
+        [UnitHeaderInspectable]
+        [PortLabel("Container Type")]
+        public EContainerType ContainerType { get; private set; }
 
         [DoNotSerialize]
         [PortLabel("ContainType")]
@@ -45,8 +46,11 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
 
         [Serialize]
         [Inspectable]
-        [InspectorToggleLeft]
-        public bool UseList { get; set; } = false;
+        [UnitHeaderInspectable]
+        [PortLabel("Structure Type")]
+        public EStructureType StructureType { get; set; } = EStructureType.Target;
+
+        private bool _UseList;
 
 
 
@@ -55,7 +59,7 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
             public IGameplayTagSystemEvent GameplayTagSystemEvent;
             public IGameplayTagSystem GameplayTagSystem;
             public bool UseList;
-            public EGameplayTagType GameplayTagType;
+            public EContainerType GameplayTagType;
             public EContainType ContainType;
             public GameplayTag GameplayTag;
             public GameplayTag[] GameplayTags;
@@ -73,9 +77,10 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
             base.Definition();
 
             Target = ValueInput<GameObject>(nameof(Target), null).NullMeansSelf();
-            Type = ValueInput<EGameplayTagType>(nameof(Type), EGameplayTagType.Owned);
 
-            if (UseList)
+            _UseList = StructureType.Equals(EStructureType.List);
+
+            if (_UseList)
             {
                 ContainType = ValueInput<EContainType>(nameof(ContainType), EContainType.All);
                 GameplayTag = ValueInput<GameplayTag[]>(nameof(GameplayTag), null);
@@ -126,7 +131,6 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
             var target = flow.GetValue<GameObject>(Target);
             var gameplayTagSystem = flow.GetValue<IGameplayTagSystem>(Target);
             var gameplayTagSystemEvent = flow.GetValue<IGameplayTagSystemEvent>(Target);
-            var type = flow.GetValue<EGameplayTagType>(Type);
 
             MessageListener.AddTo(typeof(GameplayTagSystemMessageListener), target);
 
@@ -135,7 +139,7 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
             EventHook grantHook;
             EventHook removeHook;
 
-            if (type == EGameplayTagType.Owned)
+            if (ContainerType == EContainerType.Owned)
             {
                 grantHook = new EventHook(GameplayTagSystemWithVisualScripting.GRANT_OWNED_TAG, gameplayTagSystemEvent);
                 removeHook = new EventHook(GameplayTagSystemWithVisualScripting.REMOVE_OWNED_TAG, gameplayTagSystemEvent);
@@ -157,16 +161,14 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
 
             data.GrantHandler = grantHandler;
             data.RemoveHandler = removeHandler;
-            //
-
 
             data.GameplayTagSystem = gameplayTagSystem;
             data.GameplayTagSystemEvent = gameplayTagSystemEvent;
-            data.GameplayTagType = type;
+            data.GameplayTagType = ContainerType;
             
-            data.UseList = UseList;
+            data.UseList = _UseList;
 
-            if (UseList)
+            if (_UseList)
             {
                 var gameplayTags = flow.GetValue<GameplayTag[]>(GameplayTag);
 
@@ -217,7 +219,7 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
                 {
                     if (data.ContainType == EContainType.All)
                     {
-                        if (data.GameplayTagType == EGameplayTagType.Owned)
+                        if (data.GameplayTagType == EContainerType.Owned)
                         {
                             if (data.GameplayTagSystem.ContainAllTagsInOwned(data.GameplayTags))
                             {
@@ -275,7 +277,7 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
                 {
                     if (data.ContainType == EContainType.Any)
                     {
-                        if (data.GameplayTagType == EGameplayTagType.Owned)
+                        if (data.GameplayTagType == EContainerType.Owned)
                         {
                             if (!data.GameplayTagSystem.ContainAllTagsInOwned(data.GameplayTags))
                             {

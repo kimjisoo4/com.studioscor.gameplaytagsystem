@@ -4,30 +4,37 @@ using Unity.VisualScripting;
 namespace StudioScor.GameplayTagSystem.VisualScripting
 {
     [UnitTitle("Remove GameplayTag")]
-    [UnitShortTitle("RemoveTag")]
+    [UnitSubtitle("GameplayTagSystem Unit")]
     [UnitCategory("StudioScor\\GameplayTagSystem")]
     public class GameplayTagSystemRemoveTagUnit : GameplayTagSystemFlowUnit
     {
         [DoNotSerialize]
         [PortLabel("GameplayTag")]
+        [PortLabelHidden]
         public ValueInput GameplayTag { get; private set; }
-
-        [DoNotSerialize]
-        [PortLabel("Type")]
-        public ValueInput Type { get; private set; }
 
         [Serialize]
         [Inspectable]
-        [InspectorToggleLeft]
-        public bool UseList { get; set; } = false;
+        [UnitHeaderInspectable]
+        [PortLabel("Container Type")]
+        public EContainerType ContainerType { get; private set; } = EContainerType.Owned;
+
+        [Serialize]
+        [Inspectable]
+        [UnitHeaderInspectable]
+        [PortLabel("Structure Type")]
+        public EStructureType StructureType { get; set; } = EStructureType.Target;
+
+
+        private bool _UseList;
 
         protected override void Definition()
         {
             base.Definition();
 
-            Type = ValueInput<EGameplayTagType>(nameof(Type), EGameplayTagType.Owned);
+            _UseList = StructureType.Equals(EStructureType.List);
 
-            if (UseList)
+            if (_UseList)
                 GameplayTag = ValueInput<GameplayTag[]>(nameof(GameplayTag), null);
             else
                 GameplayTag = ValueInput<GameplayTag>(nameof(GameplayTag), null);
@@ -38,19 +45,18 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
         protected override ControlOutput OnFlow(Flow flow)
         {
             var gameplayTagSystem = flow.GetValue<IGameplayTagSystem>(Target);
-            var type = flow.GetValue<EGameplayTagType>(Type);
 
-            if (UseList)
+            if (_UseList)
             {
-                var grantTags = flow.GetValue<GameplayTag[]>(GameplayTag);
+                var removeTags = flow.GetValue<GameplayTag[]>(GameplayTag);
 
-                switch (type)
+                switch (ContainerType)
                 {
-                    case EGameplayTagType.Owned:
-                        gameplayTagSystem.RemoveOwnedTags(grantTags);
+                    case EContainerType.Owned:
+                        gameplayTagSystem.RemoveOwnedTags(removeTags);
                         break;
-                    case EGameplayTagType.Block:
-                        gameplayTagSystem.RemoveBlockTags(grantTags);
+                    case EContainerType.Block:
+                        gameplayTagSystem.RemoveBlockTags(removeTags);
                         break;
                     default:
                         break;
@@ -58,15 +64,15 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
             }
             else
             {
-                var grantTag = flow.GetValue<GameplayTag>(GameplayTag);
+                var removeTag = flow.GetValue<GameplayTag>(GameplayTag);
 
-                switch (type)
+                switch (ContainerType)
                 {
-                    case EGameplayTagType.Owned:
-                        gameplayTagSystem.RemoveOwnedTag(grantTag);
+                    case EContainerType.Owned:
+                        gameplayTagSystem.RemoveOwnedTag(removeTag);
                         break;
-                    case EGameplayTagType.Block:
-                        gameplayTagSystem.RemoveBlockTag(grantTag);
+                    case EContainerType.Block:
+                        gameplayTagSystem.RemoveBlockTag(removeTag);
                         break;
                     default:
                         break;

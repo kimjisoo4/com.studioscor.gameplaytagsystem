@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 namespace StudioScor.GameplayTagSystem.VisualScripting
 {
     [UnitTitle("Toggle Grant GameplayTags")]
-    [UnitShortTitle("ToggleGrantTags")]
+    [UnitSubtitle("GameplayTagSystem Unit")]
     [UnitCategory("StudioScor\\GameplayTagSystem")]
     public class GameplayTagSystemToggleGrantUnit : GameplayTagSystemUnit
     {

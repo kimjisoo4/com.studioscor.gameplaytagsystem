@@ -1,6 +1,6 @@
 ﻿namespace StudioScor.GameplayTagSystem
 {
-    public enum EGameplayTagType
+    public enum EContainerType
     {
         Owned,
         Block,
@@ -10,6 +10,17 @@
         Any,
         All,
     }
+    public enum ETriggerType
+    {
+        Any,
+        TargetTag,
+    }
+    public enum EStructureType
+    {
+        Target,
+        List,
+    }
+
     public enum EGameplayTagEventType
     {
         ToggleOwned = 1,

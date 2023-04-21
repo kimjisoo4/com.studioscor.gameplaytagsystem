@@ -6,7 +6,7 @@ namespace StudioScor.GameplayTagSystem
     public class GameplayTag : ScriptableObject
     {
 #if UNITY_EDITOR
-        [TextArea] public string Description = "";
+        [TextArea] public string Description = " Description Is Not Include In Build.";
 #endif
     }
 }

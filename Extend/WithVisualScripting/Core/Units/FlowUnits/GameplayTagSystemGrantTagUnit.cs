@@ -4,30 +4,36 @@ using Unity.VisualScripting;
 namespace StudioScor.GameplayTagSystem.VisualScripting
 {
     [UnitTitle("Grant GameplayTag")]
-    [UnitShortTitle("GrantTag")]
+    [UnitSubtitle("GameplayTagSystem Unit")]
     [UnitCategory("StudioScor\\GameplayTagSystem")]
     public class GameplayTagSystemGrantTagUnit : GameplayTagSystemFlowUnit
     {
         [DoNotSerialize]
         [PortLabel("GameplayTag")]
+        [PortLabelHidden]
         public ValueInput GameplayTag { get; private set; }
-
-        [DoNotSerialize]
-        [PortLabel("Type")]
-        public ValueInput Type { get; private set; }
 
         [Serialize]
         [Inspectable]
-        [InspectorToggleLeft]
-        public bool UseList { get; set; } = false;
+        [UnitHeaderInspectable]
+        [PortLabel("Container Type")]
+        public EContainerType ContainerType { get; private set; } = EContainerType.Owned;
+
+        [Serialize]
+        [Inspectable]
+        [UnitHeaderInspectable]
+        [PortLabel("Structure Type")]
+        public EStructureType StructureType { get; set; } = EStructureType.Target;
+
+        private bool _UseList;
 
         protected override void Definition()
         {
             base.Definition();
 
-            Type = ValueInput<EGameplayTagType>(nameof(Type), EGameplayTagType.Owned);
+            _UseList = StructureType.Equals(EStructureType.List);
 
-            if (UseList)
+            if (_UseList)
                 GameplayTag = ValueInput<GameplayTag[]>(nameof(GameplayTag), null);
             else
                 GameplayTag = ValueInput<GameplayTag>(nameof(GameplayTag), null);
@@ -38,18 +44,17 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
         protected override ControlOutput OnFlow(Flow flow)
         {
             var gameplayTagSystem = flow.GetValue<IGameplayTagSystem>(Target);
-            var type = flow.GetValue<EGameplayTagType>(Type);
 
-            if (UseList)
+            if (_UseList)
             {
                 var grantTags = flow.GetValue<GameplayTag[]>(GameplayTag);
 
-                switch (type)
+                switch (ContainerType)
                 {
-                    case EGameplayTagType.Owned:
+                    case EContainerType.Owned:
                         gameplayTagSystem.AddOwnedTags(grantTags);
                         break;
-                    case EGameplayTagType.Block:
+                    case EContainerType.Block:
                         gameplayTagSystem.AddBlockTags(grantTags);
                         break;
                     default:
@@ -60,12 +65,12 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
             {
                 var grantTag = flow.GetValue<GameplayTag>(GameplayTag);
 
-                switch (type)
+                switch (ContainerType)
                 {
-                    case EGameplayTagType.Owned:
+                    case EContainerType.Owned:
                         gameplayTagSystem.AddOwnedTag(grantTag);
                         break;
-                    case EGameplayTagType.Block:
+                    case EContainerType.Block:
                         gameplayTagSystem.AddBlockTag(grantTag);
                         break;
                     default:

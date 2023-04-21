@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 namespace StudioScor.GameplayTagSystem.VisualScripting
 {
     [UnitTitle("Check Condition Tags")]
-    [UnitSubtitle("GameplayTagSystem")]
+    [UnitSubtitle("GameplayTagSystem Condition")]
     [UnitCategory("StudioScor\\GameplayTagSystem")]
     public class CheckConditionTagsUnit : GameplayTagSystemUnit
     {

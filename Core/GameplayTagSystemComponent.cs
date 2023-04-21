@@ -12,22 +12,22 @@ namespace StudioScor.GameplayTagSystem
         [Header(" [ Setup ] ")]
         [SerializeField] private FGameplayTags _InitializationTags;
 
-        protected Dictionary<GameplayTag, int> _OwnedTags;
-        protected Dictionary<GameplayTag, int> _BlockTags;
+        protected readonly Dictionary<GameplayTag, int> _OwnedTags = new();
+        protected readonly Dictionary<GameplayTag, int> _BlockTags = new();
 
         public IReadOnlyDictionary<GameplayTag, int> OwnedTags => _OwnedTags;
         public IReadOnlyDictionary<GameplayTag, int> BlockTags => _BlockTags;
 
 
         public event GameplayTagEventHandler OnGrantedOwnedTag;
+        public event GameplayTagEventHandler OnRemovedOwnedTag;
         public event GameplayTagEventHandler OnAddedOwnedTag;
         public event GameplayTagEventHandler OnSubtractedOwnedTag;
-        public event GameplayTagEventHandler OnRemovedOwnedTag;
 
         public event GameplayTagEventHandler OnGrantedBlockTag;
+        public event GameplayTagEventHandler OnRemovedBlockTag;
         public event GameplayTagEventHandler OnAddedBlockTag;
         public event GameplayTagEventHandler OnSubtractedBlockTag;
-        public event GameplayTagEventHandler OnRemovedBlockTag;
 
         public event GameplayTagEventHandler OnTriggeredTag;
 
@@ -36,16 +36,9 @@ namespace StudioScor.GameplayTagSystem
             SetupGameplayTagSystem();
         }
 
-        private void Start()
-        {
-            AddOwnedTags(_InitializationTags.Owneds);
-            AddBlockTags(_InitializationTags.Blocks);
-        }
-
         protected void SetupGameplayTagSystem()
         {
-            _OwnedTags = new();
-            _BlockTags = new();
+            AddInitializationTags();
 
             OnSetup();
         }
@@ -55,14 +48,32 @@ namespace StudioScor.GameplayTagSystem
             _OwnedTags.Clear();
             _BlockTags.Clear();
 
-            AddOwnedTags(_InitializationTags.Owneds);
-            AddBlockTags(_InitializationTags.Blocks);
+            AddInitializationTags();
 
             OnReset();
         }
 
         protected virtual void OnSetup() { }
         protected virtual void OnReset() { }
+
+        private void AddInitializationTags()
+        {
+            foreach (var ownedTag in _InitializationTags.Owneds)
+            {
+                if (!_OwnedTags.TryAdd(ownedTag, 1))
+                {
+                    _OwnedTags[ownedTag] += 1;
+                }
+            }
+
+            foreach (var blockTag in _InitializationTags.Blocks)
+            {
+                if (!_BlockTags.TryAdd(blockTag, 1))
+                {
+                    _BlockTags[blockTag] += 1;
+                }
+            }
+        }
 
         #region Trigger Tag
         public void TriggerTag(GameplayTag triggerTag)
