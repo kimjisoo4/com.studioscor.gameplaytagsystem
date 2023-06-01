@@ -7,12 +7,18 @@ namespace StudioScor.GameplayTagSystem
 
     public static class GameplayTagSystemUtility
     {
+        #region Get GameplayTagSystem
         public static IGameplayTagSystem GetGameplayTagSystem(this GameObject target)
         {
             return target.GetComponent<IGameplayTagSystem>();
         }
         public static IGameplayTagSystem GetGameplayTagSystem(this Component component)
         {
+            var gameplayTagSystem = component as IGameplayTagSystem;
+            
+            if (gameplayTagSystem is not null)
+                return gameplayTagSystem;
+
             return component.GetComponent<IGameplayTagSystem>();
         }
         public static bool TryGetGameplayTagSystem(this GameObject target, out IGameplayTagSystem gameplayTagSystem)
@@ -21,15 +27,27 @@ namespace StudioScor.GameplayTagSystem
         }
         public static bool TryGetGameplayTagSystem(this Component component, out IGameplayTagSystem gameplayTagSystem)
         {
+            gameplayTagSystem = component as IGameplayTagSystem;
+
+            if (gameplayTagSystem is not null)
+                return true;
+
             return component.TryGetComponent(out gameplayTagSystem);
         }
+        #endregion
 
+        #region Get GameplayTagSystemEvent
         public static IGameplayTagSystemEvent GetGameplayTagSystemEvent(this GameObject target)
         {
             return target.GetComponent<IGameplayTagSystemEvent>();
         }
         public static IGameplayTagSystemEvent GetGameplayTagSystemEvent(this Component component)
         {
+            var gameplayTagEvent = component as IGameplayTagSystemEvent;
+
+            if (gameplayTagEvent is not null)
+                return gameplayTagEvent;
+
             return component.GetComponent<IGameplayTagSystemEvent>();
         }
         public static bool TryGetGameplayTagSystemEvent(this GameObject target, out IGameplayTagSystemEvent gameplayTagSystemEvent)
@@ -38,9 +56,29 @@ namespace StudioScor.GameplayTagSystem
         }
         public static bool TryGetGameplayTagSystemEvent(this Component component, out IGameplayTagSystemEvent gameplayTagSystemEvent)
         {
+            gameplayTagSystemEvent = component as IGameplayTagSystemEvent;
+
+            if (gameplayTagSystemEvent is not null)
+                return true;
+
             return component.TryGetComponent(out gameplayTagSystemEvent);
         }
+        #endregion
 
+        #region Grant, Remove Tags
+        public static void GrantGameplayTags(this IGameplayTagSystem gameplayTagSystem, FGameplayTags gameplayTags)
+        {
+            gameplayTagSystem.AddOwnedTags(gameplayTags.Owneds);
+            gameplayTagSystem.AddBlockTags(gameplayTags.Blocks);
+        }
+        public static void RemoveGameplayTags(this IGameplayTagSystem gameplayTagSystem, FGameplayTags gameplayTags)
+        {
+            gameplayTagSystem.RemoveOwnedTags(gameplayTags.Owneds);
+            gameplayTagSystem.RemoveBlockTags(gameplayTags.Blocks);
+        }
+        #endregion
+
+        #region Contains
 
         public static bool ContainTag(this IReadOnlyDictionary<GameplayTag, int> container, GameplayTag tag)
         {
@@ -92,6 +130,13 @@ namespace StudioScor.GameplayTagSystem
 
         }
 
+        public static bool ContainConditionTags(this IGameplayTagSystem gameplayTagSystem, FConditionTags tags)
+        {
+            return gameplayTagSystem.ContainAllTagsInOwned(tags.Requireds)
+                && !gameplayTagSystem.ContainAnyTagsInOwned(tags.Obstacleds);
+        }
+
+
         public static bool ContainBlockTag(this IGameplayTagSystem gameplayTagSystem, GameplayTag tag)
         {
             return gameplayTagSystem.BlockTags.ContainTag(tag);
@@ -100,6 +145,7 @@ namespace StudioScor.GameplayTagSystem
         {
             return gameplayTagSystem.OwnedTags.ContainTag(tag);
         }
+
 
         public static bool ContainAllTagsInOwned(this IGameplayTagSystem gameplayTagSystem, IEnumerable<GameplayTag> tags)
         {
@@ -110,6 +156,7 @@ namespace StudioScor.GameplayTagSystem
             return ContainAllTags(gameplayTagSystem.BlockTags, tags);
         }
 
+
         public static bool ContainAnyTagsInOwned(this IGameplayTagSystem gameplayTagSystem, IEnumerable<GameplayTag> tags)
         {
             return ContainAnyTags(gameplayTagSystem.OwnedTags, tags);
@@ -118,5 +165,7 @@ namespace StudioScor.GameplayTagSystem
         {
             return ContainAnyTags(gameplayTagSystem.BlockTags, tags);
         }
+
+        #endregion
     }
 }
