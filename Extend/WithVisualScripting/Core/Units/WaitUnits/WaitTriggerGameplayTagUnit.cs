@@ -6,9 +6,10 @@ using StudioScor.Utilities.VisualScripting;
 
 namespace StudioScor.GameplayTagSystem.VisualScripting
 {
-    [UnitTitle("Wait Trigger GameplayTag")]
+    [UnitTitle("Task Wait Trigger GameplayTag")]
+    [UnitShortTitle("TaskWaitTriggerTag")]
     [UnitSubtitle("GameplayTagSystem Task")]
-    [UnitCategory("Time\\StudioScor\\GameplayTagSystem")]
+    [UnitCategory("StudioScor\\Task")]
     public class WaitTriggerGameplayTagUnit : WaitTriggerEventUnit<IGameplayTagSystemEvent, GameplayTag>
     {
         [DoNotSerialize]
@@ -22,7 +23,7 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
         [PortLabel("Structure Type")]
         public EStructureType StructureType { get; set; } = EStructureType.Target;
 
-        private bool _UseList;
+        private bool useList;
 
         public override string HookName => GameplayTagSystemWithVisualScripting.TRIGGER_TAG;
         public override Type MessageListenerType => typeof(GameplayTagSystemMessageListener);
@@ -41,9 +42,9 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
         {
             base.Definition();
 
-            _UseList = StructureType.Equals(EStructureType.List);
+            useList = StructureType.Equals(EStructureType.List);
 
-            if (_UseList)
+            if (useList)
             {
                 GameplayTag = ValueInput<GameplayTag[]>(nameof(GameplayTag), null);
             }
@@ -58,7 +59,7 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
         {
             var data = flow.stack.GetElementData<Data>(this);
 
-            if (_UseList)
+            if (useList)
             {
                 data.GameplayTags = flow.GetValue<GameplayTag[]>(GameplayTag);
             }
@@ -76,7 +77,7 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
             if (!data.IsActivate)
                 return false;
 
-            if (_UseList)
+            if (useList)
             {
                 if (data.GameplayTags.Contains(gameplayTag))
                     return false;
