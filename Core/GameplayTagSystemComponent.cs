@@ -7,16 +7,16 @@ namespace StudioScor.GameplayTagSystem
 {
     [DefaultExecutionOrder(GameplayTagSystemExecutionOrder.MAIN_ORDER)]
     [AddComponentMenu("StudioScor/GameplayTagSystem/GameplayTagSystem Component", order:0)]
-    public class GameplayTagSystemComponent : BaseMonoBehaviour, IGameplayTagSystem, IGameplayTagSystemEvent
+    public class GameplayTagSystemComponent : BaseMonoBehaviour, IGameplayTagSystem
     {
         [Header(" [ Setup ] ")]
-        [SerializeField] private FGameplayTags _InitializationTags;
+        [SerializeField] private FGameplayTags initializationTags;
 
-        protected readonly Dictionary<GameplayTag, int> _OwnedTags = new();
-        protected readonly Dictionary<GameplayTag, int> _BlockTags = new();
+        protected readonly Dictionary<GameplayTag, int> ownedTags = new();
+        protected readonly Dictionary<GameplayTag, int> blockTags = new();
 
-        public IReadOnlyDictionary<GameplayTag, int> OwnedTags => _OwnedTags;
-        public IReadOnlyDictionary<GameplayTag, int> BlockTags => _BlockTags;
+        public IReadOnlyDictionary<GameplayTag, int> OwnedTags => ownedTags;
+        public IReadOnlyDictionary<GameplayTag, int> BlockTags => blockTags;
 
 
         public event GameplayTagEventHandler OnGrantedOwnedTag;
@@ -45,8 +45,8 @@ namespace StudioScor.GameplayTagSystem
 
         public void ResetGameplayTagSystem()
         {
-            _OwnedTags.Clear();
-            _BlockTags.Clear();
+            ownedTags.Clear();
+            blockTags.Clear();
 
             AddInitializationTags();
 
@@ -58,19 +58,19 @@ namespace StudioScor.GameplayTagSystem
 
         private void AddInitializationTags()
         {
-            foreach (var ownedTag in _InitializationTags.Owneds)
+            foreach (var ownedTag in initializationTags.Owneds)
             {
-                if (!_OwnedTags.TryAdd(ownedTag, 1))
+                if (!ownedTags.TryAdd(ownedTag, 1))
                 {
-                    _OwnedTags[ownedTag] += 1;
+                    ownedTags[ownedTag] += 1;
                 }
             }
 
-            foreach (var blockTag in _InitializationTags.Blocks)
+            foreach (var blockTag in initializationTags.Blocks)
             {
-                if (!_BlockTags.TryAdd(blockTag, 1))
+                if (!blockTags.TryAdd(blockTag, 1))
                 {
-                    _BlockTags[blockTag] += 1;
+                    blockTags[blockTag] += 1;
                 }
             }
         }
@@ -101,18 +101,18 @@ namespace StudioScor.GameplayTagSystem
             if (addTag == null)
                 return;
 
-            if (_OwnedTags.ContainsKey(addTag))
+            if (ownedTags.ContainsKey(addTag))
             {
-                _OwnedTags[addTag] += 1;
+                ownedTags[addTag] += 1;
 
-                if (_OwnedTags[addTag] == 1)
+                if (ownedTags[addTag] == 1)
                 {
                     Callback_OnGrantedOwnedTag(addTag);
                 }
             }
             else
             {
-                _OwnedTags.TryAdd(addTag, 1);
+                ownedTags.TryAdd(addTag, 1);
 
                 Callback_OnGrantedOwnedTag(addTag);
             }
@@ -135,18 +135,18 @@ namespace StudioScor.GameplayTagSystem
             if (removeTag == null)
                 return;
 
-            if (_OwnedTags.ContainsKey(removeTag))
+            if (ownedTags.ContainsKey(removeTag))
             {
-                _OwnedTags[removeTag] -= 1;
+                ownedTags[removeTag] -= 1;
             }
             else
             {
-                _OwnedTags.Add(removeTag, -1);
+                ownedTags.Add(removeTag, -1);
             }
 
             Callback_OnSubtractedOwnedTag(removeTag);
 
-            if (_OwnedTags[removeTag] == 0)
+            if (ownedTags[removeTag] == 0)
             {
                 Callback_OnRemovedOwnedTag(removeTag);
             }
@@ -166,18 +166,18 @@ namespace StudioScor.GameplayTagSystem
             if (addTag == null)
                 return;
 
-            if (_BlockTags.ContainsKey(addTag))
+            if (blockTags.ContainsKey(addTag))
             {
-                _BlockTags[addTag] += 1;
+                blockTags[addTag] += 1;
 
-                if (_BlockTags[addTag] == 1)
+                if (blockTags[addTag] == 1)
                 {
                     Callback_OnGrantedBlockTag(addTag);
                 }
             }
             else
             {
-                _BlockTags.TryAdd(addTag, 1);
+                blockTags.TryAdd(addTag, 1);
 
                 Callback_OnGrantedBlockTag(addTag);
             }
@@ -200,18 +200,18 @@ namespace StudioScor.GameplayTagSystem
             if (removeTag == null)
                 return;
 
-            if (_BlockTags.ContainsKey(removeTag))
+            if (blockTags.ContainsKey(removeTag))
             {
-                _BlockTags[removeTag] -= 1;
+                blockTags[removeTag] -= 1;
             }
             else
             {
-                _BlockTags.Add(removeTag, -1);
+                blockTags.Add(removeTag, -1);
             }
 
             Callback_OnSubtractedBlcokTag(removeTag);
 
-            if (_BlockTags[removeTag] == 0)
+            if (blockTags[removeTag] == 0)
             {
                 Callback_OnRemovedBlockTag(removeTag);
             }

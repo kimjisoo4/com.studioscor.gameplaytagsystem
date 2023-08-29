@@ -6,10 +6,10 @@ namespace StudioScor.GameplayTagSystem
     [System.Serializable]
     public struct FConditionTags
     {
-        [SerializeField] private GameplayTag[] _Requireds;
-        [SerializeField] private GameplayTag[] _Obstacleds;
+        [SerializeField] private GameplayTag[] requireds;
+        [SerializeField] private GameplayTag[] obstacleds;
 
-        public IReadOnlyCollection<GameplayTag> Requireds => _Requireds;
-        public IReadOnlyCollection<GameplayTag> Obstacleds => _Obstacleds;
+        public IReadOnlyCollection<GameplayTag> Requireds => requireds;
+        public IReadOnlyCollection<GameplayTag> Obstacleds => obstacleds;
     }
 }

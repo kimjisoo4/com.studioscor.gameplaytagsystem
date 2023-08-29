@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace StudioScor.GameplayTagSystem
 {
-    public delegate void GameplayTagEventHandler(IGameplayTagSystemEvent gameplayTagSystem, GameplayTag gameplayTag);
+    public delegate void GameplayTagEventHandler(IGameplayTagSystem gameplayTagSystem, GameplayTag gameplayTag);
 
     public static class GameplayTagSystemUtility
     {
@@ -33,35 +33,6 @@ namespace StudioScor.GameplayTagSystem
                 return true;
 
             return component.TryGetComponent(out gameplayTagSystem);
-        }
-        #endregion
-
-        #region Get GameplayTagSystemEvent
-        public static IGameplayTagSystemEvent GetGameplayTagSystemEvent(this GameObject target)
-        {
-            return target.GetComponent<IGameplayTagSystemEvent>();
-        }
-        public static IGameplayTagSystemEvent GetGameplayTagSystemEvent(this Component component)
-        {
-            var gameplayTagEvent = component as IGameplayTagSystemEvent;
-
-            if (gameplayTagEvent is not null)
-                return gameplayTagEvent;
-
-            return component.GetComponent<IGameplayTagSystemEvent>();
-        }
-        public static bool TryGetGameplayTagSystemEvent(this GameObject target, out IGameplayTagSystemEvent gameplayTagSystemEvent)
-        {
-            return target.TryGetComponent(out gameplayTagSystemEvent);
-        }
-        public static bool TryGetGameplayTagSystemEvent(this Component component, out IGameplayTagSystemEvent gameplayTagSystemEvent)
-        {
-            gameplayTagSystemEvent = component as IGameplayTagSystemEvent;
-
-            if (gameplayTagSystemEvent is not null)
-                return true;
-
-            return component.TryGetComponent(out gameplayTagSystemEvent);
         }
         #endregion
 

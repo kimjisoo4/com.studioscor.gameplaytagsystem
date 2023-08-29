@@ -6,12 +6,12 @@ namespace StudioScor.GameplayTagSystem
     public abstract class ScriptableGameplayTagEvent : BaseScriptableObject
     {
         [Header(" [ Scriptable GameplayTag Event ] ")]
-        [SerializeField] protected EGameplayTagEventType _GameplayTagEventType;
-        [SerializeField] private GameplayTag _GameplayTag;
+        [SerializeField] protected EGameplayTagEventType gameplayTagEventType;
+        [SerializeField] private GameplayTag gameplayTag;
 
 
-        public EGameplayTagEventType GameplayTagEventType => _GameplayTagEventType;
-        public GameplayTag GameplayTag => _GameplayTag;
+        public EGameplayTagEventType GameplayTagEventType => gameplayTagEventType;
+        public GameplayTag GameplayTag => gameplayTag;
         public abstract ScriptableGameplayTagEventSpec CreateSpec(GameplayTagSystemComponent gameplayTagSystemComponent);
     }
 }

@@ -8,14 +8,14 @@ namespace StudioScor.GameplayTagSystem
     public class TriggerGameplayTagComponent : BaseMonoBehaviour
     {
         [Header(" [ Grant GameplayTag Component ] ")]
-        [SerializeField] private GameObject _Target;
+        [SerializeField] private GameObject target;
         [Space(5f)]
-        [SerializeField] private GameplayTag[] _TriggerTags;
+        [SerializeField] private GameplayTag[] triggerTags;
 
         [Header(" [ Auto Playing ] ")]
-        [SerializeField] private bool _AutoPlaying;
+        [SerializeField] private bool autoPlaying;
 
-        private IGameplayTagSystem _GameplayTagSystem;
+        private IGameplayTagSystem gameplayTagSystem;
 
 #if UNITY_EDITOR
         private void Reset()
@@ -25,18 +25,18 @@ namespace StudioScor.GameplayTagSystem
 
         private void OnValidate()
         {
-            if (_Target)
+            if (target)
             {
-                if (_Target.TryGetComponentInParentOrChildren(out _GameplayTagSystem))
+                if (target.TryGetComponentInParentOrChildren(out gameplayTagSystem))
                 {
-                    if (_Target != _GameplayTagSystem.gameObject)
+                    if (target != gameplayTagSystem.gameObject)
                     {
-                        _Target = _GameplayTagSystem.gameObject;
+                        target = gameplayTagSystem.gameObject;
                     }
                 }
                 else
                 {
-                    _Target = null;
+                    target = null;
                 }
             }
         }
@@ -48,18 +48,18 @@ namespace StudioScor.GameplayTagSystem
         }
         private void OnEnable()
         {
-            if (_AutoPlaying)
+            if (autoPlaying)
                 OnTriggerTag();
         }
 
         private void Setup()
         {
-            if (_GameplayTagSystem is not null)
+            if (gameplayTagSystem is not null)
                 return;
 
-            if (gameObject.TryGetComponentInParentOrChildren(out _GameplayTagSystem))
+            if (gameObject.TryGetComponentInParentOrChildren(out gameplayTagSystem))
             {
-                _Target = _GameplayTagSystem.gameObject;
+                target = gameplayTagSystem.gameObject;
             }
         }
 
@@ -77,13 +77,13 @@ namespace StudioScor.GameplayTagSystem
         }
         public void SetGameplayTagSystem(IGameplayTagSystem gameplayTagSystem)
         {
-            _Target = null;
+            target = null;
 
-            _GameplayTagSystem = gameplayTagSystem;
+            this.gameplayTagSystem = gameplayTagSystem;
 
-            if (_GameplayTagSystem is not null)
+            if (this.gameplayTagSystem is not null)
             {
-                _Target = _GameplayTagSystem.gameObject;
+                target = this.gameplayTagSystem.gameObject;
             }
         }
 
@@ -91,28 +91,28 @@ namespace StudioScor.GameplayTagSystem
         {
             Log("On Trigger GameplayTags");
 
-            if (_GameplayTagSystem is null)
+            if (gameplayTagSystem is null)
             {
                 Log("GamepalyTag System Is Null", true);
 
                 return;
             }
 
-            _GameplayTagSystem.TriggerTag(triggerTag);
+            gameplayTagSystem.TriggerTag(triggerTag);
         }
 
         public void OnTriggerTag()
         {
             Log("On Trigger GameplayTags");
 
-            if (_GameplayTagSystem is null)
+            if (gameplayTagSystem is null)
             {
                 Log("GamepalyTag System Is Null", true);
 
                 return;
             }
 
-            _GameplayTagSystem.TriggerTags(_TriggerTags);
+            gameplayTagSystem.TriggerTags(triggerTags);
         }
     }
 }

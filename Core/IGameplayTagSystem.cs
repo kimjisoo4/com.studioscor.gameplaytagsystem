@@ -23,5 +23,18 @@ namespace StudioScor.GameplayTagSystem
         public void AddBlockTags(IEnumerable<GameplayTag> addTags);
         public void RemoveOwnedTags(IEnumerable<GameplayTag> removeTags);
         public void RemoveBlockTags(IEnumerable<GameplayTag> removeTags);
+
+
+        public event GameplayTagEventHandler OnGrantedOwnedTag;
+        public event GameplayTagEventHandler OnRemovedOwnedTag;
+        public event GameplayTagEventHandler OnAddedOwnedTag;
+        public event GameplayTagEventHandler OnSubtractedOwnedTag;
+
+        public event GameplayTagEventHandler OnGrantedBlockTag;
+        public event GameplayTagEventHandler OnRemovedBlockTag;
+        public event GameplayTagEventHandler OnAddedBlockTag;
+        public event GameplayTagEventHandler OnSubtractedBlockTag;
+
+        public event GameplayTagEventHandler OnTriggeredTag;
     }
 }

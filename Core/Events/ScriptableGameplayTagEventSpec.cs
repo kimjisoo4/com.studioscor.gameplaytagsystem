@@ -9,48 +9,48 @@ namespace StudioScor.GameplayTagSystem
         public delegate void TagEventHandler(ScriptableGameplayTagEventSpec spec);
         #endregion
 
-        private readonly ScriptableGameplayTagEvent _TagEvent;
-        private readonly GameplayTagSystemComponent _GameplayTagSystemComponent;
+        private readonly ScriptableGameplayTagEvent tagEvent;
+        private readonly GameplayTagSystemComponent gameplayTagSystemComponent;
 
-        private bool _Toggle = false;
+        private bool toggle = false;
 
         public event TagEventHandler OnTriggerTagEvent;
         public event TagEventHandler OnReleaseTagEvent;
 
 #if UNITY_EDITOR
-        public new bool UseDebug => _TagEvent.UseDebug;
-        public new Object Context => _TagEvent;
+        public new bool UseDebug => tagEvent.UseDebug;
+        public new Object Context => tagEvent;
 #endif
 
         public ScriptableGameplayTagEventSpec(ScriptableGameplayTagEvent gameplayTagEvent, GameplayTagSystemComponent gameplayTagSystemComponent)
         {
-            _TagEvent = gameplayTagEvent;
-            _GameplayTagSystemComponent = gameplayTagSystemComponent;
+            tagEvent = gameplayTagEvent;
+            this.gameplayTagSystemComponent = gameplayTagSystemComponent;
 
-            switch (_TagEvent.GameplayTagEventType)
+            switch (tagEvent.GameplayTagEventType)
             {
                 case EGameplayTagEventType.ToggleOwned:
-                    _GameplayTagSystemComponent.OnGrantedOwnedTag += GameplayTagSystem_OnToggleTag;
-                    _GameplayTagSystemComponent.OnRemovedOwnedTag += GameplayTagSystem_OnToggleTag;
+                    this.gameplayTagSystemComponent.OnGrantedOwnedTag += GameplayTagSystem_OnToggleTag;
+                    this.gameplayTagSystemComponent.OnRemovedOwnedTag += GameplayTagSystem_OnToggleTag;
                     break;
                 case EGameplayTagEventType.ToggleBlock:
-                    _GameplayTagSystemComponent.OnGrantedBlockTag += GameplayTagSystem_OnToggleTag;
-                    _GameplayTagSystemComponent.OnRemovedBlockTag += GameplayTagSystem_OnToggleTag;
+                    this.gameplayTagSystemComponent.OnGrantedBlockTag += GameplayTagSystem_OnToggleTag;
+                    this.gameplayTagSystemComponent.OnRemovedBlockTag += GameplayTagSystem_OnToggleTag;
                     break;
                 case EGameplayTagEventType.AddOwned:
-                    _GameplayTagSystemComponent.OnGrantedOwnedTag += GameplayTagSystem_OnTriggerTag;
+                    this.gameplayTagSystemComponent.OnGrantedOwnedTag += GameplayTagSystem_OnTriggerTag;
                     break;
                 case EGameplayTagEventType.RemoveOwned:
-                    _GameplayTagSystemComponent.OnRemovedOwnedTag += GameplayTagSystem_OnTriggerTag;
+                    this.gameplayTagSystemComponent.OnRemovedOwnedTag += GameplayTagSystem_OnTriggerTag;
                     break;
                 case EGameplayTagEventType.AddBlock:
-                    _GameplayTagSystemComponent.OnGrantedBlockTag += GameplayTagSystem_OnTriggerTag;
+                    this.gameplayTagSystemComponent.OnGrantedBlockTag += GameplayTagSystem_OnTriggerTag;
                     break;
                 case EGameplayTagEventType.RemoveBlock:
-                    _GameplayTagSystemComponent.OnRemovedBlockTag += GameplayTagSystem_OnToggleTag;
+                    this.gameplayTagSystemComponent.OnRemovedBlockTag += GameplayTagSystem_OnToggleTag;
                     break;
                 case EGameplayTagEventType.Trigger:
-                    _GameplayTagSystemComponent.OnTriggeredTag += GameplayTagSystem_OnTriggerTag;
+                    this.gameplayTagSystemComponent.OnTriggeredTag += GameplayTagSystem_OnTriggerTag;
                     break;
                 default:
                     break;
@@ -59,30 +59,30 @@ namespace StudioScor.GameplayTagSystem
 
         public void Remove()
         {
-            switch (_TagEvent.GameplayTagEventType)
+            switch (tagEvent.GameplayTagEventType)
             {
                 case EGameplayTagEventType.ToggleOwned:
-                    _GameplayTagSystemComponent.OnGrantedOwnedTag -= GameplayTagSystem_OnToggleTag;
-                    _GameplayTagSystemComponent.OnRemovedOwnedTag -= GameplayTagSystem_OnToggleTag;
+                    gameplayTagSystemComponent.OnGrantedOwnedTag -= GameplayTagSystem_OnToggleTag;
+                    gameplayTagSystemComponent.OnRemovedOwnedTag -= GameplayTagSystem_OnToggleTag;
                     break;
                 case EGameplayTagEventType.ToggleBlock:
-                    _GameplayTagSystemComponent.OnGrantedBlockTag -= GameplayTagSystem_OnToggleTag;
-                    _GameplayTagSystemComponent.OnRemovedBlockTag -= GameplayTagSystem_OnToggleTag;
+                    gameplayTagSystemComponent.OnGrantedBlockTag -= GameplayTagSystem_OnToggleTag;
+                    gameplayTagSystemComponent.OnRemovedBlockTag -= GameplayTagSystem_OnToggleTag;
                     break;
                 case EGameplayTagEventType.AddOwned:
-                    _GameplayTagSystemComponent.OnGrantedOwnedTag -= GameplayTagSystem_OnTriggerTag;
+                    gameplayTagSystemComponent.OnGrantedOwnedTag -= GameplayTagSystem_OnTriggerTag;
                     break;
                 case EGameplayTagEventType.RemoveOwned:
-                    _GameplayTagSystemComponent.OnRemovedOwnedTag -= GameplayTagSystem_OnTriggerTag;
+                    gameplayTagSystemComponent.OnRemovedOwnedTag -= GameplayTagSystem_OnTriggerTag;
                     break;
                 case EGameplayTagEventType.AddBlock:
-                    _GameplayTagSystemComponent.OnGrantedBlockTag -= GameplayTagSystem_OnTriggerTag;
+                    gameplayTagSystemComponent.OnGrantedBlockTag -= GameplayTagSystem_OnTriggerTag;
                     break;
                 case EGameplayTagEventType.RemoveBlock:
-                    _GameplayTagSystemComponent.OnRemovedBlockTag -= GameplayTagSystem_OnToggleTag;
+                    gameplayTagSystemComponent.OnRemovedBlockTag -= GameplayTagSystem_OnToggleTag;
                     break;
                 case EGameplayTagEventType.Trigger:
-                    _GameplayTagSystemComponent.OnTriggeredTag -= GameplayTagSystem_OnTriggerTag;
+                    gameplayTagSystemComponent.OnTriggeredTag -= GameplayTagSystem_OnTriggerTag;
                     break;
                 default:
                     break;
@@ -96,13 +96,13 @@ namespace StudioScor.GameplayTagSystem
 
         }
 
-        private void GameplayTagSystem_OnToggleTag(IGameplayTagSystemEvent gameplayTagSystemEvent, GameplayTag changedTag)
+        private void GameplayTagSystem_OnToggleTag(IGameplayTagSystem gameplayTagSystemEvent, GameplayTag changedTag)
         {
-            if (_TagEvent.GameplayTag == changedTag)
+            if (tagEvent.GameplayTag == changedTag)
             {
-                if (!_Toggle)
+                if (!toggle)
                 {
-                    _Toggle = true;
+                    toggle = true;
 
                     TriggerEnter();
 
@@ -110,7 +110,7 @@ namespace StudioScor.GameplayTagSystem
                 }
                 else
                 {
-                    _Toggle = false;
+                    toggle = false;
 
                     TriggerExit();
 
@@ -119,9 +119,9 @@ namespace StudioScor.GameplayTagSystem
             } 
         }
 
-        private void GameplayTagSystem_OnTriggerTag(IGameplayTagSystemEvent gameplayTagSystemEvent, GameplayTag changedTag)
+        private void GameplayTagSystem_OnTriggerTag(IGameplayTagSystem gameplayTagSystemEvent, GameplayTag changedTag)
         {
-            if (_TagEvent.GameplayTag == changedTag)
+            if (tagEvent.GameplayTag == changedTag)
             {
                 TriggerEnter();
 
@@ -131,7 +131,7 @@ namespace StudioScor.GameplayTagSystem
 
         public void OnTriggerStay(float deltaTime)
         {
-            if (!_Toggle)
+            if (!toggle)
                 return;
 
             TriggerStay(deltaTime);

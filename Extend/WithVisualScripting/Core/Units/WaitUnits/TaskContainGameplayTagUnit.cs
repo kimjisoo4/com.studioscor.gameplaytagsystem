@@ -55,7 +55,7 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
 
         public new class Data : UpdateUnit.Data
         {
-            public IGameplayTagSystemEvent GameplayTagSystemEvent;
+            public IGameplayTagSystem GameplayTagSystemEvent;
             public IGameplayTagSystem GameplayTagSystem;
             public bool UseList;
             public EContainerType GameplayTagType;
@@ -110,7 +110,7 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
 
             var target = flow.GetValue<GameObject>(Target);
             var gameplayTagSystem = flow.GetValue<IGameplayTagSystem>(Target);
-            var gameplayTagSystemEvent = flow.GetValue<IGameplayTagSystemEvent>(Target);
+            var gameplayTagSystemEvent = flow.GetValue<IGameplayTagSystem>(Target);
 
             MessageListener.AddTo(typeof(GameplayTagSystemMessageListener), target);
 

@@ -9,13 +9,12 @@ namespace StudioScor.GameplayTagSystem
     public class GameplayTagEventComponent : BaseMonoBehaviour
     {
         [Header(" [ GameplayTag Event Component ] ")]
-        [SerializeField] private GameObject _Target;
-        [SerializeField] private GameplayTagEvent[] _GameplayEvents;
-        [SerializeField] private bool _AutoPlaying = true;
+        [SerializeField] private GameObject target;
+        [SerializeField] private GameplayTagEvent[] gameplayEvents;
+        [SerializeField] private bool autoPlaying = true;
 
-        private IGameplayTagSystemEvent _GameplayTagSystemEvent;
-        private bool _IsPlaying = false;
-        public bool IsPlaying => _IsPlaying;
+        private IGameplayTagSystem gameplayTagSystemEvent;
+        public bool IsPlaying { get; protected set; }
 
 #if UNITY_EDITOR
         private void Reset()
@@ -25,23 +24,23 @@ namespace StudioScor.GameplayTagSystem
 
         private void OnValidate()
         {
-            if (_Target)
+            if (target)
             {
-                if(_Target.TryGetComponentInParentOrChildren(out _GameplayTagSystemEvent))
+                if(target.TryGetComponentInParentOrChildren(out gameplayTagSystemEvent))
                 {
-                    if (_Target != _GameplayTagSystemEvent.gameObject)
+                    if (target != gameplayTagSystemEvent.gameObject)
                     {
-                        _Target = gameObject;
+                        target = gameObject;
                     }
                 }
                 else
                 {
-                    Log($"{_Target.name} Is Not Has {_GameplayTagSystemEvent.GetType()}");
+                    Log($"{target.name} Is Not Has {gameplayTagSystemEvent.GetType()}");
                 }
             }
             else
             {
-                _GameplayTagSystemEvent = null;
+                gameplayTagSystemEvent = null;
             }
         }
 #endif
@@ -53,7 +52,7 @@ namespace StudioScor.GameplayTagSystem
 
         private void OnEnable()
         {
-            if (_AutoPlaying)
+            if (autoPlaying)
                 OnListenGameplayTagEvent();
 
         }
@@ -65,70 +64,70 @@ namespace StudioScor.GameplayTagSystem
         
         protected void Setup()
         {
-            if (_GameplayTagSystemEvent is not null)
+            if (gameplayTagSystemEvent is not null)
                 return;
 
-            if(_Target)
-                _Target.TryGetComponentInParentOrChildren(out _GameplayTagSystemEvent);
+            if(target)
+                target.TryGetComponentInParentOrChildren(out gameplayTagSystemEvent);
         }
 
         public void SetTarget(GameObject gameObject)
         {
-            var gameplayTagSystemEvent = gameObject.GetComponent<IGameplayTagSystemEvent>();
+            var gameplayTagSystemEvent = gameObject.GetComponent<IGameplayTagSystem>();
 
             SetGameplayTagSystemEvent(gameplayTagSystemEvent);
         }
         public void SetTarget(Component component)
         {
-            var gameplayTagSystemEvent = component.GetComponent<IGameplayTagSystemEvent>();
+            var gameplayTagSystemEvent = component.GetComponent<IGameplayTagSystem>();
 
             SetGameplayTagSystemEvent(gameplayTagSystemEvent);
         }
-        public void SetGameplayTagSystemEvent(IGameplayTagSystemEvent gameplayTagSystemEvent)
+        public void SetGameplayTagSystemEvent(IGameplayTagSystem gameplayTagSystemEvent)
         {
-            if (_GameplayTagSystemEvent is not null)
+            if (this.gameplayTagSystemEvent is not null)
             {
                 EndListenGameplayEvent();
 
-                _Target = null;
+                target = null;
             }
 
-            _GameplayTagSystemEvent = gameplayTagSystemEvent;
+            this.gameplayTagSystemEvent = gameplayTagSystemEvent;
             
-            if (_GameplayTagSystemEvent is null)
+            if (this.gameplayTagSystemEvent is null)
                 return;
 
-            _Target = gameplayTagSystemEvent.gameObject;
+            target = gameplayTagSystemEvent.gameObject;
 
-            foreach (GameplayTagEvent gameplayTagEvent in _GameplayEvents)
+            foreach (GameplayTagEvent gameplayTagEvent in gameplayEvents)
             {
-                gameplayTagEvent.SetGameplayTagSystemEvent(_GameplayTagSystemEvent);
+                gameplayTagEvent.SetGameplayTagSystemEvent(this.gameplayTagSystemEvent);
             }
 
-            if (_AutoPlaying)
+            if (autoPlaying)
                 OnListenGameplayTagEvent();
         }
 
         public void OnListenGameplayTagEvent()
         {
-            if (_IsPlaying)
+            if (IsPlaying)
                 return;
 
-            _IsPlaying = true;
+            IsPlaying = true;
 
-            foreach (GameplayTagEvent gameplayTagEvent in _GameplayEvents)
+            foreach (GameplayTagEvent gameplayTagEvent in gameplayEvents)
             {
                 gameplayTagEvent.OnGameplayTagEvent();
             }
         }
         public void EndListenGameplayEvent()
         {
-            if (!_IsPlaying)
+            if (!IsPlaying)
                 return;
 
-            _IsPlaying = false;
+            IsPlaying = false;
 
-            foreach (GameplayTagEvent gameplayTagEvent in _GameplayEvents)
+            foreach (GameplayTagEvent gameplayTagEvent in gameplayEvents)
             {
                 gameplayTagEvent.EndGameplayTagEvent();
             }

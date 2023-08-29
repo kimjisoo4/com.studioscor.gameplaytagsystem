@@ -10,7 +10,7 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
     [UnitShortTitle("TaskWaitTriggerTag")]
     [UnitSubtitle("GameplayTagSystem Task")]
     [UnitCategory("StudioScor\\Task")]
-    public class WaitTriggerGameplayTagUnit : WaitTriggerEventUnit<IGameplayTagSystemEvent, GameplayTag>
+    public class WaitTriggerGameplayTagUnit : WaitTriggerEventUnit<IGameplayTagSystem, GameplayTag>
     {
         [DoNotSerialize]
         [PortLabel("GameplayTag")]
@@ -28,7 +28,7 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
         public override string HookName => GameplayTagSystemWithVisualScripting.TRIGGER_TAG;
         public override Type MessageListenerType => typeof(GameplayTagSystemMessageListener);
 
-        public new class Data : WaitTriggerEventUnit<IGameplayTagSystemEvent, GameplayTag>.Data
+        public new class Data : WaitTriggerEventUnit<IGameplayTagSystem, GameplayTag>.Data
         {
             public GameplayTag GameplayTag;
             public GameplayTag[] GameplayTags;
