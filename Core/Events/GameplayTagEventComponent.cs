@@ -4,7 +4,7 @@ using StudioScor.Utilities;
 
 namespace StudioScor.GameplayTagSystem
 {
-    [DefaultExecutionOrder(GameplayTagSystemExecutionOrder.SUB_ORDER)]
+    [DefaultExecutionOrder(GameplayTagSystemUtility.SUB_ORDER)]
     [AddComponentMenu("StudioScor/GameplayTagSystem/GameplayTagSystem Event Component", order: 10)]
     public class GameplayTagEventComponent : BaseMonoBehaviour
     {
@@ -16,14 +16,16 @@ namespace StudioScor.GameplayTagSystem
         private IGameplayTagSystem gameplayTagSystemEvent;
         public bool IsPlaying { get; protected set; }
 
-#if UNITY_EDITOR
         private void Reset()
         {
+#if UNITY_EDITOR
             Setup();
+#endif
         }
 
         private void OnValidate()
         {
+#if UNITY_EDITOR
             if (target)
             {
                 if(target.TryGetComponentInParentOrChildren(out gameplayTagSystemEvent))
@@ -42,9 +44,9 @@ namespace StudioScor.GameplayTagSystem
             {
                 gameplayTagSystemEvent = null;
             }
-        }
 #endif
 
+        }
         private void Awake()
         {
             Setup();
@@ -54,7 +56,6 @@ namespace StudioScor.GameplayTagSystem
         {
             if (autoPlaying)
                 OnListenGameplayTagEvent();
-
         }
 
         private void OnDisable()

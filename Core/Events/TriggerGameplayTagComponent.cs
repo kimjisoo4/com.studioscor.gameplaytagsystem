@@ -3,7 +3,7 @@ using StudioScor.Utilities;
 
 namespace StudioScor.GameplayTagSystem
 {
-    [DefaultExecutionOrder(GameplayTagSystemExecutionOrder.SUB_ORDER)]
+    [DefaultExecutionOrder(GameplayTagSystemUtility.SUB_ORDER)]
     [AddComponentMenu("StudioScor/GameplayTagSystem/Trigger GameplayTagComponent", order: 10)]
     public class TriggerGameplayTagComponent : BaseMonoBehaviour
     {

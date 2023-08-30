@@ -5,11 +5,11 @@ using StudioScor.Utilities;
 
 namespace StudioScor.GameplayTagSystem
 {
-    [DefaultExecutionOrder(GameplayTagSystemExecutionOrder.MAIN_ORDER)]
+    [DefaultExecutionOrder(GameplayTagSystemUtility.MAIN_ORDER)]
     [AddComponentMenu("StudioScor/GameplayTagSystem/GameplayTagSystem Component", order:0)]
     public class GameplayTagSystemComponent : BaseMonoBehaviour, IGameplayTagSystem
     {
-        [Header(" [ Setup ] ")]
+        [Header(" [ Gameplay Tag System Component ] ")]
         [SerializeField] private FGameplayTags initializationTags;
 
         protected readonly Dictionary<GameplayTag, int> ownedTags = new();

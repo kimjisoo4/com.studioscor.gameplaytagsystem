@@ -4,7 +4,7 @@ using StudioScor.Utilities;
 namespace StudioScor.GameplayTagSystem
 {
 
-    [DefaultExecutionOrder(GameplayTagSystemExecutionOrder.SUB_ORDER)]
+    [DefaultExecutionOrder(GameplayTagSystemUtility.SUB_ORDER)]
     [AddComponentMenu("StudioScor/GameplayTagSystem/Grant GameplayTagComponent", order:10)]
     public class GrantGameplayTagComponent : BaseMonoBehaviour
     {
@@ -20,14 +20,16 @@ namespace StudioScor.GameplayTagSystem
 
         private IGameplayTagSystem gameplayTagSystem;
 
-#if UNITY_EDITOR
         private void Reset()
         {
+#if UNITY_EDITOR
             Setup();
+#endif
         }
             
         private void OnValidate()
         {
+#if UNITY_EDITOR
             if (target)
             {
                 if(target.TryGetComponentInParentOrChildren(out gameplayTagSystem))
@@ -42,8 +44,8 @@ namespace StudioScor.GameplayTagSystem
                     target = null;
                 }
             }
-        }
 #endif
+        }
 
         private void Awake()
         {

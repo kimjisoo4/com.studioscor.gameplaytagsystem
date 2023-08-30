@@ -7,6 +7,9 @@ namespace StudioScor.GameplayTagSystem
 
     public static class GameplayTagSystemUtility
     {
+        public const int MAIN_ORDER = 1;
+        public const int SUB_ORDER = MAIN_ORDER + 1;
+
         #region Get GameplayTagSystem
         public static IGameplayTagSystem GetGameplayTagSystem(this GameObject target)
         {
