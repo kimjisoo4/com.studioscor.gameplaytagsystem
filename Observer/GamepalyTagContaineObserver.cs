@@ -3,6 +3,7 @@ using System.Linq;
 
 namespace StudioScor.GameplayTagSystem
 {
+
     public class GamepalyTagContaineObserver : GameplayTagObserver
     {
         [Header(" [ Gameplay Tag Containe Observer ] ")]
