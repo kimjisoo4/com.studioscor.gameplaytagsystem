@@ -5,7 +5,7 @@ using UnityEngine.Events;
 namespace StudioScor.GameplayTagSystem
 {
     [DefaultExecutionOrder(GameplayTagSystemUtility.SUB_ORDER)]
-    [AddComponentMenu("StudioScor/GameplayTagSystem/GameplayTagSystem Component", order: 0)]
+    [AddComponentMenu("StudioScor/GameplayTagSystem/GameplayTag Condition Observer Component", order: 0)]
     public class GameplayTagConditionObserverComponent : BaseMonoBehaviour
     {
         [Header(" [ GameplayTag Condition Observer Component ] ")]

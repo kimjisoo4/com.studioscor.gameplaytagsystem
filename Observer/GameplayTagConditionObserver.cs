@@ -8,7 +8,6 @@ namespace StudioScor.GameplayTagSystem
     [System.Serializable]
     public class GameplayTagConditionObserver : GameplayTagObserver
     {
-        
         [Header(" [ Gameplay Tag Condition Observer ] ")]
         [SerializeField] private GameplayTag[] attributeTags;
         [SerializeField] private FConditionTags conditionTags;
