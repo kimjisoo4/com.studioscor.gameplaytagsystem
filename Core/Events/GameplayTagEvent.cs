@@ -10,8 +10,9 @@ namespace StudioScor.GameplayTagSystem
     {
 #if UNITY_EDITOR
         public string DecsriptionName = "GameplayTag Event";
-        public override Object Context => gameplayTagSystem.gameObject;
+        protected override Object Context => gameplayTagSystem.gameObject;
 #endif
+
         [Header(" [ GameplayTag Event ] ")]
         [SerializeField] private EGameplayTagEventType eventType;
         [SerializeField] private GameplayTag[] gameplayTags;
@@ -54,7 +55,7 @@ namespace StudioScor.GameplayTagSystem
         {
             if (gameplayTagSystem is null)
             {
-                Log("IGameplayTagSystemEvents Is Null !!!", false);
+                LogError("IGameplayTagSystemEvents Is Null !!!");
 
                 return;
             }
@@ -81,12 +82,15 @@ namespace StudioScor.GameplayTagSystem
                     gameplayTagSystem.OnRemovedBlockTag += TryTriggerTagEvent;
                     break;
                 case EGameplayTagEventType.Trigger:
-                    gameplayTagSystem.OnTriggeredTag += TryTriggerTagEvent;
+                    gameplayTagSystem.OnTriggeredTag += GameplayTagSystem_OnTriggeredTag;
                     break;
                 default:
                     break;
             }
         }
+
+        
+
         private void ResetEvents()
         {
             if (gameplayTagSystem is null)
@@ -119,11 +123,16 @@ namespace StudioScor.GameplayTagSystem
                     gameplayTagSystem.OnRemovedBlockTag -= TryTriggerTagEvent;
                     break;
                 case EGameplayTagEventType.Trigger:
-                    gameplayTagSystem.OnTriggeredTag -= TryTriggerTagEvent;
+                    gameplayTagSystem.OnTriggeredTag -= GameplayTagSystem_OnTriggeredTag;
                     break;
                 default:
                     break;
             }
+        }
+
+        private void GameplayTagSystem_OnTriggeredTag(IGameplayTagSystem gameplayTagSystem, GameplayTag gameplayTag, object data = null)
+        {
+            TryTriggerTagEvent(gameplayTagSystem, gameplayTag);
         }
 
         public void SetTarget(GameObject target)
@@ -145,7 +154,7 @@ namespace StudioScor.GameplayTagSystem
 
             if(gameplayTagSystem is null)
             {
-                Log("IGameplayTag System Events Is NULL!!!", true);
+                LogError("IGameplayTag System Events Is NULL!!!");
                 
                 return;
             }

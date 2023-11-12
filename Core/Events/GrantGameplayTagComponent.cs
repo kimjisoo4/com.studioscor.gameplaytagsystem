@@ -115,7 +115,7 @@ namespace StudioScor.GameplayTagSystem
 
             if (gameplayTagSystem is null)
             {
-                Log("GamepalyTag System Is Null", true);
+                LogError("GamepalyTag System Is Null");
 
                 return;
             }
@@ -135,7 +135,7 @@ namespace StudioScor.GameplayTagSystem
 
             if (gameplayTagSystem is null)
             {
-                Log("GamepalyTag System Is Null", true);
+                LogError("GamepalyTag System Is Null");
 
                 return;
             }

@@ -19,17 +19,17 @@ namespace StudioScor.GameplayTagSystem
         public IReadOnlyDictionary<GameplayTag, int> BlockTags => blockTags;
 
 
-        public event GameplayTagEventHandler OnGrantedOwnedTag;
-        public event GameplayTagEventHandler OnRemovedOwnedTag;
-        public event GameplayTagEventHandler OnAddedOwnedTag;
-        public event GameplayTagEventHandler OnSubtractedOwnedTag;
-
-        public event GameplayTagEventHandler OnGrantedBlockTag;
-        public event GameplayTagEventHandler OnRemovedBlockTag;
-        public event GameplayTagEventHandler OnAddedBlockTag;
-        public event GameplayTagEventHandler OnSubtractedBlockTag;
-
-        public event GameplayTagEventHandler OnTriggeredTag;
+        public event IGameplayTagSystem.GameplayTagEventHandler OnGrantedOwnedTag;
+        public event IGameplayTagSystem.GameplayTagEventHandler OnRemovedOwnedTag;
+        public event IGameplayTagSystem.GameplayTagEventHandler OnAddedOwnedTag;
+        public event IGameplayTagSystem.GameplayTagEventHandler OnSubtractedOwnedTag;
+        
+        public event IGameplayTagSystem.GameplayTagEventHandler OnGrantedBlockTag;
+        public event IGameplayTagSystem.GameplayTagEventHandler OnRemovedBlockTag;
+        public event IGameplayTagSystem.GameplayTagEventHandler OnAddedBlockTag;
+        public event IGameplayTagSystem.GameplayTagEventHandler OnSubtractedBlockTag;
+        
+        public event IGameplayTagSystem.GameplayTagTriggerEventHandler OnTriggeredTag;
 
         private void Awake()
         {
@@ -76,12 +76,12 @@ namespace StudioScor.GameplayTagSystem
         }
 
         #region Trigger Tag
-        public void TriggerTag(GameplayTag triggerTag)
+        public void TriggerTag(GameplayTag triggerTag, object data = null)
         {
             if (!triggerTag)
                 return;
 
-            Callback_OnTriggerTag(triggerTag);
+            Callback_OnTriggerTag(triggerTag, data);
         }
         public void TriggerTags(IEnumerable<GameplayTag> triggerTags)
         {
@@ -229,11 +229,11 @@ namespace StudioScor.GameplayTagSystem
         #endregion
 
         #region CallBack
-        protected virtual void Callback_OnTriggerTag(GameplayTag  triggerTag)
+        protected virtual void Callback_OnTriggerTag(GameplayTag  triggerTag, object data = null)
         {
             Log("On Trigger Tag - " + triggerTag);
 
-            OnTriggeredTag?.Invoke(this, triggerTag);
+            OnTriggeredTag?.Invoke(this, triggerTag, data);
         }
         protected virtual void Callback_OnAddedOwnedTag(GameplayTag addOwnedTag)
         {

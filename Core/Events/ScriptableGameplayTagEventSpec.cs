@@ -50,12 +50,13 @@ namespace StudioScor.GameplayTagSystem
                     this.gameplayTagSystemComponent.OnRemovedBlockTag += GameplayTagSystem_OnToggleTag;
                     break;
                 case EGameplayTagEventType.Trigger:
-                    this.gameplayTagSystemComponent.OnTriggeredTag += GameplayTagSystem_OnTriggerTag;
+                    this.gameplayTagSystemComponent.OnTriggeredTag += GameplayTagSystemComponent_OnTriggeredTag;
                     break;
                 default:
                     break;
             }
         }
+
 
         public void Remove()
         {
@@ -82,7 +83,7 @@ namespace StudioScor.GameplayTagSystem
                     gameplayTagSystemComponent.OnRemovedBlockTag -= GameplayTagSystem_OnToggleTag;
                     break;
                 case EGameplayTagEventType.Trigger:
-                    gameplayTagSystemComponent.OnTriggeredTag -= GameplayTagSystem_OnTriggerTag;
+                    gameplayTagSystemComponent.OnTriggeredTag -= GameplayTagSystemComponent_OnTriggeredTag;
                     break;
                 default:
                     break;
@@ -117,6 +118,12 @@ namespace StudioScor.GameplayTagSystem
                     OnReleaseTagEvent?.Invoke(this);
                 }
             } 
+        }
+
+
+        private void GameplayTagSystemComponent_OnTriggeredTag(IGameplayTagSystem gameplayTagSystem, GameplayTag gameplayTag, object data = null)
+        {
+            GameplayTagSystem_OnTriggerTag(gameplayTagSystem, gameplayTag);
         }
 
         private void GameplayTagSystem_OnTriggerTag(IGameplayTagSystem gameplayTagSystemEvent, GameplayTag changedTag)

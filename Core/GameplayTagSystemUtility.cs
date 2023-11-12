@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace StudioScor.GameplayTagSystem
 {
-    public delegate void GameplayTagEventHandler(IGameplayTagSystem gameplayTagSystem, GameplayTag gameplayTag);
+    
 
     public static class GameplayTagSystemUtility
     {
@@ -40,15 +40,62 @@ namespace StudioScor.GameplayTagSystem
         #endregion
 
         #region Grant, Remove Tags
+        public static void TriggerTags(this IGameplayTagSystem gameplayTagSystem, IEnumerable<GameplayTag> triggerTags)
+        {
+            foreach (var triggerTag in triggerTags)
+            {
+                gameplayTagSystem.TriggerTag(triggerTag);
+            }
+        }
+        public static void AddOwnedTags(this IGameplayTagSystem gameplayTagSystem, IEnumerable<GameplayTag> addOwnedTags)
+        {
+            foreach (var ownedTag in addOwnedTags)
+            {
+                gameplayTagSystem.AddOwnedTag(ownedTag);
+            }
+        }
+        public static void RemoveOwnedTags(this IGameplayTagSystem gameplayTagSystem, IEnumerable<GameplayTag> removeOwnedTags)
+        {
+            foreach (var ownedTag in removeOwnedTags)
+            {
+                gameplayTagSystem.RemoveOwnedTag(ownedTag);
+            }
+        }
+        public static void AddBlockTags(this IGameplayTagSystem gameplayTagSystem, IEnumerable<GameplayTag> addBlockTags)
+        {
+            foreach (var blockTag in addBlockTags)
+            {
+                gameplayTagSystem.AddBlockTag(blockTag);
+            }
+        }
+        public static void RemoveBlockTags(this IGameplayTagSystem gameplayTagSystem, IEnumerable<GameplayTag> removeBlockTags)
+        {
+            foreach (var blockTag in removeBlockTags)
+            {
+                gameplayTagSystem.RemoveBlockTag(blockTag);
+            }
+        }
         public static void GrantGameplayTags(this IGameplayTagSystem gameplayTagSystem, FGameplayTags gameplayTags)
         {
-            gameplayTagSystem.AddOwnedTags(gameplayTags.Owneds);
-            gameplayTagSystem.AddBlockTags(gameplayTags.Blocks);
+            foreach (var ownedTag in gameplayTags.Owneds)
+            {
+                gameplayTagSystem.AddOwnedTag(ownedTag);
+            }
+            foreach (var blockTag in gameplayTags.Blocks)
+            {
+                gameplayTagSystem.AddBlockTag(blockTag);
+            }
         }
         public static void RemoveGameplayTags(this IGameplayTagSystem gameplayTagSystem, FGameplayTags gameplayTags)
         {
-            gameplayTagSystem.RemoveOwnedTags(gameplayTags.Owneds);
-            gameplayTagSystem.RemoveBlockTags(gameplayTags.Blocks);
+            foreach (var ownedTag in gameplayTags.Owneds)
+            {
+                gameplayTagSystem.RemoveOwnedTag(ownedTag);
+            }
+            foreach (var blockTag in gameplayTags.Blocks)
+            {
+                gameplayTagSystem.RemoveBlockTag(blockTag);
+            }
         }
         #endregion
 

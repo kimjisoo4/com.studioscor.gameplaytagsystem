@@ -28,7 +28,6 @@ namespace StudioScor.GameplayTagSystem
         private void OnEnable()
         {
             conditionObserver.SetOwner(target);
-
             conditionObserver.OnObserver();
         }
         private void OnDisable()
@@ -38,7 +37,7 @@ namespace StudioScor.GameplayTagSystem
 
         private void ConditionObserver_OnChangedState(GameplayTagObserver gameplayTagConditionObserver, bool isOn)
         {
-            Log("Condition Changed", false, isOn ? SUtility.NAME_COLOR_GREEN : SUtility.NAME_COLOR_GRAY);
+            Log("Condition Changed", isOn ? SUtility.NAME_COLOR_GREEN : SUtility.NAME_COLOR_GRAY);
 
             if (isOn)
                 onActivated?.Invoke();
