@@ -10,7 +10,7 @@ namespace StudioScor.GameplayTagSystem
     {
 #if UNITY_EDITOR
         public string DecsriptionName = "GameplayTag Event";
-        protected override Object Context => gameplayTagSystem.gameObject;
+        public override Object Context => gameplayTagSystem.gameObject;
 #endif
 
         [Header(" [ GameplayTag Event ] ")]
