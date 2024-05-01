@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace StudioScor.GameplayTagSystem
 {
@@ -42,6 +43,9 @@ namespace StudioScor.GameplayTagSystem
         #region Grant, Remove Tags
         public static void TriggerTags(this IGameplayTagSystem gameplayTagSystem, IEnumerable<GameplayTag> triggerTags)
         {
+            if (triggerTags is null || triggerTags.Count() == 0)
+                return;
+
             foreach (var triggerTag in triggerTags)
             {
                 gameplayTagSystem.TriggerTag(triggerTag);
@@ -49,6 +53,9 @@ namespace StudioScor.GameplayTagSystem
         }
         public static void AddOwnedTags(this IGameplayTagSystem gameplayTagSystem, IEnumerable<GameplayTag> addOwnedTags)
         {
+            if (addOwnedTags is null || addOwnedTags.Count() == 0)
+                return;
+
             foreach (var ownedTag in addOwnedTags)
             {
                 gameplayTagSystem.AddOwnedTag(ownedTag);
@@ -56,6 +63,9 @@ namespace StudioScor.GameplayTagSystem
         }
         public static void RemoveOwnedTags(this IGameplayTagSystem gameplayTagSystem, IEnumerable<GameplayTag> removeOwnedTags)
         {
+            if (removeOwnedTags is null || removeOwnedTags.Count() == 0)
+                return;
+
             foreach (var ownedTag in removeOwnedTags)
             {
                 gameplayTagSystem.RemoveOwnedTag(ownedTag);
@@ -63,6 +73,8 @@ namespace StudioScor.GameplayTagSystem
         }
         public static void AddBlockTags(this IGameplayTagSystem gameplayTagSystem, IEnumerable<GameplayTag> addBlockTags)
         {
+            if (addBlockTags is null || addBlockTags.Count() == 0)
+                return;
             foreach (var blockTag in addBlockTags)
             {
                 gameplayTagSystem.AddBlockTag(blockTag);
@@ -70,6 +82,9 @@ namespace StudioScor.GameplayTagSystem
         }
         public static void RemoveBlockTags(this IGameplayTagSystem gameplayTagSystem, IEnumerable<GameplayTag> removeBlockTags)
         {
+            if (removeBlockTags is null || removeBlockTags.Count() == 0)
+                return;
+
             foreach (var blockTag in removeBlockTags)
             {
                 gameplayTagSystem.RemoveBlockTag(blockTag);
@@ -77,25 +92,13 @@ namespace StudioScor.GameplayTagSystem
         }
         public static void GrantGameplayTags(this IGameplayTagSystem gameplayTagSystem, FGameplayTags gameplayTags)
         {
-            foreach (var ownedTag in gameplayTags.Owneds)
-            {
-                gameplayTagSystem.AddOwnedTag(ownedTag);
-            }
-            foreach (var blockTag in gameplayTags.Blocks)
-            {
-                gameplayTagSystem.AddBlockTag(blockTag);
-            }
+            gameplayTagSystem.AddOwnedTags(gameplayTags.Owneds);
+            gameplayTagSystem.AddBlockTags(gameplayTags.Blocks);
         }
         public static void RemoveGameplayTags(this IGameplayTagSystem gameplayTagSystem, FGameplayTags gameplayTags)
         {
-            foreach (var ownedTag in gameplayTags.Owneds)
-            {
-                gameplayTagSystem.RemoveOwnedTag(ownedTag);
-            }
-            foreach (var blockTag in gameplayTags.Blocks)
-            {
-                gameplayTagSystem.RemoveBlockTag(blockTag);
-            }
+            gameplayTagSystem.RemoveOwnedTags(gameplayTags.Owneds);
+            gameplayTagSystem.RemoveBlockTags(gameplayTags.Blocks);
         }
         #endregion
 
