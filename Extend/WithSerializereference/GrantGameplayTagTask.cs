@@ -51,7 +51,7 @@ namespace StudioScor.GameplayTagSystem.Extend.TaskSystem
             RemoveGameplayTag();
         }
 
-        public void UpdateSubTask(float normalizedTime)
+        public void UpdateSubTask(float deltaTime, float normalizedTime)
         {
             if(!_wasGranted)
             {
@@ -88,7 +88,7 @@ namespace StudioScor.GameplayTagSystem.Extend.TaskSystem
             _gameplayTagSystem.RemoveGameplayTags(_original is null ? _grantTags : _original._grantTags);
         }
 
-        public void FixedUpdateSubTask(float normalizedTime)
+        public void FixedUpdateSubTask(float deltaTime, float normalizedTime)
         {
             return;
         }
