@@ -64,7 +64,7 @@ namespace StudioScor.GameplayTagSystem.Extend.TaskSystem
             {
                 if(normalizedTime >= _end)
                 {
-                    EndTask();
+                    ComplateTask();
                 }
             }
         }
