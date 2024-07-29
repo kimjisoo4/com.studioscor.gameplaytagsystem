@@ -17,9 +17,10 @@ namespace StudioScor.GameplayTagSystem
         public void TriggerTag(GameplayTag triggerTag, object data = null);
         public void AddOwnedTag(GameplayTag addTag);
         public void RemoveOwnedTag(GameplayTag removeTag);
+        public void ClearOwnedTag(GameplayTag clearTag);
         public void AddBlockTag(GameplayTag addTag);
         public void RemoveBlockTag(GameplayTag removeTag);
-
+        public void ClearBlockTag(GameplayTag clearTag);
 
         public event GameplayTagEventHandler OnGrantedOwnedTag;
         public event GameplayTagEventHandler OnRemovedOwnedTag;

@@ -10,13 +10,13 @@ namespace StudioScor.GameplayTagSystem
     public class GameplayTagSystemComponent : BaseMonoBehaviour, IGameplayTagSystem
     {
         [Header(" [ Gameplay Tag System Component ] ")]
-        [SerializeField] private FGameplayTags initializationTags;
+        [SerializeField] private FGameplayTags _initializationTags;
 
-        protected readonly Dictionary<GameplayTag, int> ownedTags = new();
-        protected readonly Dictionary<GameplayTag, int> blockTags = new();
+        protected readonly Dictionary<GameplayTag, int> _ownedTags = new();
+        protected readonly Dictionary<GameplayTag, int> _blockTags = new();
 
-        public IReadOnlyDictionary<GameplayTag, int> OwnedTags => ownedTags;
-        public IReadOnlyDictionary<GameplayTag, int> BlockTags => blockTags;
+        public IReadOnlyDictionary<GameplayTag, int> OwnedTags => _ownedTags;
+        public IReadOnlyDictionary<GameplayTag, int> BlockTags => _blockTags;
 
 
         public event IGameplayTagSystem.GameplayTagEventHandler OnGrantedOwnedTag;
@@ -45,8 +45,8 @@ namespace StudioScor.GameplayTagSystem
 
         public void ResetGameplayTagSystem()
         {
-            ownedTags.Clear();
-            blockTags.Clear();
+            _ownedTags.Clear();
+            _blockTags.Clear();
 
             AddInitializationTags();
 
@@ -58,19 +58,19 @@ namespace StudioScor.GameplayTagSystem
 
         private void AddInitializationTags()
         {
-            foreach (var ownedTag in initializationTags.Owneds)
+            foreach (var ownedTag in _initializationTags.Owneds)
             {
-                if (!ownedTags.TryAdd(ownedTag, 1))
+                if (!_ownedTags.TryAdd(ownedTag, 1))
                 {
-                    ownedTags[ownedTag] += 1;
+                    _ownedTags[ownedTag] += 1;
                 }
             }
 
-            foreach (var blockTag in initializationTags.Blocks)
+            foreach (var blockTag in _initializationTags.Blocks)
             {
-                if (!blockTags.TryAdd(blockTag, 1))
+                if (!_blockTags.TryAdd(blockTag, 1))
                 {
-                    blockTags[blockTag] += 1;
+                    _blockTags[blockTag] += 1;
                 }
             }
         }
@@ -101,18 +101,18 @@ namespace StudioScor.GameplayTagSystem
             if (addTag == null)
                 return;
 
-            if (ownedTags.ContainsKey(addTag))
+            if (_ownedTags.ContainsKey(addTag))
             {
-                ownedTags[addTag] += 1;
+                _ownedTags[addTag] += 1;
 
-                if (ownedTags[addTag] == 1)
+                if (_ownedTags[addTag] == 1)
                 {
                     Callback_OnGrantedOwnedTag(addTag);
                 }
             }
             else
             {
-                ownedTags.TryAdd(addTag, 1);
+                _ownedTags.TryAdd(addTag, 1);
 
                 Callback_OnGrantedOwnedTag(addTag);
             }
@@ -135,22 +135,23 @@ namespace StudioScor.GameplayTagSystem
             if (removeTag == null)
                 return;
 
-            if (ownedTags.ContainsKey(removeTag))
+            if (_ownedTags.ContainsKey(removeTag))
             {
-                ownedTags[removeTag] -= 1;
+                _ownedTags[removeTag] -= 1;
             }
             else
             {
-                ownedTags.Add(removeTag, -1);
+                _ownedTags.Add(removeTag, -1);
             }
 
             Callback_OnSubtractedOwnedTag(removeTag);
 
-            if (ownedTags[removeTag] == 0)
+            if (_ownedTags[removeTag] == 0)
             {
                 Callback_OnRemovedOwnedTag(removeTag);
             }
         }
+       
         public void RemoveOwnedTags(IEnumerable<GameplayTag> removeTas)
         {
             if (removeTas is null)
@@ -161,23 +162,34 @@ namespace StudioScor.GameplayTagSystem
                 RemoveOwnedTag(tag);
             }
         }
+        public void ClearOwnedTag(GameplayTag clearTag)
+        {
+            if (clearTag == null)
+                return;
+
+            if (_ownedTags.ContainsKey(clearTag))
+            {
+                _ownedTags[clearTag] = 0;
+                Callback_OnRemovedOwnedTag(clearTag);
+            }
+        }
         public void AddBlockTag(GameplayTag addTag)
         {
             if (addTag == null)
                 return;
 
-            if (blockTags.ContainsKey(addTag))
+            if (_blockTags.ContainsKey(addTag))
             {
-                blockTags[addTag] += 1;
+                _blockTags[addTag] += 1;
 
-                if (blockTags[addTag] == 1)
+                if (_blockTags[addTag] == 1)
                 {
                     Callback_OnGrantedBlockTag(addTag);
                 }
             }
             else
             {
-                blockTags.TryAdd(addTag, 1);
+                _blockTags.TryAdd(addTag, 1);
 
                 Callback_OnGrantedBlockTag(addTag);
             }
@@ -200,18 +212,18 @@ namespace StudioScor.GameplayTagSystem
             if (removeTag == null)
                 return;
 
-            if (blockTags.ContainsKey(removeTag))
+            if (_blockTags.ContainsKey(removeTag))
             {
-                blockTags[removeTag] -= 1;
+                _blockTags[removeTag] -= 1;
             }
             else
             {
-                blockTags.Add(removeTag, -1);
+                _blockTags.Add(removeTag, -1);
             }
 
             Callback_OnSubtractedBlcokTag(removeTag);
 
-            if (blockTags[removeTag] == 0)
+            if (_blockTags[removeTag] == 0)
             {
                 Callback_OnRemovedBlockTag(removeTag);
             }
@@ -224,6 +236,18 @@ namespace StudioScor.GameplayTagSystem
             foreach (GameplayTag tag in removeTags)
             {
                 RemoveBlockTag(tag);
+            }
+        }
+
+        public void ClearBlockTag(GameplayTag clearTag)
+        {
+            if (clearTag == null)
+                return;
+
+            if(BlockTags.ContainsKey(clearTag))
+            {
+                _blockTags[clearTag] = 0;
+                Callback_OnRemovedBlockTag(clearTag);
             }
         }
         #endregion
