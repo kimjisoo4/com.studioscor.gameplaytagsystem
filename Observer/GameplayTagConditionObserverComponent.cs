@@ -37,7 +37,7 @@ namespace StudioScor.GameplayTagSystem
 
         private void ConditionObserver_OnChangedState(GameplayTagObserver gameplayTagConditionObserver, bool isOn)
         {
-            Log("Condition Changed", isOn ? SUtility.NAME_COLOR_GREEN : SUtility.NAME_COLOR_GRAY);
+            Log("Condition Changed", isOn ? SUtility.STRING_COLOR_GREEN : SUtility.STRING_COLOR_GREY);
 
             if (isOn)
                 onActivated?.Invoke();
