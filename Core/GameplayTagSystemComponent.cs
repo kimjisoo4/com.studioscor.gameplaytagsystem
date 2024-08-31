@@ -58,21 +58,8 @@ namespace StudioScor.GameplayTagSystem
 
         private void AddInitializationTags()
         {
-            foreach (var ownedTag in _initializationTags.Owneds)
-            {
-                if (!_ownedTags.TryAdd(ownedTag, 1))
-                {
-                    _ownedTags[ownedTag] += 1;
-                }
-            }
-
-            foreach (var blockTag in _initializationTags.Blocks)
-            {
-                if (!_blockTags.TryAdd(blockTag, 1))
-                {
-                    _blockTags[blockTag] += 1;
-                }
-            }
+            AddOwnedTags(_initializationTags.Owneds);
+            AddBlockTags(_initializationTags.Blocks);
         }
 
         #region Trigger Tag
