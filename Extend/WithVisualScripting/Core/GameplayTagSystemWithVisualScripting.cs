@@ -1,21 +1,54 @@
 ﻿#if SCOR_ENABLE_VISUALSCRIPTING
 
+using System;
+using System.Diagnostics;
+using UnityEngine.Pool;
+
 namespace StudioScor.GameplayTagSystem
 {
     public class TriggerTagData
     {
-        public TriggerTagData(GameplayTag gameplayTag, object data = null)
+        private static ObjectPool<TriggerTagData> _pool;
+        private GameplayTag _triggerTag;
+        private object _data;
+        public TriggerTagData()
+        { }
+
+        public GameplayTag TriggerTag => _triggerTag;
+        public object Data => _data;
+
+        public static TriggerTagData Get(GameplayTag gameplayTag, object data)
         {
-            this.triggerTag = gameplayTag;
-            this.data = data;
+            if(_pool is null)
+            {
+                _pool = new ObjectPool<TriggerTagData>(Create);
+            }
+
+            var poolData = _pool.Get();
+
+            poolData._triggerTag = gameplayTag;
+            poolData._data = data;
+
+            return poolData;
         }
 
-        private readonly GameplayTag triggerTag;
-        private readonly object data;
+        private static TriggerTagData Create()
+        {
+#if UNITY_EDITOR
+            if(_pool.CountActive > 50)
+            {
+                UnityEngine.Debug.Log($"[{nameof(TriggerTagData)}] TriggerTagData is need released");
+            }
+#endif
+            return new TriggerTagData();
+        }
 
-        public GameplayTag TriggerTag => triggerTag;
-        public object Data => data;
+        public void Release()
+        {
+            _pool.Release(this);
+        }
     }
+
     public static class GameplayTagSystemWithVisualScripting
     {
         public const string TRIGGER_TAG = "TriggerTag";

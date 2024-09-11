@@ -1,12 +1,13 @@
 ﻿#if SCOR_ENABLE_VISUALSCRIPTING
-using System;
-using System.Collections.Generic;
-
-using Unity.VisualScripting;
 using StudioScor.Utilities.VisualScripting;
+using System;
+using Unity.VisualScripting;
 
 namespace StudioScor.GameplayTagSystem.VisualScripting
 {
+
+
+
     public abstract class GameplayTagSystemEventUnit : CustomInterfaceEventUnit<IGameplayTagSystem, GameplayTag>
     {
         [DoNotSerialize]

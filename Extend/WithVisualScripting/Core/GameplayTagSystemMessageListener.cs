@@ -89,11 +89,11 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
 
         private void GameplayTagSystem_OnTriggeredTag(IGameplayTagSystem gameplayTagSystemEvent, GameplayTag gameplayTag, object data = null)
         {
-            var eventData = new TriggerTagData(gameplayTag, data);
+            var eventData = TriggerTagData.Get(gameplayTag, data);
 
             EventBus.Trigger(new EventHook(GameplayTagSystemWithVisualScripting.TRIGGER_TAG, gameplayTagSystemEvent), eventData);
 
-            eventData = null;
+            eventData.Release();
         }
     }
 }
