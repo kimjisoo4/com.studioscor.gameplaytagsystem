@@ -13,17 +13,21 @@ namespace StudioScor.GameplayTagSystem
         [SerializeField] private GameObject target;
 
         [Header(" Unity Events ")]
+        [SerializeField] private bool _useEventInStart = true;
         [SerializeField] private UnityEvent onActivated;
         [SerializeField] private UnityEvent onDeactivated;
 
         private void Awake()
         {
-            conditionObserver.OnChangedState += ConditionObserver_OnChangedState;
+            conditionObserver.OnActivated += ConditionObserver_OnChangedState;
+            conditionObserver.OnDeactivate += ConditionObserver_OnDeactivate;
         }
         private void OnDestroy()
         {
-            conditionObserver.OnChangedState -= ConditionObserver_OnChangedState;
+            conditionObserver.OnActivated -= ConditionObserver_OnChangedState;
+            conditionObserver.OnDeactivate -= ConditionObserver_OnDeactivate;
         }
+
 
         private void OnEnable()
         {
@@ -35,14 +39,23 @@ namespace StudioScor.GameplayTagSystem
             conditionObserver.EndObserver();
         }
 
-        private void ConditionObserver_OnChangedState(GameplayTagObserver gameplayTagConditionObserver, bool isOn)
+        private void ConditionObserver_OnChangedState(GameplayTagObserver gameplayTagConditionObserver, bool inStart)
         {
-            Log("Condition Changed", isOn ? SUtility.STRING_COLOR_GREEN : SUtility.STRING_COLOR_GREY);
+            if (_useEventInStart != inStart)
+                return;
 
-            if (isOn)
-                onActivated?.Invoke();
-            else
-                onDeactivated?.Invoke();
+            Log($"{nameof(onActivated)}");
+
+            onActivated?.Invoke();
+        }
+        private void ConditionObserver_OnDeactivate(GameplayTagObserver gameplayTagConditionObserver, bool inStart)
+        {
+            if (_useEventInStart != inStart)
+                return;
+
+            Log($"{nameof(onDeactivated)}");
+
+            onDeactivated?.Invoke();
         }
     }
 }

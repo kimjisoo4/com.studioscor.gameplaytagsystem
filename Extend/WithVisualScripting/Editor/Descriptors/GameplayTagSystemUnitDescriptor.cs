@@ -2,7 +2,7 @@
 #if SCOR_ENABLE_VISUALSCRIPTING
 using Unity.VisualScripting;
 
-namespace StudioScor.GameplayTagSystem.VisualScripting.Editor
+namespace StudioScor.GameplayTagSystem.Extend.VisualScripting.Editor
 {
     [Descriptor(typeof(GameplayTagSystemUnit))]
     public sealed class GameplayTagSystemUnitDescriptor : UnitDescriptor<GameplayTagSystemUnit>

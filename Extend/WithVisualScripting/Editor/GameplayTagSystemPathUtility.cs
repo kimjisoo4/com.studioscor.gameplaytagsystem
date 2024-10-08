@@ -8,7 +8,7 @@ using Unity.VisualScripting;
 using StudioScor.GameplayTagSystem.Editor;
 
 
-namespace StudioScor.GameplayTagSystem.VisualScripting.Editor
+namespace StudioScor.GameplayTagSystem.Extend.VisualScripting.Editor
 {
     public static class GameplayTagSystemPathUtilityWithVisualScripting
     {

@@ -1,25 +1,17 @@
-﻿using System;
+using System;
+using UnityEngine;
 
 namespace StudioScor.GameplayTagSystem
 {
-#if SCOR_ENABLE_VISUALSCRIPTING
-    [Unity.VisualScripting.IncludeInSettings(true)]
-#endif
-    public class GameplayTag : IGameplayTag
+    [CreateAssetMenu(fileName = "New GameplayTag", menuName = "StudioScor/GameplayTagSystem/New GameplayTag")]
+    public class GameplayTagSO : ScriptableObject, IGameplayTag
     {
-        public string name { get; private set; }
-
-        public GameplayTag(string name)
-        {
-            this.name = name;
-        }
-
         public override bool Equals(object other)
         {
             if (ReferenceEquals(this, other))
                 return true;
 
-            if (other is IGameplayTag gameplayTag)
+            if(other is IGameplayTag gameplayTag)
             {
                 return string.Equals(name, gameplayTag.name, StringComparison.OrdinalIgnoreCase);
             }
@@ -32,7 +24,7 @@ namespace StudioScor.GameplayTagSystem
             return name?.GetHashCode() ?? 0;
         }
 
-        public static bool operator ==(GameplayTag lhs, IGameplayTag rhs)
+        public static bool operator ==(GameplayTagSO lhs, IGameplayTag rhs)
         {
             if (ReferenceEquals(lhs, rhs))
                 return true;
@@ -45,7 +37,7 @@ namespace StudioScor.GameplayTagSystem
 
             return false;
         }
-        public static bool operator !=(GameplayTag lhs, IGameplayTag rhs)
+        public static bool operator !=(GameplayTagSO lhs, IGameplayTag rhs)
         {
             return !(lhs == rhs);
         }

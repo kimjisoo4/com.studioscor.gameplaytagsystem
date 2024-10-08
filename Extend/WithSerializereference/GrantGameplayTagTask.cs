@@ -76,7 +76,7 @@ namespace StudioScor.GameplayTagSystem.Extend.TaskSystem
 
             _wasGranted = true;
 
-            _gameplayTagSystem.GrantGameplayTags(_original is null ? _grantTags : _original._grantTags);
+            _gameplayTagSystem.AddGameplayTags(_original is null ? _grantTags : _original._grantTags);
         }
         private void RemoveGameplayTag()
         {

@@ -1,6 +1,6 @@
 {
-    "name": "StudioScor.GameplayTagSystem.VisualScripting.Editor",
-    "rootNamespace": "StudioScor.GameplayTagSystem.VisualScripting.Editor",
+    "name": "StudioScor.GameplayTagSystem.Extend.VisualScripting.Editor",
+    "rootNamespace": "StudioScor.GameplayTagSystem.Extend.VisualScripting.Editor",
     "references": [
         "GUID:2a2d341d7e231f74d8c9f2adfaaa67f6",
         "GUID:77d9d854f019f8b468cae45e1cbf8a08",

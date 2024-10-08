@@ -4,13 +4,13 @@ using System.Linq;
 using Unity.VisualScripting;
 using StudioScor.Utilities.VisualScripting;
 
-namespace StudioScor.GameplayTagSystem.VisualScripting
+namespace StudioScor.GameplayTagSystem.Extend.VisualScripting
 {
     [UnitTitle("Task Wait Trigger GameplayTag")]
     [UnitShortTitle("TaskWaitTriggerTag")]
     [UnitSubtitle("GameplayTagSystem Task")]
-    [UnitCategory("StudioScor\\Task")]
-    public class WaitTriggerGameplayTagUnit : WaitTriggerEventUnit<IGameplayTagSystem, GameplayTag>
+    [UnitCategory("StudioScor\\Task\\GameplayTagSystem")]
+    public class TaskWaitTriggerGameplayTagUnit : WaitTriggerEventUnit<IGameplayTagSystem, GameplayTagSO>
     {
         [DoNotSerialize]
         [PortLabel("GameplayTag")]
@@ -28,10 +28,10 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
         public override string HookName => GameplayTagSystemWithVisualScripting.TRIGGER_TAG;
         public override Type MessageListenerType => typeof(GameplayTagSystemMessageListener);
 
-        public new class Data : WaitTriggerEventUnit<IGameplayTagSystem, GameplayTag>.Data
+        public new class Data : WaitTriggerEventUnit<IGameplayTagSystem, GameplayTagSO>.Data
         {
-            public GameplayTag GameplayTag;
-            public GameplayTag[] GameplayTags;
+            public GameplayTagSO GameplayTag;
+            public GameplayTagSO[] GameplayTags;
         }
         public override IGraphElementData CreateData()
         {
@@ -46,11 +46,11 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
 
             if (useList)
             {
-                GameplayTag = ValueInput<GameplayTag[]>(nameof(GameplayTag), null);
+                GameplayTag = ValueInput<GameplayTagSO[]>(nameof(GameplayTag), null);
             }
             else
             {
-                GameplayTag = ValueInput<GameplayTag>(nameof(GameplayTag), null);
+                GameplayTag = ValueInput<GameplayTagSO>(nameof(GameplayTag), null);
             }
             
         }
@@ -61,16 +61,16 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
 
             if (useList)
             {
-                data.GameplayTags = flow.GetValue<GameplayTag[]>(GameplayTag);
+                data.GameplayTags = flow.GetValue<GameplayTagSO[]>(GameplayTag);
             }
             else
             {
-                data.GameplayTag = flow.GetValue<GameplayTag>(GameplayTag);
+                data.GameplayTag = flow.GetValue<GameplayTagSO>(GameplayTag);
             }
 
             
         }
-        protected override bool ShouldTrigger(Flow flow, GameplayTag gameplayTag)
+        protected override bool ShouldTrigger(Flow flow, GameplayTagSO gameplayTag)
         {
             var data = flow.stack.GetElementData<Data>(this);
 

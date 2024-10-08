@@ -1,71 +1,79 @@
-﻿using UnityEngine;
-
-using StudioScor.Utilities;
+﻿using StudioScor.Utilities;
+using UnityEngine;
 
 namespace StudioScor.GameplayTagSystem
 {
-    public delegate void ObserverToggleHandler(GameplayTagObserver gameplayTagConditionObserver, bool isOn);
-    public class GameplayTagObserver : BaseClass
+    public abstract class GameplayTagObserver : BaseClass
     {
-        [field: Header(" [ GameplayTag Observer ] ")]
-        [field: SerializeField] public GameObject Owner { get; private set; }
+        public delegate void ObserverStateEventHandler(GameplayTagObserver gameplayTagConditionObserver, bool isOn);
+        public delegate void ObserverEventHandler(GameplayTagObserver gameplayTagConditionObserver);
 
-        [field: SerializeField][field: SReadOnly] public bool IsOn { get; private set; } = false;
-        [field: SerializeField][field: SReadOnly] public bool IsPlaying { get; private set; } = false;
+        [Header(" [ GameplayTag Observer ] ")]
+        [SerializeField] private GameObject _owner;
+        private bool _isToggleOn;
+        private bool _isPlaying;
 
-        public IGameplayTagSystem GameplayTagSystem { get; private set; }
-        public event ObserverToggleHandler OnChangedState;
+        private IGameplayTagSystem _gameplayTagSystem;
 
-        public GameplayTagObserver()
-        {
+        public GameObject Owner => _owner;
+        public bool IsPlaying => _isPlaying;
+        public bool IsToggleOn => _isToggleOn;
+        public IGameplayTagSystem GameplayTagSystem => _gameplayTagSystem;
 
-        }
+        public event ObserverEventHandler OnStartedObserving;
+        public event ObserverEventHandler OnEndedObserving;
+        public event ObserverStateEventHandler OnDeactivate;
+        public event ObserverStateEventHandler OnActivated;
+
         public GameplayTagObserver(GameObject owner)
         {
-            GameplayTagSystem = owner.GetGameplayTagSystem();
-            Owner = GameplayTagSystem.gameObject;
+            _owner = owner;
+            _gameplayTagSystem = owner.GetGameplayTagSystem();
         }
         public GameplayTagObserver(IGameplayTagSystem gameplayTagSystem)
         {
-            GameplayTagSystem = gameplayTagSystem;
-            Owner = GameplayTagSystem.gameObject;
+            _gameplayTagSystem = gameplayTagSystem;
+            _owner = _gameplayTagSystem.gameObject;
         }
-
         public void SetOwner(GameObject owner)
         {
-            GameplayTagSystem = owner.GetGameplayTagSystem();
-            Owner = GameplayTagSystem.gameObject;
+            _owner = owner;
+            _gameplayTagSystem = owner.GetGameplayTagSystem();
         }
-        public void SetOwner(IGameplayTagSystem targetGameplayTagSystem)
+        public void SetOwner(IGameplayTagSystem gameplayTagSystem)
         {
-            GameplayTagSystem = targetGameplayTagSystem;
-            Owner = GameplayTagSystem.gameObject;
+            _gameplayTagSystem = gameplayTagSystem;
+            _owner = _gameplayTagSystem.gameObject;
         }
+
         public void OnObserver()
         {
-            if (IsPlaying)
+            if (_isPlaying)
                 return;
 
-            IsPlaying = true;
-            IsOn = false;
-
-            ChangedToggleState(CanActivate());
+            _isPlaying = true;
 
             EnterObserver();
+
+            Invoke_OnStartedObserving();
+
+            ChangedToggleState(CanActivate(), true);
         }
 
         public void EndObserver()
         {
-            if (!IsPlaying)
+            if (!_isPlaying)
                 return;
 
-            IsPlaying = false;
-
-            if (GameplayTagSystem is null)
-                return;
+            _isPlaying = false;
 
             ExitObserver();
+
+            Invoke_OnEndedObserving();
+
+            ChangedToggleState(CanActivate());
         }
+
 
         protected virtual void EnterObserver()
         {
@@ -79,22 +87,48 @@ namespace StudioScor.GameplayTagSystem
 
         protected virtual bool CanActivate()
         {
-            return true;
+            return _gameplayTagSystem is not null;
         }
 
-        protected void ChangedToggleState(bool newState)
+        protected abstract void Activate(bool inStart);
+        protected abstract void Deactivate(bool inStart);
+
+        protected void ChangedToggleState(bool newState, bool inStart = false)
         {
-            if (IsOn == newState)
+            if (_isToggleOn == newState && !inStart)
                 return;
 
-            IsOn = newState;
+            _isToggleOn = newState;
 
-            Callback_OnActivated();
+            if (_isToggleOn)
+            {
+                Activate(inStart);
+                Invoke_OnActivated(inStart);
+
+            }
+            else
+            {
+                Deactivate(inStart);
+                Invoke_OnDeactivate(inStart);
+            }
         }
 
-        protected virtual void Callback_OnActivated()
+
+        private void Invoke_OnStartedObserving()
         {
-            OnChangedState?.Invoke(this, IsOn);
+            OnStartedObserving?.Invoke(this);
+        }
+        private void Invoke_OnEndedObserving()
+        {
+            OnEndedObserving?.Invoke(this);
+        }
+        private void Invoke_OnActivated(bool inStart)
+        {
+            OnActivated?.Invoke(this, inStart);
+        }
+        private void Invoke_OnDeactivate(bool inStart)
+        {
+            OnDeactivate?.Invoke(this, inStart);
         }
     }
 }

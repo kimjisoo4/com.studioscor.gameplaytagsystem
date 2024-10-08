@@ -1,7 +1,7 @@
 ﻿#if SCOR_ENABLE_VISUALSCRIPTING
 using Unity.VisualScripting;
 
-namespace StudioScor.GameplayTagSystem.VisualScripting
+namespace StudioScor.GameplayTagSystem.Extend.VisualScripting
 {
     [UnitTitle("On Subtracted BlockTag")]
     [UnitSubtitle("Event")]

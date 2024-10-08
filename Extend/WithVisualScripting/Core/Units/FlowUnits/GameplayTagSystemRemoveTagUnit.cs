@@ -1,7 +1,7 @@
 ﻿#if SCOR_ENABLE_VISUALSCRIPTING
 using Unity.VisualScripting;
 
-namespace StudioScor.GameplayTagSystem.VisualScripting
+namespace StudioScor.GameplayTagSystem.Extend.VisualScripting
 {
     [UnitTitle("Remove GameplayTag")]
     [UnitSubtitle("GameplayTagSystem Unit")]
@@ -35,9 +35,9 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
             _UseList = StructureType.Equals(EStructureType.List);
 
             if (_UseList)
-                GameplayTag = ValueInput<GameplayTag[]>(nameof(GameplayTag), null);
+                GameplayTag = ValueInput<GameplayTagSO[]>(nameof(GameplayTag), null);
             else
-                GameplayTag = ValueInput<GameplayTag>(nameof(GameplayTag), null);
+                GameplayTag = ValueInput<GameplayTagSO>(nameof(GameplayTag), null);
 
             Requirement(GameplayTag, Enter);
         }
@@ -48,7 +48,7 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
 
             if (_UseList)
             {
-                var removeTags = flow.GetValue<GameplayTag[]>(GameplayTag);
+                var removeTags = flow.GetValue<GameplayTagSO[]>(GameplayTag);
 
                 switch (ContainerType)
                 {
@@ -64,7 +64,7 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
             }
             else
             {
-                var removeTag = flow.GetValue<GameplayTag>(GameplayTag);
+                var removeTag = flow.GetValue<GameplayTagSO>(GameplayTag);
 
                 switch (ContainerType)
                 {

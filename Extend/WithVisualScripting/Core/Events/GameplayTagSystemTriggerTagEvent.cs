@@ -3,7 +3,7 @@ using StudioScor.Utilities.VisualScripting;
 using System;
 using Unity.VisualScripting;
 
-namespace StudioScor.GameplayTagSystem.VisualScripting
+namespace StudioScor.GameplayTagSystem.Extend.VisualScripting
 {
 
     [UnitTitle("On Trigger GameplayTag")]
@@ -44,7 +44,7 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
 
             if(!_UseTarget)
             {
-                GameplayTag = ValueOutput<GameplayTag>(nameof(GameplayTag));
+                GameplayTag = ValueOutput<GameplayTagSO>(nameof(GameplayTag));
             }
             
             EventData = ValueOutput<object>(nameof(Data));
@@ -52,7 +52,7 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
 
             if (_UseTarget)
             {
-                TargetTag = ValueInput<GameplayTag>(nameof(TargetTag), null);
+                TargetTag = ValueInput<GameplayTagSO>(nameof(TargetTag), null);
             }
         }
 
@@ -68,7 +68,7 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
 
         protected override bool ShouldTrigger(Flow flow, TriggerTagData triggerTagData)
         {
-            return !_UseTarget || flow.GetValue<GameplayTag>(TargetTag) == triggerTagData.TriggerTag;
+            return !_UseTarget || flow.GetValue<GameplayTagSO>(TargetTag) == triggerTagData.TriggerTag;
         }
     }
 }

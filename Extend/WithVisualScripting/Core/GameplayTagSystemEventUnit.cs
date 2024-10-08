@@ -3,12 +3,9 @@ using StudioScor.Utilities.VisualScripting;
 using System;
 using Unity.VisualScripting;
 
-namespace StudioScor.GameplayTagSystem.VisualScripting
+namespace StudioScor.GameplayTagSystem.Extend.VisualScripting
 {
-
-
-
-    public abstract class GameplayTagSystemEventUnit : CustomInterfaceEventUnit<IGameplayTagSystem, GameplayTag>
+    public abstract class GameplayTagSystemEventUnit : CustomInterfaceEventUnit<IGameplayTagSystem, IGameplayTag>
     {
         [DoNotSerialize]
         [PortLabel("GameplayTag")]
@@ -34,22 +31,22 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
         {
             base.Definition();
 
-            GameplayTag = ValueOutput<GameplayTag>(nameof(GameplayTag));
+            GameplayTag = ValueOutput<GameplayTagSO>(nameof(GameplayTag));
 
             _UseTarget = TriggerType == ETriggerType.TargetTag;
 
             if (_UseTarget)
-                TargetTag = ValueInput<GameplayTag>(nameof(TargetTag), null);
+                TargetTag = ValueInput<GameplayTagSO>(nameof(TargetTag), null);
         }
 
-        protected override void AssignArguments(Flow flow, GameplayTag gameplayTag)
+        protected override void AssignArguments(Flow flow, IGameplayTag gameplayTag)
         {
             flow.SetValue(GameplayTag, gameplayTag);
         }
 
-        protected override bool ShouldTrigger(Flow flow, GameplayTag gameplayTag)
+        protected override bool ShouldTrigger(Flow flow, IGameplayTag gameplayTag)
         {
-            return !_UseTarget || flow.GetValue<GameplayTag>(TargetTag) == gameplayTag;
+            return !_UseTarget || flow.GetValue<GameplayTagSO>(TargetTag) == gameplayTag;
         }
     }
 }

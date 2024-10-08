@@ -9,10 +9,6 @@ namespace StudioScor.GameplayTagSystem
         [Header(" [ Gameplay Tag Containe Observer ] ")]
         [SerializeField] private FGameplayTags containeTags;
 
-        public GamepalyTagContaineObserver()
-        {
-
-        }
         public GamepalyTagContaineObserver(GameObject owner, FGameplayTags containTags) : base(owner)
         {
             this.containeTags = containTags;
@@ -62,9 +58,9 @@ namespace StudioScor.GameplayTagSystem
             }
         }
 
-        private void GameplayTagSystem_OnGrantedOwnedTag(IGameplayTagSystem gameplayTagSystem, GameplayTag gameplayTag)
+        private void GameplayTagSystem_OnGrantedOwnedTag(IGameplayTagSystem gameplayTagSystem, IGameplayTag gameplayTag)
         {
-            if(!IsOn)
+            if(!IsToggleOn)
             {
                 if(containeTags.Owneds.Contains(gameplayTag))
                 {
@@ -74,9 +70,9 @@ namespace StudioScor.GameplayTagSystem
         }
 
 
-        private void GameplayTagSystem_OnRemovedOwnedTag(IGameplayTagSystem gameplayTagSystem, GameplayTag gameplayTag)
+        private void GameplayTagSystem_OnRemovedOwnedTag(IGameplayTagSystem gameplayTagSystem, IGameplayTag gameplayTag)
         {
-            if(IsOn)
+            if(IsToggleOn)
             {
                 if (containeTags.Owneds.Contains(gameplayTag))
                     ChangedToggleState(false);
@@ -84,9 +80,9 @@ namespace StudioScor.GameplayTagSystem
         }
 
 
-        private void GameplayTagSystem_OnGrantedBlockTag(IGameplayTagSystem gameplayTagSystem, GameplayTag gameplayTag)
+        private void GameplayTagSystem_OnGrantedBlockTag(IGameplayTagSystem gameplayTagSystem, IGameplayTag gameplayTag)
         {
-            if (!IsOn)
+            if (!IsToggleOn)
             {
                 if (containeTags.Blocks.Contains(gameplayTag))
                 {
@@ -94,15 +90,14 @@ namespace StudioScor.GameplayTagSystem
                 }
             }
         }
-        private void GameplayTagSystem_OnRemovedBlockTag(IGameplayTagSystem gameplayTagSystem, GameplayTag gameplayTag)
+        private void GameplayTagSystem_OnRemovedBlockTag(IGameplayTagSystem gameplayTagSystem, IGameplayTag gameplayTag)
         {
-            if (IsOn)
+            if (IsToggleOn)
             {
                 if (containeTags.Blocks.Contains(gameplayTag))
                     ChangedToggleState(false);
             }
         }
-
 
         protected override bool CanActivate()
         {
@@ -119,5 +114,12 @@ namespace StudioScor.GameplayTagSystem
             return false;
         }
 
+        protected override void Activate(bool inStart)
+        {
+        }
+
+        protected override void Deactivate(bool inStart)
+        {
+        }
     }
 }

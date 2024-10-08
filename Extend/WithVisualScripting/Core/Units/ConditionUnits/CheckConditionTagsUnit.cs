@@ -1,7 +1,7 @@
 ﻿#if SCOR_ENABLE_VISUALSCRIPTING
 using Unity.VisualScripting;
 
-namespace StudioScor.GameplayTagSystem.VisualScripting
+namespace StudioScor.GameplayTagSystem.Extend.VisualScripting
 {
     [UnitTitle("Check Condition Tags")]
     [UnitSubtitle("GameplayTagSystem Condition")]
@@ -25,8 +25,8 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
         {
             base.Definition();
 
-            ObstacledTags = ValueInput<GameplayTag[]>(nameof(ObstacledTags), default);
-            RequiredTags = ValueInput<GameplayTag[]>(nameof(RequiredTags), default);
+            ObstacledTags = ValueInput<GameplayTagSO[]>(nameof(ObstacledTags), default);
+            RequiredTags = ValueInput<GameplayTagSO[]>(nameof(RequiredTags), default);
 
             IsPositive = ValueOutput<bool>(nameof(IsPositive), CheckGameplayTags);
 
@@ -39,12 +39,12 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
         {
             var gameplayTagSystem = flow.GetValue<IGameplayTagSystem>(Target);
 
-            var obstacledTags = flow.GetValue<GameplayTag[]>(ObstacledTags);
+            var obstacledTags = flow.GetValue<GameplayTagSO[]>(ObstacledTags);
 
             if (obstacledTags.Length > 0 && gameplayTagSystem.ContainAnyTagsInOwned(obstacledTags))
                 return false;
 
-            var requiredTags = flow.GetValue<GameplayTag[]>(RequiredTags);
+            var requiredTags = flow.GetValue<GameplayTagSO[]>(RequiredTags);
 
             if (requiredTags.Length > 0 && !gameplayTagSystem.ContainAllTagsInOwned(requiredTags))
                 return false;

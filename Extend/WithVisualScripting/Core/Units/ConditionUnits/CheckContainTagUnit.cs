@@ -1,7 +1,7 @@
 ﻿#if SCOR_ENABLE_VISUALSCRIPTING
 using Unity.VisualScripting;
 
-namespace StudioScor.GameplayTagSystem.VisualScripting
+namespace StudioScor.GameplayTagSystem.Extend.VisualScripting
 {
     [UnitTitle("Check Contain Tag")]
     [UnitSubtitle("GameplayTagSystem Condition")]
@@ -35,7 +35,7 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
         {
             base.Definition();
 
-            GameplayTag = ValueInput<GameplayTag>(nameof(GameplayTag), null);
+            GameplayTag = ValueInput<GameplayTagSO>(nameof(GameplayTag), null);
 
 
             IsContaine = ValueOutput<bool>(nameof(IsContaine), CheckGameplayTags);
@@ -48,7 +48,7 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
         {
             var gameplayTagSystem = flow.GetValue<IGameplayTagSystem>(Target);
 
-            var tag = flow.GetValue<GameplayTag>(GameplayTag);
+            var tag = flow.GetValue<GameplayTagSO>(GameplayTag);
 
             if (!tag)
                 return false;

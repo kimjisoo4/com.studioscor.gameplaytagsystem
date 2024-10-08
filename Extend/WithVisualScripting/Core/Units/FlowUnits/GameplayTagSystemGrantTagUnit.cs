@@ -1,7 +1,7 @@
 ﻿#if SCOR_ENABLE_VISUALSCRIPTING
 using Unity.VisualScripting;
 
-namespace StudioScor.GameplayTagSystem.VisualScripting
+namespace StudioScor.GameplayTagSystem.Extend.VisualScripting
 {
     [UnitTitle("Grant GameplayTag")]
     [UnitSubtitle("GameplayTagSystem Unit")]
@@ -34,9 +34,9 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
             _UseList = StructureType.Equals(EStructureType.List);
 
             if (_UseList)
-                GameplayTag = ValueInput<GameplayTag[]>(nameof(GameplayTag), null);
+                GameplayTag = ValueInput<GameplayTagSO[]>(nameof(GameplayTag), null);
             else
-                GameplayTag = ValueInput<GameplayTag>(nameof(GameplayTag), null);
+                GameplayTag = ValueInput<GameplayTagSO>(nameof(GameplayTag), null);
 
             Requirement(GameplayTag, Enter);
         }
@@ -47,7 +47,7 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
 
             if (_UseList)
             {
-                var grantTags = flow.GetValue<GameplayTag[]>(GameplayTag);
+                var grantTags = flow.GetValue<GameplayTagSO[]>(GameplayTag);
 
                 switch (ContainerType)
                 {
@@ -63,7 +63,7 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
             }
             else
             {
-                var grantTag = flow.GetValue<GameplayTag>(GameplayTag);
+                var grantTag = flow.GetValue<GameplayTagSO>(GameplayTag);
 
                 switch (ContainerType)
                 {

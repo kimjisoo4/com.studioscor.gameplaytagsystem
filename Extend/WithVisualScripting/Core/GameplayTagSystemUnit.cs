@@ -2,8 +2,9 @@
 using UnityEngine;
 using Unity.VisualScripting;
 
-namespace StudioScor.GameplayTagSystem.VisualScripting
+namespace StudioScor.GameplayTagSystem.Extend.VisualScripting
 {
+    [UnitCategory("StudioScor\\GameplayTagSystem")]
     public abstract class GameplayTagSystemUnit : Unit
     {
         [DoNotSerialize]

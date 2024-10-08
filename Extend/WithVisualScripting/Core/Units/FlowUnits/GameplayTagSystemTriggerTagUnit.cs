@@ -1,7 +1,7 @@
 ﻿#if SCOR_ENABLE_VISUALSCRIPTING
 using Unity.VisualScripting;
 
-namespace StudioScor.GameplayTagSystem.VisualScripting
+namespace StudioScor.GameplayTagSystem.Extend.VisualScripting
 {
     [UnitTitle("Trigger GameplayTag")]
     [UnitSubtitle("GameplayTagSystem Unit")]
@@ -28,9 +28,9 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
             _UseList = StructureType.Equals(EStructureType.List);
 
             if (_UseList)
-                GameplayTag = ValueInput<GameplayTag[]>(nameof(GameplayTag), null);
+                GameplayTag = ValueInput<GameplayTagSO[]>(nameof(GameplayTag), null);
             else
-                GameplayTag = ValueInput<GameplayTag>(nameof(GameplayTag), null);
+                GameplayTag = ValueInput<GameplayTagSO>(nameof(GameplayTag), null);
 
             Requirement(GameplayTag, Enter);
         }
@@ -41,13 +41,13 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
             
             if(_UseList)
             {
-                var triggerTags = flow.GetValue<GameplayTag[]>(GameplayTag);
+                var triggerTags = flow.GetValue<GameplayTagSO[]>(GameplayTag);
 
                 gameplayTagSystem.TriggerTags(triggerTags);
             }
             else
             {
-                var triggerTag = flow.GetValue<GameplayTag>(GameplayTag);
+                var triggerTag = flow.GetValue<GameplayTagSO>(GameplayTag);
 
                 gameplayTagSystem.TriggerTag(triggerTag);
             }

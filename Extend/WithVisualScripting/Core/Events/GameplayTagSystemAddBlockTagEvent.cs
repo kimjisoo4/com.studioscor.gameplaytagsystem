@@ -1,7 +1,8 @@
 ﻿#if SCOR_ENABLE_VISUALSCRIPTING
 using Unity.VisualScripting;
+using UnityEngine;
 
-namespace StudioScor.GameplayTagSystem.VisualScripting
+namespace StudioScor.GameplayTagSystem.Extend.VisualScripting
 {
     [UnitTitle("On Added BlockTag")]
     [UnitSubtitle("Event")]
@@ -11,5 +12,4 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
         protected override string HookName => GameplayTagSystemWithVisualScripting.ADD_BLOCK_TAG;
     }
 }
-
 #endif

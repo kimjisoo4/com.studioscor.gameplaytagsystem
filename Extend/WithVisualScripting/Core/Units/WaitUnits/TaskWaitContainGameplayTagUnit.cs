@@ -5,13 +5,13 @@ using System.Linq;
 using Unity.VisualScripting;
 using StudioScor.Utilities.VisualScripting;
 
-namespace StudioScor.GameplayTagSystem.VisualScripting
+namespace StudioScor.GameplayTagSystem.Extend.VisualScripting
 {
-    [UnitTitle("Task Contain GameplayTag")]
-    [UnitShortTitle("TaskContainTag")]
+    [UnitTitle("Wait Contain GameplayTag")]
+    [UnitShortTitle("TaskWaitContainTag")]
     [UnitSubtitle("GameplayTagSystem Task")]
-    [UnitCategory("StudioScor\\Task")]
-    public class TaskContainGameplayTagUnit : UpdateUnit
+    [UnitCategory("StudioScor\\Task\\GameplayTagSystem")]
+    public class TaskWaitContainGameplayTagUnit : ToggleUpdateUnit
     {
         [DoNotSerialize]
         [PortLabel("Target")]
@@ -51,28 +51,27 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
         [PortLabel("Structure Type")]
         public EStructureType StructureType { get; set; } = EStructureType.Target;
 
-        private bool useList;
+        private bool _UseList;
 
-        public new class Data : UpdateUnit.Data
+
+
+        public new class Data : ToggleUpdateUnit.Data
         {
             public IGameplayTagSystem GameplayTagSystemEvent;
             public IGameplayTagSystem GameplayTagSystem;
             public bool UseList;
             public EContainerType GameplayTagType;
             public EContainType ContainType;
-            public GameplayTag GameplayTag;
-            public GameplayTag[] GameplayTags;
+            public GameplayTagSO GameplayTag;
+            public GameplayTagSO[] GameplayTags;
             public bool IsToggle;
             public bool IsOn;
 
             public EventHook GrantHook;
             public EventHook RemoveHook;
-
             public Delegate GrantHandler;
             public Delegate RemoveHandler;
-
         }
-
 
         protected override void Definition()
         {
@@ -80,16 +79,16 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
 
             Target = ValueInput<GameObject>(nameof(Target), null).NullMeansSelf();
 
-            useList = StructureType.Equals(EStructureType.List);
+            _UseList = StructureType.Equals(EStructureType.List);
 
-            if (useList)
+            if (_UseList)
             {
                 ContainType = ValueInput<EContainType>(nameof(ContainType), EContainType.All);
-                GameplayTag = ValueInput<GameplayTag[]>(nameof(GameplayTag), null);
+                GameplayTag = ValueInput<GameplayTagSO[]>(nameof(GameplayTag), null);
             }
             else
             {
-                GameplayTag = ValueInput<GameplayTag>(nameof(GameplayTag), null);
+                GameplayTag = ValueInput<GameplayTagSO>(nameof(GameplayTag), null);
             }
 
             ToggleOn = ControlOutput(nameof(ToggleOn));
@@ -97,14 +96,36 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
 
             Succession(Enter, ToggleOn);
             Succession(Enter, ToggleOff);
-
         }
+
         public override IGraphElementData CreateData()
         {
             return new Data();
         }
 
-        protected override void OnEnter(Flow flow)
+        protected override void EndActivate(Flow flow)
+        {
+            base.EndActivate(flow);
+
+            var data = flow.stack.GetElementData<Data>(this);
+
+            if(data.IsOn)
+            {
+                flow.Invoke(ToggleOff);
+            }
+        }
+
+        protected override void OnUpdate(Flow flow)
+        {
+            var data = flow.stack.GetElementData<Data>(this);
+
+            if(data.IsOn)
+            {
+                flow.Invoke(Update);
+            }
+        }
+
+        protected override void SetValue(Flow flow)
         {
             var data = flow.stack.GetElementData<Data>(this);
 
@@ -130,8 +151,8 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
                 removeHook = new EventHook(GameplayTagSystemWithVisualScripting.REMOVE_BLOCK_TAG, gameplayTagSystemEvent);
             }
 
-            Action<GameplayTag> grantHandler = tag => GrantTag(reference, tag);
-            Action<GameplayTag> removeHandler = tag => RemoveTag(reference, tag);
+            Action<GameplayTagSO> grantHandler = tag => GrantTag(reference, tag);
+            Action<GameplayTagSO> removeHandler = tag => RemoveTag(reference, tag);
 
             EventBus.Register(grantHook, grantHandler);
             EventBus.Register(removeHook, removeHandler);
@@ -145,12 +166,12 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
             data.GameplayTagSystem = gameplayTagSystem;
             data.GameplayTagSystemEvent = gameplayTagSystemEvent;
             data.GameplayTagType = ContainerType;
+            
+            data.UseList = _UseList;
 
-            data.UseList = useList;
-
-            if (useList)
+            if (_UseList)
             {
-                var gameplayTags = flow.GetValue<GameplayTag[]>(GameplayTag);
+                var gameplayTags = flow.GetValue<GameplayTagSO[]>(GameplayTag);
 
                 data.GameplayTag = null;
                 data.GameplayTags = gameplayTags;
@@ -158,51 +179,35 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
             }
             else
             {
-                var gameplayTag = flow.GetValue<GameplayTag>(GameplayTag);
+                var gameplayTag = flow.GetValue<GameplayTagSO>(GameplayTag);
 
                 data.GameplayTag = gameplayTag;
                 data.GameplayTags = null;
             }
         }
 
-        protected override void OnInterrupt(Flow flow)
+        protected override void ResetValue(Flow flow)
         {
             var data = flow.stack.GetElementData<Data>(this);
 
-            if (!data.IsActivate)
-                return;
+            EventBus.Unregister(data.GrantHook, data.GrantHandler);
+            EventBus.Unregister(data.RemoveHook, data.RemoveHandler);
 
-            data.IsActivate = false;
-
+            data.GrantHandler = null;
+            data.RemoveHandler = null;
         }
 
-        protected override ControlOutput OnManualUpdate(Flow flow)
+        protected override void UpdateValue(Flow flow)
         {
             var data = flow.stack.GetElementData<Data>(this);
 
-            if (data.IsOn)
-            {
-                flow.Invoke(Update);
-            }
+            data.DeltaTime = data.IsManual ? flow.GetValue<float>(ManualDeltaTime) : GetDeltaTime;
 
-            flow.Dispose();
 
-            return null;
+            flow.SetValue(DeltaTime, data.DeltaTime);
         }
 
-        protected override void OnUpdate(Flow flow)
-        {
-            var data = flow.stack.GetElementData<Data>(this);
-
-            if(data.IsOn)
-            {
-                flow.Invoke(Update);
-            }
-
-            flow.Dispose();
-        }
-
-        private void GrantTag(GraphReference reference, GameplayTag tag)
+        private void GrantTag(GraphReference reference, GameplayTagSO tag)
         {
             var data = reference.GetElementData<Data>(this);
 
@@ -260,7 +265,7 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
                 }
             }
         }
-        private void RemoveTag(GraphReference reference, GameplayTag tag)
+        private void RemoveTag(GraphReference reference, GameplayTagSO tag)
         {
             var data = reference.GetElementData<Data>(this);
 
@@ -318,8 +323,6 @@ namespace StudioScor.GameplayTagSystem.VisualScripting
                 }
             }
         }
-
-
     }
 }
 
