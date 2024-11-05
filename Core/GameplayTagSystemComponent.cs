@@ -1,5 +1,6 @@
 ﻿using StudioScor.Utilities;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace StudioScor.GameplayTagSystem
@@ -29,19 +30,36 @@ namespace StudioScor.GameplayTagSystem
 
         public void ClearAllGameplayTags()
         {
-            foreach (var ownedTag in _ownedTags.Keys)
+            Log(nameof(ClearAllGameplayTags));
+
+            if (_ownedTags.Count > 0)
             {
-                ClearOwnedTag(ownedTag);
+                var ownedTags = _ownedTags.Keys;
+
+                for (int i = ownedTags.LastIndex(); i >= 0; i--)
+                {
+                    var ownedTag = ownedTags.ElementAt(i);
+
+                    ClearOwnedTag(ownedTag);
+                }
+
+                _ownedTags.Clear();
+            }
+
+            if(_blockTags.Count > 0)
+            {
+                var blockTags = _blockTags.Keys;
+
+                for (int i = blockTags.LastIndex(); i >= 0; i--)
+                {
+                    var blockTag = blockTags.ElementAt(i);
+
+                    ClearBlockTag(blockTag);
+                }
+
+                _blockTags.Clear();
             }
             
-            _ownedTags.Clear();
-
-            foreach (var blockTag in _blockTags.Keys)
-            {
-                ClearOwnedTag(blockTag);
-            }
-
-            _blockTags.Clear();
 
             OnReset();
         }
