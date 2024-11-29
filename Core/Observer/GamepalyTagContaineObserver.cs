@@ -58,7 +58,7 @@ namespace StudioScor.GameplayTagSystem
             }
         }
 
-        private void GameplayTagSystem_OnGrantedOwnedTag(IGameplayTagSystem gameplayTagSystem, IGameplayTag gameplayTag)
+        private void GameplayTagSystem_OnGrantedOwnedTag(IGameplayTagSystem gameplayTagSystem, GameplayTag gameplayTag)
         {
             if(!IsToggleOn)
             {
@@ -70,7 +70,7 @@ namespace StudioScor.GameplayTagSystem
         }
 
 
-        private void GameplayTagSystem_OnRemovedOwnedTag(IGameplayTagSystem gameplayTagSystem, IGameplayTag gameplayTag)
+        private void GameplayTagSystem_OnRemovedOwnedTag(IGameplayTagSystem gameplayTagSystem, GameplayTag gameplayTag)
         {
             if(IsToggleOn)
             {
@@ -80,7 +80,7 @@ namespace StudioScor.GameplayTagSystem
         }
 
 
-        private void GameplayTagSystem_OnGrantedBlockTag(IGameplayTagSystem gameplayTagSystem, IGameplayTag gameplayTag)
+        private void GameplayTagSystem_OnGrantedBlockTag(IGameplayTagSystem gameplayTagSystem, GameplayTag gameplayTag)
         {
             if (!IsToggleOn)
             {
@@ -90,7 +90,7 @@ namespace StudioScor.GameplayTagSystem
                 }
             }
         }
-        private void GameplayTagSystem_OnRemovedBlockTag(IGameplayTagSystem gameplayTagSystem, IGameplayTag gameplayTag)
+        private void GameplayTagSystem_OnRemovedBlockTag(IGameplayTagSystem gameplayTagSystem, GameplayTag gameplayTag)
         {
             if (IsToggleOn)
             {

@@ -3,32 +3,28 @@ using UnityEngine;
 
 namespace StudioScor.GameplayTagSystem
 {
-    public interface IGameplayTag
-    {
-        public string name { get; }
-    }
     public interface IGameplayTagSystem
     {
-        public delegate void GameplayTagEventHandler(IGameplayTagSystem gameplayTagSystem, IGameplayTag gameplayTag);
-        public delegate void GameplayTagTriggerEventHandler(IGameplayTagSystem gameplayTagSystem, IGameplayTag gameplayTag, object data = null);
+        public delegate void GameplayTagEventHandler(IGameplayTagSystem gameplayTagSystem, GameplayTag gameplayTag);
+        public delegate void GameplayTagTriggerEventHandler(IGameplayTagSystem gameplayTagSystem, GameplayTag gameplayTag, object data = null);
 
         public GameObject gameObject { get; }
         public Transform transform { get; }
 
-        public IReadOnlyDictionary<IGameplayTag, int> OwnedTags { get; }
-        public IReadOnlyDictionary<IGameplayTag, int> BlockTags { get; }
+        public IReadOnlyDictionary<GameplayTag, int> OwnedTags { get; }
+        public IReadOnlyDictionary<GameplayTag, int> BlockTags { get; }
 
         public void ClearAllGameplayTags();
 
-        public void TriggerTag(IGameplayTag triggerTag, object data = null);
+        public void TriggerTag(GameplayTag triggerTag, object data = null);
 
-        public void AddOwnedTag(IGameplayTag addTag);
-        public void RemoveOwnedTag(IGameplayTag removeTag);
-        public void ClearOwnedTag(IGameplayTag clearTag);
+        public void AddOwnedTag(GameplayTag addTag);
+        public void RemoveOwnedTag(GameplayTag removeTag);
+        public void ClearOwnedTag(GameplayTag clearTag);
 
-        public void AddBlockTag(IGameplayTag addTag);
-        public void RemoveBlockTag(IGameplayTag removeTag);
-        public void ClearBlockTag(IGameplayTag clearTag);
+        public void AddBlockTag(GameplayTag addTag);
+        public void RemoveBlockTag(GameplayTag removeTag);
+        public void ClearBlockTag(GameplayTag clearTag);
 
 
         public event GameplayTagEventHandler OnGrantedOwnedTag;

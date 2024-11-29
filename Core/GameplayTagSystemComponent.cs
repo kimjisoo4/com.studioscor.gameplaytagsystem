@@ -9,11 +9,11 @@ namespace StudioScor.GameplayTagSystem
     [AddComponentMenu("StudioScor/GameplayTagSystem/GameplayTagSystem Component", order:0)]
     public class GameplayTagSystemComponent : BaseMonoBehaviour, IGameplayTagSystem
     {
-        protected readonly Dictionary<IGameplayTag, int> _ownedTags = new();
-        protected readonly Dictionary<IGameplayTag, int> _blockTags = new();
+        protected readonly Dictionary<GameplayTag, int> _ownedTags = new();
+        protected readonly Dictionary<GameplayTag, int> _blockTags = new();
 
-        public IReadOnlyDictionary<IGameplayTag, int> OwnedTags => _ownedTags;
-        public IReadOnlyDictionary<IGameplayTag, int> BlockTags => _blockTags;
+        public IReadOnlyDictionary<GameplayTag, int> OwnedTags => _ownedTags;
+        public IReadOnlyDictionary<GameplayTag, int> BlockTags => _blockTags;
 
 
         public event IGameplayTagSystem.GameplayTagEventHandler OnGrantedOwnedTag;
@@ -66,7 +66,7 @@ namespace StudioScor.GameplayTagSystem
 
         protected virtual void OnReset() { }
 
-        public void TriggerTag(IGameplayTag triggerTag, object data = null)
+        public void TriggerTag(GameplayTag triggerTag, object data = null)
         {
             if (triggerTag is null)
                 return;
@@ -74,7 +74,7 @@ namespace StudioScor.GameplayTagSystem
             Invoke_OnTriggeredTag(triggerTag, data);
         }
         
-        public void AddOwnedTag(IGameplayTag addTag)
+        public void AddOwnedTag(GameplayTag addTag)
         {
             if (addTag is null)
                 return;
@@ -98,7 +98,7 @@ namespace StudioScor.GameplayTagSystem
             Invoke_OnAddedOwnedTag(addTag);
         }
 
-        public void RemoveOwnedTag(IGameplayTag removeTag)
+        public void RemoveOwnedTag(GameplayTag removeTag)
         {
             if (removeTag is null)
                 return;
@@ -120,7 +120,7 @@ namespace StudioScor.GameplayTagSystem
             }
         }
 
-        public void ClearOwnedTag(IGameplayTag clearTag)
+        public void ClearOwnedTag(GameplayTag clearTag)
         {
             if (clearTag is null)
                 return;
@@ -137,7 +137,7 @@ namespace StudioScor.GameplayTagSystem
                 Invoke_OnRemovedOwnedTag(clearTag);
             }
         }
-        public void AddBlockTag(IGameplayTag addTag)
+        public void AddBlockTag(GameplayTag addTag)
         {
             if (addTag is null)
                 return;
@@ -161,7 +161,7 @@ namespace StudioScor.GameplayTagSystem
             Invoke_OnAddedBlockTag(addTag);
         }
 
-        public void RemoveBlockTag(IGameplayTag removeTag)
+        public void RemoveBlockTag(GameplayTag removeTag)
         {
             if (removeTag is null)
                 return;
@@ -183,7 +183,7 @@ namespace StudioScor.GameplayTagSystem
             }
         }
 
-        public void ClearBlockTag(IGameplayTag clearTag)
+        public void ClearBlockTag(GameplayTag clearTag)
         {
             if (clearTag is null)
                 return;
@@ -203,55 +203,55 @@ namespace StudioScor.GameplayTagSystem
 
 
         #region Invoke
-        private void Invoke_OnTriggeredTag(IGameplayTag triggerTag, object data = null)
+        private void Invoke_OnTriggeredTag(GameplayTag triggerTag, object data = null)
         {
             Log($"{nameof(OnTriggeredTag)} :: {triggerTag}");
 
             OnTriggeredTag?.Invoke(this, triggerTag, data);
         }
-        private void Invoke_OnAddedOwnedTag(IGameplayTag addOwnedTag)
+        private void Invoke_OnAddedOwnedTag(GameplayTag addOwnedTag)
         {
             Log($"{nameof(OnAddedOwnedTag)} :: {addOwnedTag}");
 
             OnAddedOwnedTag?.Invoke(this, addOwnedTag);
         }
-        private void Invoke_OnSubtractedOwnedTag(IGameplayTag addOwnedTag)
+        private void Invoke_OnSubtractedOwnedTag(GameplayTag addOwnedTag)
         {
             Log($"{nameof(OnSubtractedOwnedTag)} :: {addOwnedTag}");
 
             OnSubtractedOwnedTag?.Invoke(this, addOwnedTag);
         }
-        private void Invoke_OnGrantedOwnedTag(IGameplayTag addNewOwnedTag)
+        private void Invoke_OnGrantedOwnedTag(GameplayTag addNewOwnedTag)
         {
             Log($"{nameof(OnGrantedOwnedTag)} :: {addNewOwnedTag}");
 
             OnGrantedOwnedTag?.Invoke(this, addNewOwnedTag);
         }
-        private void Invoke_OnRemovedOwnedTag(IGameplayTag removeOwnedTag)
+        private void Invoke_OnRemovedOwnedTag(GameplayTag removeOwnedTag)
         {
             Log($"{nameof(OnRemovedOwnedTag)} :: {removeOwnedTag}");
 
             OnRemovedOwnedTag?.Invoke(this, removeOwnedTag);
         }
-        private void Invoke_OnAddedBlockTag(IGameplayTag addBlockTag)
+        private void Invoke_OnAddedBlockTag(GameplayTag addBlockTag)
         {
             Log($"{nameof(OnAddedBlockTag)} :: {addBlockTag}");
 
             OnAddedBlockTag?.Invoke(this, addBlockTag);
         }
-        private void Invoke_OnSubtractedBlockTag(IGameplayTag addBlockTag)
+        private void Invoke_OnSubtractedBlockTag(GameplayTag addBlockTag)
         {
             Log($"{nameof(OnSubtractedBlockTag)} :: {addBlockTag}");
 
             OnSubtractedBlockTag?.Invoke(this, addBlockTag);
         }
-        private void Invoke_OnGrantedBlockTag(IGameplayTag addNewBlockTag)
+        private void Invoke_OnGrantedBlockTag(GameplayTag addNewBlockTag)
         {
             Log($"{nameof(OnGrantedBlockTag)} :: {addNewBlockTag}");
 
             OnGrantedBlockTag?.Invoke(this, addNewBlockTag);
         }
-        private void Invoke_OnRemovedBlockTag(IGameplayTag removeBlockTag)
+        private void Invoke_OnRemovedBlockTag(GameplayTag removeBlockTag)
         {
             Log($"{nameof(OnRemovedBlockTag)} :: {removeBlockTag}");
 

@@ -10,7 +10,7 @@ namespace StudioScor.GameplayTagSystem
         [Header(" [ Grant GameplayTag Component ] ")]
         [SerializeField] private GameObject target;
         [Space(5f)]
-        [SerializeField] private GameplayTagSO[] triggerTags;
+        [SerializeField] private GameplayTag[] triggerTags;
 
         [Header(" [ Auto Playing ] ")]
         [SerializeField] private bool autoPlaying;
@@ -87,7 +87,7 @@ namespace StudioScor.GameplayTagSystem
             }
         }
 
-        public void OnTriggerTag(GameplayTagSO triggerTag)
+        public void OnTriggerTag(GameplayTag triggerTag)
         {
             Log("On Trigger GameplayTags");
 

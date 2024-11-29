@@ -33,7 +33,7 @@ namespace StudioScor.GameplayTagSystem.Extend.VisualScripting
         {
             base.Definition();
 
-            GameplayTags = ValueInput<GameplayTagSO[]>(nameof(GameplayTags), null);
+            GameplayTags = ValueInput<GameplayTag[]>(nameof(GameplayTags), null);
 
             IsContaine = ValueOutput<bool>(nameof(IsContaine), CheckGameplayTags);
 
@@ -44,7 +44,7 @@ namespace StudioScor.GameplayTagSystem.Extend.VisualScripting
         private bool CheckGameplayTags(Flow flow)
         {
             var gameplayTagSystem = flow.GetValue<IGameplayTagSystem>(Target);
-            var tags = flow.GetValue<GameplayTagSO[]>(GameplayTags);
+            var tags = flow.GetValue<GameplayTag[]>(GameplayTags);
 
             if (tags is null || tags.Length <= 0)
                 return false;

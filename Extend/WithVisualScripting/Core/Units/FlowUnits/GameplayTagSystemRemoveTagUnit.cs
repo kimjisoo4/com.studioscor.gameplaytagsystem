@@ -35,9 +35,9 @@ namespace StudioScor.GameplayTagSystem.Extend.VisualScripting
             _UseList = StructureType.Equals(EStructureType.List);
 
             if (_UseList)
-                GameplayTag = ValueInput<GameplayTagSO[]>(nameof(GameplayTag), null);
+                GameplayTag = ValueInput<GameplayTag[]>(nameof(GameplayTag), null);
             else
-                GameplayTag = ValueInput<GameplayTagSO>(nameof(GameplayTag), null);
+                GameplayTag = ValueInput<GameplayTag>(nameof(GameplayTag), null);
 
             Requirement(GameplayTag, Enter);
         }
@@ -48,7 +48,7 @@ namespace StudioScor.GameplayTagSystem.Extend.VisualScripting
 
             if (_UseList)
             {
-                var removeTags = flow.GetValue<GameplayTagSO[]>(GameplayTag);
+                var removeTags = flow.GetValue<GameplayTag[]>(GameplayTag);
 
                 switch (ContainerType)
                 {
@@ -64,7 +64,7 @@ namespace StudioScor.GameplayTagSystem.Extend.VisualScripting
             }
             else
             {
-                var removeTag = flow.GetValue<GameplayTagSO>(GameplayTag);
+                var removeTag = flow.GetValue<GameplayTag>(GameplayTag);
 
                 switch (ContainerType)
                 {

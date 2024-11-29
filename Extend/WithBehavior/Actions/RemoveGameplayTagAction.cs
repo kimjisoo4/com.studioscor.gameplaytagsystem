@@ -15,7 +15,7 @@ namespace StudioScor.GameplayTagSystem.Behavior
             Block,
         }
 
-        [SerializeReference] public BlackboardVariable<GameplayTagSO> GameplayTag;
+        [SerializeReference] public BlackboardVariable<GameplayTag> GameplayTag;
         [SerializeReference] public BlackboardVariable<EType> Type = new(EType.Owned);
 
         protected override Status OnStart()

@@ -9,15 +9,15 @@ namespace StudioScor.GameplayTagSystem
     public class GameplayTagConditionObserver : GameplayTagObserver
     {
         [Header(" [ Gameplay Tag Condition Observer ] ")]
-        [SerializeField] private GameplayTagSO[] attributeTags;
+        [SerializeField] private GameplayTag[] attributeTags;
         [SerializeField] private FConditionTags conditionTags;
         
-        public GameplayTagConditionObserver(GameObject owner, IEnumerable<GameplayTagSO> attributeTags, FConditionTags conditionTags) : base(owner)
+        public GameplayTagConditionObserver(GameObject owner, IEnumerable<GameplayTag> attributeTags, FConditionTags conditionTags) : base(owner)
         {
             this.attributeTags = attributeTags.ToArray();
             this.conditionTags = conditionTags;
         }
-        public GameplayTagConditionObserver(IGameplayTagSystem gameplayTagSystem, IEnumerable<GameplayTagSO> attributeTags, FConditionTags conditionTags) : base(gameplayTagSystem)
+        public GameplayTagConditionObserver(IGameplayTagSystem gameplayTagSystem, IEnumerable<GameplayTag> attributeTags, FConditionTags conditionTags) : base(gameplayTagSystem)
         {
             this.attributeTags = attributeTags.ToArray();
             this.conditionTags = conditionTags;
@@ -76,7 +76,7 @@ namespace StudioScor.GameplayTagSystem
         }
 
 
-        private void GameplayTagSystem_OnGrantedOwnedTag(IGameplayTagSystem gameplayTagSystem, IGameplayTag gameplayTag)
+        private void GameplayTagSystem_OnGrantedOwnedTag(IGameplayTagSystem gameplayTagSystem, GameplayTag gameplayTag)
         {
             if(IsToggleOn)
             {
@@ -94,7 +94,7 @@ namespace StudioScor.GameplayTagSystem
             }
         }
 
-        private void GameplayTagSystem_OnRemovedOwnedTag(IGameplayTagSystem gameplayTagSystem, IGameplayTag gameplayTag)
+        private void GameplayTagSystem_OnRemovedOwnedTag(IGameplayTagSystem gameplayTagSystem, GameplayTag gameplayTag)
         {
             if (IsToggleOn)
             {
@@ -112,7 +112,7 @@ namespace StudioScor.GameplayTagSystem
             }
         }
 
-        private void GameplayTagSystem_OnGrantedBlockTag(IGameplayTagSystem gameplayTagSystem, IGameplayTag gameplayTag)
+        private void GameplayTagSystem_OnGrantedBlockTag(IGameplayTagSystem gameplayTagSystem, GameplayTag gameplayTag)
         {
             if (IsToggleOn)
             {
@@ -121,7 +121,7 @@ namespace StudioScor.GameplayTagSystem
 
             }
         }
-        private void GameplayTagSystem_OnRemovedBlockTag(IGameplayTagSystem gameplayTagSystem, IGameplayTag gameplayTag)
+        private void GameplayTagSystem_OnRemovedBlockTag(IGameplayTagSystem gameplayTagSystem, GameplayTag gameplayTag)
         {
             if (!IsToggleOn)
             {

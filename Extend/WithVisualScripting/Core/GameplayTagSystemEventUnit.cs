@@ -5,7 +5,7 @@ using Unity.VisualScripting;
 
 namespace StudioScor.GameplayTagSystem.Extend.VisualScripting
 {
-    public abstract class GameplayTagSystemEventUnit : CustomInterfaceEventUnit<IGameplayTagSystem, IGameplayTag>
+    public abstract class GameplayTagSystemEventUnit : CustomInterfaceEventUnit<IGameplayTagSystem, GameplayTag>
     {
         [DoNotSerialize]
         [PortLabel("GameplayTag")]
@@ -31,22 +31,22 @@ namespace StudioScor.GameplayTagSystem.Extend.VisualScripting
         {
             base.Definition();
 
-            GameplayTag = ValueOutput<GameplayTagSO>(nameof(GameplayTag));
+            GameplayTag = ValueOutput<GameplayTag>(nameof(GameplayTag));
 
             _UseTarget = TriggerType == ETriggerType.TargetTag;
 
             if (_UseTarget)
-                TargetTag = ValueInput<GameplayTagSO>(nameof(TargetTag), null);
+                TargetTag = ValueInput<GameplayTag>(nameof(TargetTag), null);
         }
 
-        protected override void AssignArguments(Flow flow, IGameplayTag gameplayTag)
+        protected override void AssignArguments(Flow flow, GameplayTag gameplayTag)
         {
-            flow.SetValue(GameplayTag, gameplayTag);
+            flow.SetValue(GameplayTag, (object)gameplayTag);
         }
 
-        protected override bool ShouldTrigger(Flow flow, IGameplayTag gameplayTag)
+        protected override bool ShouldTrigger(Flow flow, GameplayTag gameplayTag)
         {
-            return !_UseTarget || flow.GetValue<GameplayTagSO>(TargetTag) == gameplayTag;
+            return !_UseTarget || flow.GetValue<GameplayTag>(TargetTag) == gameplayTag;
         }
     }
 }

@@ -62,8 +62,8 @@ namespace StudioScor.GameplayTagSystem.Extend.VisualScripting
             public bool UseList;
             public EContainerType GameplayTagType;
             public EContainType ContainType;
-            public GameplayTagSO GameplayTag;
-            public GameplayTagSO[] GameplayTags;
+            public GameplayTag GameplayTag;
+            public GameplayTag[] GameplayTags;
             public bool IsToggle;
             public bool IsOn;
 
@@ -84,11 +84,11 @@ namespace StudioScor.GameplayTagSystem.Extend.VisualScripting
             if (_UseList)
             {
                 ContainType = ValueInput<EContainType>(nameof(ContainType), EContainType.All);
-                GameplayTag = ValueInput<GameplayTagSO[]>(nameof(GameplayTag), null);
+                GameplayTag = ValueInput<GameplayTag[]>(nameof(GameplayTag), null);
             }
             else
             {
-                GameplayTag = ValueInput<GameplayTagSO>(nameof(GameplayTag), null);
+                GameplayTag = ValueInput<GameplayTag>(nameof(GameplayTag), null);
             }
 
             ToggleOn = ControlOutput(nameof(ToggleOn));
@@ -151,8 +151,8 @@ namespace StudioScor.GameplayTagSystem.Extend.VisualScripting
                 removeHook = new EventHook(GameplayTagSystemWithVisualScripting.REMOVE_BLOCK_TAG, gameplayTagSystemEvent);
             }
 
-            Action<GameplayTagSO> grantHandler = tag => GrantTag(reference, tag);
-            Action<GameplayTagSO> removeHandler = tag => RemoveTag(reference, tag);
+            Action<GameplayTag> grantHandler = tag => GrantTag(reference, tag);
+            Action<GameplayTag> removeHandler = tag => RemoveTag(reference, tag);
 
             EventBus.Register(grantHook, grantHandler);
             EventBus.Register(removeHook, removeHandler);
@@ -171,7 +171,7 @@ namespace StudioScor.GameplayTagSystem.Extend.VisualScripting
 
             if (_UseList)
             {
-                var gameplayTags = flow.GetValue<GameplayTagSO[]>(GameplayTag);
+                var gameplayTags = flow.GetValue<GameplayTag[]>(GameplayTag);
 
                 data.GameplayTag = null;
                 data.GameplayTags = gameplayTags;
@@ -179,7 +179,7 @@ namespace StudioScor.GameplayTagSystem.Extend.VisualScripting
             }
             else
             {
-                var gameplayTag = flow.GetValue<GameplayTagSO>(GameplayTag);
+                var gameplayTag = flow.GetValue<GameplayTag>(GameplayTag);
 
                 data.GameplayTag = gameplayTag;
                 data.GameplayTags = null;
@@ -207,7 +207,7 @@ namespace StudioScor.GameplayTagSystem.Extend.VisualScripting
             flow.SetValue(DeltaTime, data.DeltaTime);
         }
 
-        private void GrantTag(GraphReference reference, GameplayTagSO tag)
+        private void GrantTag(GraphReference reference, GameplayTag tag)
         {
             var data = reference.GetElementData<Data>(this);
 
@@ -265,7 +265,7 @@ namespace StudioScor.GameplayTagSystem.Extend.VisualScripting
                 }
             }
         }
-        private void RemoveTag(GraphReference reference, GameplayTagSO tag)
+        private void RemoveTag(GraphReference reference, GameplayTag tag)
         {
             var data = reference.GetElementData<Data>(this);
 

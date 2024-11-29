@@ -9,7 +9,7 @@ namespace StudioScor.GameplayTagSystem.Behavior
     [NodeDescription(name: "Trigger Gameplay Tag", story: "[Self] Trigger [GameplayTag] Tag", category: "Action/StudioScor/GameplayTagSystem", id: "playersystem_triggergameplaytag")]
     public class TriggerGameplayTagAction : GameplayTagSystemAction
     {
-        [SerializeReference] public BlackboardVariable<GameplayTagSO> GameplayTag;
+        [SerializeReference] public BlackboardVariable<GameplayTag> GameplayTag;
 
         protected override Status OnStart()
         {

@@ -47,47 +47,47 @@ namespace StudioScor.GameplayTagSystem.Extend.VisualScripting
             }
         }
 
-        private void GameplayTagSystem_OnRemovedBlockTag(IGameplayTagSystem gameplayTagSystemEvent, IGameplayTag gameplayTag)
+        private void GameplayTagSystem_OnRemovedBlockTag(IGameplayTagSystem gameplayTagSystemEvent, GameplayTag gameplayTag)
         {
             EventBus.Trigger(new EventHook(GameplayTagSystemWithVisualScripting.REMOVE_BLOCK_TAG, gameplayTagSystemEvent), gameplayTag);
         }
 
-        private void GameplayTagSystem_OnRemovedOwnedTag(IGameplayTagSystem gameplayTagSystemEvent, IGameplayTag gameplayTag)
+        private void GameplayTagSystem_OnRemovedOwnedTag(IGameplayTagSystem gameplayTagSystemEvent, GameplayTag gameplayTag)
         {
             EventBus.Trigger(new EventHook(GameplayTagSystemWithVisualScripting.REMOVE_OWNED_TAG, gameplayTagSystemEvent), gameplayTag);
         }
 
-        private void GameplayTagSystem_OnSubtractedBlockTag(IGameplayTagSystem gameplayTagSystemEvent, IGameplayTag gameplayTag)
+        private void GameplayTagSystem_OnSubtractedBlockTag(IGameplayTagSystem gameplayTagSystemEvent, GameplayTag gameplayTag)
         {
             EventBus.Trigger(new EventHook(GameplayTagSystemWithVisualScripting.SUBTRACT_BLOCK_TAG, gameplayTagSystemEvent), gameplayTag);
         }
 
-        private void GameplayTagSystem_OnSubtractedOwnedTag(IGameplayTagSystem gameplayTagSystemEvent, IGameplayTag gameplayTag)
+        private void GameplayTagSystem_OnSubtractedOwnedTag(IGameplayTagSystem gameplayTagSystemEvent, GameplayTag gameplayTag)
         {
             EventBus.Trigger(new EventHook(GameplayTagSystemWithVisualScripting.SUBTRACT_OWNED_TAG, gameplayTagSystemEvent), gameplayTag);
         }
 
-        private void GameplayTagSystem_OnGrantedBlockTag(IGameplayTagSystem gameplayTagSystemEvent, IGameplayTag gameplayTag)
+        private void GameplayTagSystem_OnGrantedBlockTag(IGameplayTagSystem gameplayTagSystemEvent, GameplayTag gameplayTag)
         {
             EventBus.Trigger(new EventHook(GameplayTagSystemWithVisualScripting.GRANT_BLOCK_TAG, gameplayTagSystemEvent), gameplayTag);
         }
 
-        private void GameplayTagSystem_OnGrantedOwnedTag(IGameplayTagSystem gameplayTagSystemEvent, IGameplayTag gameplayTag)
+        private void GameplayTagSystem_OnGrantedOwnedTag(IGameplayTagSystem gameplayTagSystemEvent, GameplayTag gameplayTag)
         {
             EventBus.Trigger(new EventHook(GameplayTagSystemWithVisualScripting.GRANT_OWNED_TAG, gameplayTagSystemEvent), gameplayTag);
         }
 
-        private void GameplayTagSystem_OnAddedBlockTag(IGameplayTagSystem gameplayTagSystemEvent, IGameplayTag gameplayTag)
+        private void GameplayTagSystem_OnAddedBlockTag(IGameplayTagSystem gameplayTagSystemEvent, GameplayTag gameplayTag)
         {
             EventBus.Trigger(new EventHook(GameplayTagSystemWithVisualScripting.ADD_BLOCK_TAG, gameplayTagSystemEvent), gameplayTag);
         }
 
-        private void GameplayTagSystem_OnAddedOwnedTag(IGameplayTagSystem gameplayTagSystemEvent, IGameplayTag gameplayTag)
+        private void GameplayTagSystem_OnAddedOwnedTag(IGameplayTagSystem gameplayTagSystemEvent, GameplayTag gameplayTag)
         {
             EventBus.Trigger(new EventHook(GameplayTagSystemWithVisualScripting.ADD_OWNED_TAG, gameplayTagSystemEvent), gameplayTag);
         }
 
-        private void GameplayTagSystem_OnTriggeredTag(IGameplayTagSystem gameplayTagSystemEvent, IGameplayTag gameplayTag, object data = null)
+        private void GameplayTagSystem_OnTriggeredTag(IGameplayTagSystem gameplayTagSystemEvent, GameplayTag gameplayTag, object data = null)
         {
             var eventData = TriggerTagData.Get(gameplayTag, data);
 

@@ -44,7 +44,7 @@ namespace StudioScor.GameplayTagSystem.Extend.VisualScripting
 
             if(!_UseTarget)
             {
-                GameplayTag = ValueOutput<GameplayTagSO>(nameof(GameplayTag));
+                GameplayTag = ValueOutput<GameplayTag>(nameof(GameplayTag));
             }
             
             EventData = ValueOutput<object>(nameof(Data));
@@ -52,7 +52,7 @@ namespace StudioScor.GameplayTagSystem.Extend.VisualScripting
 
             if (_UseTarget)
             {
-                TargetTag = ValueInput<GameplayTagSO>(nameof(TargetTag), null);
+                TargetTag = ValueInput<GameplayTag>(nameof(TargetTag), null);
             }
         }
 
@@ -68,7 +68,7 @@ namespace StudioScor.GameplayTagSystem.Extend.VisualScripting
 
         protected override bool ShouldTrigger(Flow flow, TriggerTagData triggerTagData)
         {
-            return !_UseTarget || flow.GetValue<GameplayTagSO>(TargetTag) == triggerTagData.TriggerTag;
+            return !_UseTarget || flow.GetValue<GameplayTag>(TargetTag) == triggerTagData.TriggerTag;
         }
     }
 }

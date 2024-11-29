@@ -28,9 +28,9 @@ namespace StudioScor.GameplayTagSystem.Extend.VisualScripting
             _UseList = StructureType.Equals(EStructureType.List);
 
             if (_UseList)
-                GameplayTag = ValueInput<GameplayTagSO[]>(nameof(GameplayTag), null);
+                GameplayTag = ValueInput<GameplayTag[]>(nameof(GameplayTag), null);
             else
-                GameplayTag = ValueInput<GameplayTagSO>(nameof(GameplayTag), null);
+                GameplayTag = ValueInput<GameplayTag>(nameof(GameplayTag), null);
 
             Requirement(GameplayTag, Enter);
         }
@@ -41,13 +41,13 @@ namespace StudioScor.GameplayTagSystem.Extend.VisualScripting
             
             if(_UseList)
             {
-                var triggerTags = flow.GetValue<GameplayTagSO[]>(GameplayTag);
+                var triggerTags = flow.GetValue<GameplayTag[]>(GameplayTag);
 
                 gameplayTagSystem.TriggerTags(triggerTags);
             }
             else
             {
-                var triggerTag = flow.GetValue<GameplayTagSO>(GameplayTag);
+                var triggerTag = flow.GetValue<GameplayTag>(GameplayTag);
 
                 gameplayTagSystem.TriggerTag(triggerTag);
             }

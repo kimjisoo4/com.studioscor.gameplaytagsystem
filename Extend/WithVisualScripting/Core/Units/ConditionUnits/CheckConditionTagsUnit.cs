@@ -25,8 +25,8 @@ namespace StudioScor.GameplayTagSystem.Extend.VisualScripting
         {
             base.Definition();
 
-            ObstacledTags = ValueInput<GameplayTagSO[]>(nameof(ObstacledTags), default);
-            RequiredTags = ValueInput<GameplayTagSO[]>(nameof(RequiredTags), default);
+            ObstacledTags = ValueInput<GameplayTag[]>(nameof(ObstacledTags), default);
+            RequiredTags = ValueInput<GameplayTag[]>(nameof(RequiredTags), default);
 
             IsPositive = ValueOutput<bool>(nameof(IsPositive), CheckGameplayTags);
 
@@ -39,12 +39,12 @@ namespace StudioScor.GameplayTagSystem.Extend.VisualScripting
         {
             var gameplayTagSystem = flow.GetValue<IGameplayTagSystem>(Target);
 
-            var obstacledTags = flow.GetValue<GameplayTagSO[]>(ObstacledTags);
+            var obstacledTags = flow.GetValue<GameplayTag[]>(ObstacledTags);
 
             if (obstacledTags.Length > 0 && gameplayTagSystem.ContainAnyTagsInOwned(obstacledTags))
                 return false;
 
-            var requiredTags = flow.GetValue<GameplayTagSO[]>(RequiredTags);
+            var requiredTags = flow.GetValue<GameplayTag[]>(RequiredTags);
 
             if (requiredTags.Length > 0 && !gameplayTagSystem.ContainAllTagsInOwned(requiredTags))
                 return false;

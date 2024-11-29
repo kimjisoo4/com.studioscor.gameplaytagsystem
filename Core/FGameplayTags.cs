@@ -6,10 +6,10 @@ namespace StudioScor.GameplayTagSystem
     [System.Serializable]
     public struct FGameplayTags
     {
-        [SerializeField] private GameplayTagSO[] owneds;
-        [SerializeField] private GameplayTagSO[] blocks;
+        [SerializeField] private GameplayTag[] owneds;
+        [SerializeField] private GameplayTag[] blocks;
 
-        public readonly IReadOnlyCollection<GameplayTagSO> Owneds => owneds;
-        public readonly IReadOnlyCollection<GameplayTagSO> Blocks => blocks;
+        public readonly IReadOnlyCollection<GameplayTag> Owneds => owneds;
+        public readonly IReadOnlyCollection<GameplayTag> Blocks => blocks;
     }
 }

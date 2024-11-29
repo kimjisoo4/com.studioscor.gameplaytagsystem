@@ -48,8 +48,8 @@ namespace StudioScor.GameplayTagSystem.Extend.VisualScripting
             TurnOn = ControlOutput(nameof(TurnOn));
             TurnOff = ControlOutput(nameof(TurnOff));
 
-            OwnedTags = ValueInput<GameplayTagSO[]>(nameof(OwnedTags), null).AllowsNull();
-            BlockTags = ValueInput<GameplayTagSO[]>(nameof(BlockTags), null).AllowsNull();
+            OwnedTags = ValueInput<GameplayTag[]>(nameof(OwnedTags), null).AllowsNull();
+            BlockTags = ValueInput<GameplayTag[]>(nameof(BlockTags), null).AllowsNull();
 
             IsOn = ValueOutput<bool>(nameof(IsOn));
 
@@ -63,8 +63,8 @@ namespace StudioScor.GameplayTagSystem.Extend.VisualScripting
         {
             var gameplayTagSystem = flow.GetValue<IGameplayTagSystem>(Target);
 
-            var ownedTags = flow.GetValue<GameplayTagSO[]>(OwnedTags);
-            var blockTags = flow.GetValue<GameplayTagSO[]>(BlockTags);
+            var ownedTags = flow.GetValue<GameplayTag[]>(OwnedTags);
+            var blockTags = flow.GetValue<GameplayTag[]>(BlockTags);
 
             gameplayTagSystem.AddOwnedTags(ownedTags);
             gameplayTagSystem.AddBlockTags(blockTags);
@@ -78,8 +78,8 @@ namespace StudioScor.GameplayTagSystem.Extend.VisualScripting
         {
             var gameplayTagSystem = flow.GetValue<IGameplayTagSystem>(Target);
 
-            var ownedTags = flow.GetValue<GameplayTagSO[]>(OwnedTags);
-            var blockTags = flow.GetValue<GameplayTagSO[]>(BlockTags);
+            var ownedTags = flow.GetValue<GameplayTag[]>(OwnedTags);
+            var blockTags = flow.GetValue<GameplayTag[]>(BlockTags);
 
             gameplayTagSystem.RemoveOwnedTags(ownedTags);
             gameplayTagSystem.RemoveBlockTags(blockTags);

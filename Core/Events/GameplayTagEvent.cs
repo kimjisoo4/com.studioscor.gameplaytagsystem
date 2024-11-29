@@ -15,7 +15,7 @@ namespace StudioScor.GameplayTagSystem
 
         [Header(" [ GameplayTag Event ] ")]
         [SerializeField] private EGameplayTagEventType eventType;
-        [SerializeField] private GameplayTagSO[] gameplayTags;
+        [SerializeField] private GameplayTag[] gameplayTags;
         [Space(5f)]
         [SerializeField] private UnityEvent onTriggeredTag;
         [SerializeField] private UnityEvent onReleasedTag;
@@ -130,7 +130,7 @@ namespace StudioScor.GameplayTagSystem
             }
         }
 
-        private void GameplayTagSystem_OnTriggeredTag(IGameplayTagSystem gameplayTagSystem, IGameplayTag gameplayTag, object data = null)
+        private void GameplayTagSystem_OnTriggeredTag(IGameplayTagSystem gameplayTagSystem, GameplayTag gameplayTag, object data = null)
         {
             TryTriggerTagEvent(gameplayTagSystem, gameplayTag);
         }
@@ -160,9 +160,9 @@ namespace StudioScor.GameplayTagSystem
             }
         }
 
-        private void TryTriggerTagEvent(IGameplayTagSystem gameplayTagSystemEvent, IGameplayTag changedTag)
+        private void TryTriggerTagEvent(IGameplayTagSystem gameplayTagSystemEvent, GameplayTag changedTag)
         {
-            foreach (GameplayTagSO tag in gameplayTags)
+            foreach (GameplayTag tag in gameplayTags)
             {
                 if (tag == changedTag)
                 {

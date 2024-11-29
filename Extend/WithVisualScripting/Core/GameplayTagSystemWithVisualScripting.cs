@@ -9,15 +9,15 @@ namespace StudioScor.GameplayTagSystem
     public class TriggerTagData
     {
         private static ObjectPool<TriggerTagData> _pool;
-        private IGameplayTag _triggerTag;
+        private GameplayTag _triggerTag;
         private object _data;
         public TriggerTagData()
         { }
 
-        public IGameplayTag TriggerTag => _triggerTag;
+        public GameplayTag TriggerTag => _triggerTag;
         public object Data => _data;
 
-        public static TriggerTagData Get(IGameplayTag gameplayTag, object data)
+        public static TriggerTagData Get(GameplayTag gameplayTag, object data)
         {
             if(_pool is null)
             {

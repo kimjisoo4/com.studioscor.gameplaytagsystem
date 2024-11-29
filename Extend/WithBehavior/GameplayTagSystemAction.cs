@@ -14,6 +14,9 @@ namespace StudioScor.GameplayTagSystem.Behavior
 
         protected override Status OnStart()
         {
+            if (base.OnStart() == Status.Failure)
+                return Status.Failure;
+
             var self = Self.Value;
 
             if (!self)
