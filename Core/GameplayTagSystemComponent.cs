@@ -68,7 +68,7 @@ namespace StudioScor.GameplayTagSystem
 
         public void TriggerTag(GameplayTag triggerTag, object data = null)
         {
-            if (triggerTag is null)
+            if (!triggerTag)
                 return;
 
             Invoke_OnTriggeredTag(triggerTag, data);
@@ -76,7 +76,7 @@ namespace StudioScor.GameplayTagSystem
         
         public void AddOwnedTag(GameplayTag addTag)
         {
-            if (addTag is null)
+            if (!addTag)
                 return;
 
             if (_ownedTags.ContainsKey(addTag))
@@ -100,7 +100,7 @@ namespace StudioScor.GameplayTagSystem
 
         public void RemoveOwnedTag(GameplayTag removeTag)
         {
-            if (removeTag is null)
+            if (!removeTag)
                 return;
 
             if (_ownedTags.ContainsKey(removeTag))
@@ -122,7 +122,7 @@ namespace StudioScor.GameplayTagSystem
 
         public void ClearOwnedTag(GameplayTag clearTag)
         {
-            if (clearTag is null)
+            if (!clearTag)
                 return;
 
             if (_ownedTags.TryGetValue(clearTag, out int count) && count != 0)
@@ -139,7 +139,7 @@ namespace StudioScor.GameplayTagSystem
         }
         public void AddBlockTag(GameplayTag addTag)
         {
-            if (addTag is null)
+            if (!addTag)
                 return;
 
             if (_blockTags.ContainsKey(addTag))
@@ -163,7 +163,7 @@ namespace StudioScor.GameplayTagSystem
 
         public void RemoveBlockTag(GameplayTag removeTag)
         {
-            if (removeTag is null)
+            if (!removeTag)
                 return;
 
             if (_blockTags.ContainsKey(removeTag))
@@ -185,7 +185,7 @@ namespace StudioScor.GameplayTagSystem
 
         public void ClearBlockTag(GameplayTag clearTag)
         {
-            if (clearTag is null)
+            if (!clearTag)
                 return;
 
             if(_blockTags.TryGetValue(clearTag, out int count) && count != 0)
